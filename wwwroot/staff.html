@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>canTee - Quản lý căng tin</title>
+    <title>canTee - Quản lý căn tin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,7 +59,7 @@
                 <i class="fa-solid fa-utensils w-4"></i><span>Thực đơn</span>
             </button>
             <button onclick="navigate('canteen')" id="navCanteen" class="sidebar-item w-full text-left px-3 py-2.5 rounded-lg text-xs font-semibold flex items-center gap-2.5 text-white/70 hover:bg-white/10 hover:text-white">
-                <i class="fa-solid fa-store w-4"></i><span>Căng tin</span>
+                <i class="fa-solid fa-store w-4"></i><span>Căn tin</span>
             </button>
         </nav>
         <div class="p-3 border-t border-white/10">
@@ -74,7 +74,7 @@
             <div class="flex-1 flex items-center gap-3">
                 <span class="text-sm font-bold text-brand-navy" id="headerTitle">Tổng quan</span>
                 <select id="canteenSelect" onchange="onCanteenChange()" class="text-xs bg-gray-100 border border-gray-200 rounded-lg px-2.5 py-1.5 font-semibold text-gray-700 hidden">
-                    <option value="">-- Chọn căng tin --</option>
+                    <option value="">-- Chọn căn tin --</option>
                 </select>
             </div>
             <span class="text-xs text-gray-500 hidden sm:inline" id="headerUser"></span>
@@ -140,7 +140,7 @@
             <!-- ══════ CANTEEN ══════ -->
             <div id="viewCanteen" class="hidden space-y-6 max-w-2xl">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                    <h3 class="text-sm font-extrabold text-brand-navy mb-4">Thông tin căng tin</h3>
+                    <h3 class="text-sm font-extrabold text-brand-navy mb-4">Thông tin căn tin</h3>
                     <form id="canteenForm" onsubmit="saveCanteen(event)" class="space-y-3">
                         <div class="grid grid-cols-2 gap-3">
                             <div><label class="block text-xs font-bold text-gray-600 mb-1">Tên</label><input id="canteenName" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs"></div>
@@ -258,7 +258,10 @@
             orders: [], orderTab: 'kanban',
             menuTab: 'categories',
             categories: [], products: [], selectedCategoryId: null,
-            expandedProductId: null
+            expandedProductId: null,
+            modifierGroupMap: {},
+            modifierMap: {},
+            orderPollInterval: null
         };
         var allViews = ['viewDashboard','viewOrders','viewMenu','viewCanteen'];
 
@@ -324,13 +327,14 @@
             if (location.hash.slice(1) !== view) history.pushState(null, '', '#' + view);
             state.activeView = view;
             setActiveNav(view);
-            var titles = { dashboard:'Tổng quan', orders:'Đơn hàng', menu:'Thực đơn', canteen:'Căng tin' };
+            var titles = { dashboard:'Tổng quan', orders:'Đơn hàng', menu:'Thực đơn', canteen:'Căn tin' };
             document.getElementById('headerTitle').innerText = titles[view] || view;
-            if (!state.currentCanteen && ['dashboard','orders','menu','canteen'].indexOf(view) !== -1) { showToast('Vui lòng chọn căng tin', 'info'); return; }
+            if (!state.currentCanteen && ['dashboard','orders','menu','canteen'].indexOf(view) !== -1) { showToast('Vui lòng chọn căn tin', 'info'); return; }
             if (view === 'dashboard') { showView('viewDashboard'); await loadDashboard(); }
-            else if (view === 'orders') { showView('viewOrders'); await loadOrders(); }
+            else if (view === 'orders') { showView('viewOrders'); await loadOrders(); startOrderPolling(); }
             else if (view === 'menu') { showView('viewMenu'); await loadMenu(); }
             else if (view === 'canteen') { showView('viewCanteen'); await loadCanteenSettings(); }
+            if (view !== 'orders') stopOrderPolling();
         }
 
         // ---- DASHBOARD ----
@@ -376,6 +380,17 @@
         async function loadOrders() {
             var cid = state.currentCanteen.id;
             try { state.orders = await api.orders.listByCanteen(cid, {}); renderOrders(); } catch(e) { showToast('Lỗi: '+(e.message||''),'error'); }
+        }
+
+        function stopOrderPolling() {
+            if (state.orderPollInterval) { clearInterval(state.orderPollInterval); state.orderPollInterval = null; }
+        }
+
+        function startOrderPolling() {
+            stopOrderPolling();
+            state.orderPollInterval = setInterval(function() {
+                if (state.activeView === 'orders' && state.currentCanteen) loadOrders();
+            }, 5000);
         }
 
         function setOrderTab(tab) {
@@ -495,13 +510,22 @@
             var filtered = state.products;
             if (state.selectedCategoryId) filtered = filtered.filter(function(p) { return p.categoryId === state.selectedCategoryId; });
             document.getElementById('menuProducts').innerHTML = filtered.map(function(p) {
-                return '<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4"><div class="flex items-start justify-between"><div class="flex items-center gap-3 flex-1"><div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden"><img src="'+imageUrl(p.imageUrl)+'" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"></div><div class="flex-1"><div class="flex items-center gap-2"><span class="font-bold text-sm text-gray-800">'+p.name+'</span>'+stockBadge(p.status)+'</div><p class="text-xs text-gray-400">'+formatMoney(p.basePriceAmount)+' &middot; '+p.soldCount+' bán</p></div></div><div class="flex items-center gap-1"><button onclick="openProductForm('+p.id+')" class="w-6 h-6 rounded bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center text-[10px]"><i class="fa-solid fa-pen"></i></button><button onclick="deleteProduct('+p.id+')" class="w-6 h-6 rounded bg-red-50 text-red-400 hover:bg-red-100 flex items-center justify-center text-[10px]"><i class="fa-solid fa-trash"></i></button><button onclick="toggleExpanded('+p.id+')" class="w-6 h-6 rounded bg-blue-50 text-brand-blue hover:bg-blue-100 flex items-center justify-center text-[10px]"><i class="fa-solid fa-chevron-down"></i></button></div></div>'+
+                return '<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4"><div class="flex items-start justify-between"><div class="flex items-center gap-3 flex-1"><div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden"><img src="'+imageUrl(p.imageUrl)+'" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"></div><div class="flex-1"><div class="flex items-center gap-2"><span class="font-bold text-sm text-gray-800">'+p.name+'</span><button onclick="event.stopPropagation();toggleProductStatus('+p.id+',\''+p.status+'\')" class="text-[10px] font-bold px-2 py-0.5 rounded-full cursor-pointer hover:opacity-80 '+(p.status==='Available'?'bg-emerald-100 text-emerald-700':'bg-red-100 text-red-700')+'">'+(p.status==='Available'?'Còn hàng':'Hết hàng')+'</button></div><p class="text-xs text-gray-400">'+formatMoney(p.basePriceAmount)+' &middot; '+p.soldCount+' bán</p></div></div><div class="flex items-center gap-1.5"><button onclick="openProductForm('+p.id+')" class="w-8 h-8 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 flex items-center justify-center text-xs"><i class="fa-solid fa-pen"></i></button><button onclick="deleteProduct('+p.id+')" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 hover:bg-red-100 flex items-center justify-center text-xl"><i class="fa-solid fa-trash"></i></button><button onclick="toggleExpanded('+p.id+')" class="w-8 h-8 rounded-lg bg-blue-50 text-brand-blue hover:bg-blue-100 flex items-center justify-center text-xs"><i class="fa-solid fa-chevron-down"></i></button></div></div>'+
                 '<div id="productMods'+p.id+'" class="hidden mt-3 pt-3 border-t border-gray-100"><div id="mgList'+p.id+'" class="space-y-2 text-xs"></div><button onclick="openMgForm('+p.id+')" class="mt-2 px-2 py-1 bg-brand-blue text-white rounded text-[10px] font-bold"><i class="fa-solid fa-plus mr-1"></i>Thêm nhóm</button></div></div>';
             }).join('') || '<p class="text-center text-gray-400 text-xs py-8">Chưa có sản phẩm</p>';
         }
 
         function stockBadge(status) {
             return status === 'Available' ? '<span class="badge-status bg-emerald-100 text-emerald-700">Còn hàng</span>' : '<span class="badge-status bg-red-100 text-red-700">Hết hàng</span>';
+        }
+
+        async function toggleProductStatus(productId, currentStatus) {
+            var newStatus = currentStatus === 'Available' ? 'OutOfStock' : 'Available';
+            try {
+                await api.products.updateStatus(productId, { status: newStatus });
+                await loadMenu();
+                showToast(newStatus === 'Available' ? 'Đã mở bán lại' : 'Đã đánh dấu hết hàng', 'success');
+            } catch(e) { showToast('Lỗi: ' + (e.message || ''), 'error'); }
         }
 
         async function toggleExpanded(productId) {
@@ -519,6 +543,12 @@
         async function loadModifierGroups(productId) {
             try {
                 var groups = await api.modifierGroups.list(productId);
+                state.modifierGroupMap = {};
+                state.modifierMap = {};
+                groups.forEach(function(g) {
+                    state.modifierGroupMap[g.id] = g;
+                    (g.modifiers || []).forEach(function(m) { state.modifierMap[m.id] = m; });
+                });
                 document.getElementById('mgList'+productId).innerHTML = groups.map(function(g) {
                     var modsHtml = (g.modifiers||[]).map(function(m) {
                         return '<div class="flex items-center justify-between py-1"><span class="text-gray-700">'+m.name+' '+(m.isDefault?'<span class="text-[10px] text-brand-blue font-bold">(mặc định)</span>':'')+'</span><div class="flex items-center gap-1"><span class="text-gray-400">'+ (m.priceAmount > 0 ? '+' + formatMoney(m.priceAmount) : 'Miễn phí') +'</span><button onclick="openModForm('+g.id+','+m.id+')" class="text-gray-400 hover:text-brand-blue text-[10px]"><i class="fa-solid fa-pen"></i></button><button onclick="deleteModifier('+m.id+')" class="text-red-400 hover:text-red-600 text-[10px]"><i class="fa-solid fa-times"></i></button></div></div>';
@@ -594,7 +624,8 @@
                         name: document.getElementById('prodName').value.trim(),
                         description: document.getElementById('prodDesc').value.trim() || null,
                         basePriceAmount: parseFloat(document.getElementById('prodPrice').value)||0,
-                        categoryId: parseInt(document.getElementById('prodCategory').value)
+                        categoryId: parseInt(document.getElementById('prodCategory').value),
+                        status: document.getElementById('prodStatus').value
                     });
                     if (file) { var fd = new FormData(); fd.append('image', file); await api.products.uploadImage(parseInt(id), fd); }
                 } else {
@@ -622,13 +653,10 @@
             document.getElementById('mgModalTitle').innerText = groupId ? 'Sửa nhóm' : 'Thêm nhóm';
             if (!groupId) { document.getElementById('mgName').value = ''; document.getElementById('mgRequired').value = 'false'; document.getElementById('mgMaxSelected').value = '1'; }
             else {
-                var mg = null;
-                for (var i = 0; i < (document.getElementById('mgList'+productId)?.children||[]).length; i++) {
-                    var t = document.getElementById('mgList'+productId).children[i].querySelector('.font-bold');
-                    if (t && t.innerText) { /* approximate - we'd need mg data in state */ break; }
-                }
-                document.getElementById('mgName').value = ''; document.getElementById('mgRequired').value = 'false'; document.getElementById('mgMaxSelected').value = '1';
-                showToast('Reload to edit modifier group details','info');
+                var mg = state.modifierGroupMap[groupId];
+                document.getElementById('mgName').value = mg ? mg.name || '' : '';
+                document.getElementById('mgRequired').value = mg && mg.required ? 'true' : 'false';
+                document.getElementById('mgMaxSelected').value = mg ? mg.maxSelected || 1 : 1;
             }
             document.getElementById('mgModal').classList.remove('hidden');
         }
@@ -654,6 +682,12 @@
             document.getElementById('modEditId').value = editId || ''; document.getElementById('modGroupId').value = groupId;
             document.getElementById('modModalTitle').innerText = editId ? 'Sửa option' : 'Thêm option';
             if (!editId) { document.getElementById('modName').value = ''; document.getElementById('modPrice').value = '0'; document.getElementById('modDefault').value = 'false'; }
+            else {
+                var mod = state.modifierMap[editId];
+                document.getElementById('modName').value = mod ? mod.name || '' : '';
+                document.getElementById('modPrice').value = mod ? mod.priceAmount || 0 : 0;
+                document.getElementById('modDefault').value = mod && mod.isDefault ? 'true' : 'false';
+            }
             document.getElementById('modModal').classList.remove('hidden');
         }
         function closeModForm() { document.getElementById('modModal').classList.add('hidden'); }
@@ -697,7 +731,7 @@
                 });
                 await api.canteens.updateStatus(state.currentCanteen.id, { status: document.getElementById('canteenStatus').value });
                 await saveOperatingHours();
-                showToast('Đã lưu thông tin căng tin','success');
+                showToast('Đã lưu thông tin căn tin','success');
             } catch(er) { showToast('Lỗi: '+(er.message||''),'error'); }
         }
 

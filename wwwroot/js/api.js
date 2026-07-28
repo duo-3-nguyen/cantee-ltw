@@ -10,14 +10,9 @@ api._fetch = function(url, options) {
         options.headers['Content-Type'] = 'application/json';
     }
     return fetch(CONFIG.API_BASE + url, options).then(function(res) {
-        var ct = res.headers.get('content-type') || '';
         return res.text().then(function(text) {
             var data;
-            if (ct.indexOf('application/json') !== -1) {
-                try { data = JSON.parse(text); } catch(e) { data = text; }
-            } else {
-                data = text;
-            }
+            try { data = JSON.parse(text); } catch(e) { data = text; }
             if (!res.ok) {
                 var msg;
                 if (typeof data === 'string') {

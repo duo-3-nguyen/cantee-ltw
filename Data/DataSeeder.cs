@@ -103,16 +103,16 @@ public static class DataSeeder
         // ═══════════════════════════════
         var canteenDefs = new[]
         {
-            new { Name = "Căng tin 1",           Addr = "Tầng 1, Tòa A, 123 Nguyễn Văn Cừ",         Phone = "0281000001", Email = "cantin1@cantee.com", StaffName = "Nguyễn Văn A" },
-            new { Name = "Căng tin 2",           Addr = "Tầng trệt, Tòa B, 45 Lê Lợi",              Phone = "0281000002", Email = "cantin2@cantee.com", StaffName = "Nguyễn Văn B" },
-            new { Name = "Căng tin 3",           Addr = "Lầu 2, Khu C, 78 Hai Bà Trưng",            Phone = "0281000003", Email = "cantin3@cantee.com", StaffName = "Nguyễn Văn C" },
-            new { Name = "Căng tin 4",           Addr = "Sảnh chính, 22 Trần Hưng Đạo",             Phone = "0281000004", Email = "cantin4@cantee.com", StaffName = "Nguyễn Văn D" },
-            new { Name = "Căng tin 5",           Addr = "Khu B, 56 Điện Biên Phủ",                  Phone = "0281000005", Email = "cantin5@cantee.com", StaffName = "Nguyễn Văn E" },
-            new { Name = "Căng tin 6",           Addr = "Tòa C, 90 Hoàng Diệu",                     Phone = "0281000006", Email = "cantin6@cantee.com", StaffName = "Nguyễn Văn F" },
-            new { Name = "Căng tin 7",           Addr = "Tầng lửng, 15 Nguyễn Huệ",                 Phone = "0281000007", Email = "cantin7@cantee.com", StaffName = "Nguyễn Văn G" },
-            new { Name = "Căng tin 8",           Addr = "Khu thể thao, 33 Võ Văn Tần",              Phone = "0281000008", Email = "cantin8@cantee.com", StaffName = "Nguyễn Văn H" },
-            new { Name = "Căng tin Đại học CMC", Addr = "Tòa nhà chính, ĐH CMC, 84C Nguyễn Thanh Bình", Phone = "0281000009", Email = "dhcmc@cantee.com", StaffName = "Nguyễn Văn I" },
-            new { Name = "Căng tin THPT CMC",    Addr = "Cơ sở 2, THPT CMC, 112 Đường số 3",        Phone = "0281000010", Email = "thptcmc@cantee.com", StaffName = "Nguyễn Văn J" },
+            new { Name = "Căn tin 1",           Addr = "Tầng 1, Tòa A, 123 Nguyễn Văn Cừ",         Phone = "0281000001", Email = "cantin1@cantee.com", StaffName = "Nguyễn Văn A" },
+            new { Name = "Căn tin 2",           Addr = "Tầng trệt, Tòa B, 45 Lê Lợi",              Phone = "0281000002", Email = "cantin2@cantee.com", StaffName = "Nguyễn Văn B" },
+            new { Name = "Căn tin 3",           Addr = "Lầu 2, Khu C, 78 Hai Bà Trưng",            Phone = "0281000003", Email = "cantin3@cantee.com", StaffName = "Nguyễn Văn C" },
+            new { Name = "Căn tin 4",           Addr = "Sảnh chính, 22 Trần Hưng Đạo",             Phone = "0281000004", Email = "cantin4@cantee.com", StaffName = "Nguyễn Văn D" },
+            new { Name = "Căn tin 5",           Addr = "Khu B, 56 Điện Biên Phủ",                  Phone = "0281000005", Email = "cantin5@cantee.com", StaffName = "Nguyễn Văn E" },
+            new { Name = "Căn tin 6",           Addr = "Tòa C, 90 Hoàng Diệu",                     Phone = "0281000006", Email = "cantin6@cantee.com", StaffName = "Nguyễn Văn F" },
+            new { Name = "Căn tin 7",           Addr = "Tầng lửng, 15 Nguyễn Huệ",                 Phone = "0281000007", Email = "cantin7@cantee.com", StaffName = "Nguyễn Văn G" },
+            new { Name = "Căn tin 8",           Addr = "Khu thể thao, 33 Võ Văn Tần",              Phone = "0281000008", Email = "cantin8@cantee.com", StaffName = "Nguyễn Văn H" },
+            new { Name = "Căn tin Đại học CMC", Addr = "Tòa nhà chính, ĐH CMC, 84C Nguyễn Thanh Bình", Phone = "0281000009", Email = "dhcmc@cantee.com", StaffName = "Nguyễn Văn I" },
+            new { Name = "Căn tin THPT CMC",    Addr = "Cơ sở 2, THPT CMC, 112 Đường số 3",        Phone = "0281000010", Email = "thptcmc@cantee.com", StaffName = "Nguyễn Văn J" },
         };
 
         var staffList = new List<User>();
@@ -206,7 +206,7 @@ public static class DataSeeder
         // MENU DATA
         // ═══════════════════════════════════════════════
 
-        // ── Căng tin 1 ──
+        // ── Căn tin 1 ──
         AddCategories(canteenList[0].Id,
             Cat("Cơm",
                 Prod("Cơm tấm sườn nướng", "Cơm tấm miếng sườn heo nướng đậm đà, ăn kèm bì chả trứng, mỡ hành và đồ chua", 30000, StockStatus.Available,
@@ -236,7 +236,7 @@ public static class DataSeeder
                 Prod("Nước cam ép", "Nước cam tươi ép nguyên chất, không đường nhân tạo", 15000, StockStatus.Available),
                 Prod("Coca Cola", "Nước ngọt Coca Cola lon 330ml", 8000, StockStatus.Available)));
 
-        // ── Căng tin 2 ──
+        // ── Căn tin 2 ──
         AddCategories(canteenList[1].Id,
             Cat("Cơm",
                 Prod("Cơm sườn cốt lết", "Sườn cốt lết chiên vàng giòn, cơm trắng, canh rau củ, đồ chua", 30000, StockStatus.Available,
@@ -262,7 +262,7 @@ public static class DataSeeder
                     Mg("Độ ngọt", true, 1, M("Ít ngọt", 0, false), M("Vừa", 0, true), M("Ngọt", 0, false))),
                 Prod("Nước suối", "Nước khoáng tinh khiết 500ml", 5000, StockStatus.Available)));
 
-        // ── Căng tin 3 ──
+        // ── Căn tin 3 ──
         AddCategories(canteenList[2].Id,
             Cat("Bánh mì",
                 Prod("Bánh mì thịt nướng", "Thịt heo nướng thơm lừng, đồ chua, pate, bơ, dưa leo, ngò, ớt", 20000, StockStatus.Available,
@@ -285,7 +285,7 @@ public static class DataSeeder
                 Prod("Nước ngọt", "Nước ngọt các loại (Coca, Pepsi, 7Up, Mirinda)", 8000, StockStatus.Available),
                 Prod("Sữa tươi", "Sữa tươi tiệt trùng có đường 220ml", 10000, StockStatus.Available)));
 
-        // ── Căng tin 4 ──
+        // ── Căn tin 4 ──
         AddCategories(canteenList[3].Id,
             Cat("Cơm",
                 Prod("Cơm gà xối mỡ", "Gà chiên xối mỡ da giòn, cơm trắng, rau răm, nước mắm gừng", 35000, StockStatus.Available,
@@ -303,7 +303,7 @@ public static class DataSeeder
                 Prod("Nước cam ép", "Cam tươi vắt nguyên chất", 15000, StockStatus.Available),
                 Prod("Sinh tố xoài", "Sinh tố xoài chín ngọt, sữa đặc, đá bào", 20000, StockStatus.Available)));
 
-        // ── Căng tin 5 ──
+        // ── Căn tin 5 ──
         AddCategories(canteenList[4].Id,
             Cat("Cơm văn phòng",
                 Prod("Cơm bò xào tiêu đen", "Thịt bò Úc xào tiêu đen, sốt nấm, cơm trắng, rau củ luộc", 42000, StockStatus.Available),
@@ -321,7 +321,7 @@ public static class DataSeeder
                 Prod("Nước ép dưa hấu", "Dưa hấu tươi ép nguyên chất", 18000, StockStatus.Available),
                 Prod("Latte nóng", "Cà phê espresso pha sữa tươi nóng, lớp bọt mịn", 25000, StockStatus.Available)));
 
-        // ── Căng tin 6 ──
+        // ── Căn tin 6 ──
         AddCategories(canteenList[5].Id,
             Cat("Cơm",
                 Prod("Cơm tấm đặc biệt", "Cơm tấm sườn, bì, chả, trứng, chà bông, mỡ hành, đồ chua đầy đủ", 38000, StockStatus.Available,
@@ -338,7 +338,7 @@ public static class DataSeeder
                 Prod("Cà phê đen đá", "Cà phê phin không đường, vị đắng đậm đà", 12000, StockStatus.Available),
                 Prod("Trà sữa matcha", "Matcha Nhật Bản pha sữa tươi, trân châu đen", 25000, StockStatus.Available)));
 
-        // ── Căng tin 7 ──
+        // ── Căn tin 7 ──
         AddCategories(canteenList[6].Id,
             Cat("Chè - Tráng miệng",
                 Prod("Chè đậu đỏ", "Đậu đỏ hầm nhừ, nước cốt dừa béo, đá bào", 15000, StockStatus.Available,
@@ -355,7 +355,7 @@ public static class DataSeeder
                 Prod("Nước sâm bí đao", "Nước sâm bí đao mát lành, la hán quả, rễ tranh", 10000, StockStatus.Available),
                 Prod("Sữa hạt điều", "Sữa hạt điều rang thơm, không đường, bổ dưỡng", 18000, StockStatus.Available)));
 
-        // ── Căng tin 8 ──
+        // ── Căn tin 8 ──
         AddCategories(canteenList[7].Id,
             Cat("Cơm",
                 Prod("Cơm chay", "Cơm trắng, đậu phụ sốt cà, nấm xào, rau củ luộc, canh rong biển", 25000, StockStatus.Available),
@@ -369,7 +369,7 @@ public static class DataSeeder
                 Prod("Nước ép cà rốt", "Cà rốt tươi ép nguyên chất, bổ sung vitamin A", 15000, StockStatus.Available),
                 Prod("Sữa đậu nành", "Sữa đậu nành nóng hoặc lạnh, thơm béo tự nhiên", 10000, StockStatus.Available)));
 
-        // ── Căng tin Đại học CMC ──
+        // ── Căn tin Đại học CMC ──
         AddCategories(canteenList[8].Id,
             Cat("Cơm",
                 Prod("Cơm tấm đại học", "Cơm tấm sườn nướng, bì, chả, trứng, đầy đủ topping, giá sinh viên", 30000, StockStatus.Available,
@@ -395,7 +395,7 @@ public static class DataSeeder
                 Prod("Bắp xào", "Bắp Mỹ xào bơ, tép khô, hành lá, ăn vặt tuổi thơ", 12000, StockStatus.Available),
                 Prod("Cá viên chiên", "Cá viên chiên vàng, chấm tương ớt hoặc sốt mayonnaise (10 viên)", 15000, StockStatus.Available)));
 
-        // ── Căng tin THPT CMC ──
+        // ── Căn tin THPT CMC ──
         AddCategories(canteenList[9].Id,
             Cat("Cơm trưa",
                 Prod("Cơm tấm học sinh", "Cơm tấm sườn nhỏ, trứng ốp la, đồ chua, giá phải chăng", 22000, StockStatus.Available,

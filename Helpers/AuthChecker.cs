@@ -4,7 +4,7 @@ using Backend.Data;
 using Backend.Models;
 using Backend.Enums;
 
-namespace Backend.Services;
+namespace Backend.Helpers;
 
 public class AuthChecker
 {

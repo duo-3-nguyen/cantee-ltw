@@ -4,7 +4,7 @@ using Backend.Data;
 using Backend.DTOs;
 using Backend.Enums;
 using Backend.Models;
-using Backend.Services;
+using Backend.Helpers;
 
 namespace Backend.Controllers;
 
@@ -113,7 +113,7 @@ public class ProductController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == canteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var category = _db.Categories.FirstOrDefault(c => c.Id == request.CategoryId);
         if (category == null) return NotFound("Không tìm thấy danh mục.");
@@ -184,6 +184,7 @@ public class ProductController : ControllerBase
             if (category == null) return NotFound("Không tìm thấy danh mục.");
             product.CategoryId = request.CategoryId.Value;
         }
+        if (request.Status.HasValue) product.Status = request.Status.Value;
 
         _db.SaveChanges();
         return Ok("Cập nhật sản phẩm thành công.");

@@ -4,7 +4,7 @@ using Backend.Data;
 using Backend.DTOs;
 using Backend.Enums;
 using Backend.Models;
-using Backend.Services;
+using Backend.Helpers;
 
 namespace Backend.Controllers;
 
@@ -37,9 +37,9 @@ public class OrderController : ControllerBase
             return BadRequest("Giỏ hàng trống. Vui lòng thêm món trước khi tạo đơn.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == request.CanteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
         if (canteen.Status != CanteenStatus.Active)
-            return BadRequest("Căng tin hiện không hoạt động.");
+            return BadRequest("Căn tin hiện không hoạt động.");
 
         var order = new Order
         {

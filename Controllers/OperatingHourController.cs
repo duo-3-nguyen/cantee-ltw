@@ -4,7 +4,7 @@ using Backend.Data;
 using Backend.DTOs;
 using Backend.Enums;
 using Backend.Models;
-using Backend.Services;
+using Backend.Helpers;
 
 namespace Backend.Controllers;
 
@@ -25,7 +25,7 @@ public class OperatingHourController : ControllerBase
     public ActionResult<List<OperatingHourResponse>> GetAll(int canteenId)
     {
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == canteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var hours = _db.OperatingHours
             .Where(o => o.CanteenId == canteenId)
@@ -51,7 +51,7 @@ public class OperatingHourController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == canteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var existingHours = _db.OperatingHours.Where(o => o.CanteenId == canteenId).ToList();
         _db.OperatingHours.RemoveRange(existingHours);

@@ -4,7 +4,7 @@ using Backend.Data;
 using Backend.DTOs;
 using Backend.Enums;
 using Backend.Models;
-using Backend.Services;
+using Backend.Helpers;
 
 namespace Backend.Controllers;
 
@@ -60,7 +60,7 @@ public class CanteenController : ControllerBase
             .Include(c => c.OperatingHours.OrderBy(o => o.DayOfWeek))
             .FirstOrDefault(c => c.Id == id);
 
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         return new CanteenResponse
         {
@@ -92,7 +92,7 @@ public class CanteenController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == id);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         if (request.Name != null) canteen.Name = request.Name;
         if (request.Address != null) canteen.Address = request.Address;
@@ -100,7 +100,7 @@ public class CanteenController : ControllerBase
         if (request.Email != null) canteen.Email = request.Email;
 
         _db.SaveChanges();
-        return Ok("Cập nhật căng tin thành công.");
+        return Ok("Cập nhật căn tin thành công.");
     }
 
     [HttpPost("{id}/image")]
@@ -112,7 +112,7 @@ public class CanteenController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == id);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "canteens");
         Directory.CreateDirectory(uploadsDir);
@@ -123,7 +123,7 @@ public class CanteenController : ControllerBase
 
         canteen.ImageUrl = $"/uploads/canteens/{fileName}";
         _db.SaveChanges();
-        return Ok("Cập nhật ảnh căng tin thành công.");
+        return Ok("Cập nhật ảnh căn tin thành công.");
     }
 
     [HttpPatch("{id}/status")]
@@ -135,10 +135,10 @@ public class CanteenController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == id);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         canteen.Status = request.Status;
         _db.SaveChanges();
-        return Ok("Cập nhật trạng thái căng tin thành công.");
+        return Ok("Cập nhật trạng thái căn tin thành công.");
     }
 }

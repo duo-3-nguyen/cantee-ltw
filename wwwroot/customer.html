@@ -56,14 +56,14 @@
                     <span id="headerCanteenStatus" class="hidden text-[10px] font-bold px-2 py-1.5 rounded-full whitespace-nowrap"></span>
                     <div id="canteenDropdown" class="hidden absolute top-full left-0 z-50 mt-1 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 dropdown-animate overflow-hidden" style="max-height:60vh">
                         <div class="p-3 border-b border-gray-100">
-                            <input id="canteenSearchInput" oninput="filterCanteenDropdown()" type="text" placeholder="Tìm căng tin..." class="w-full bg-gray-100 rounded-xl text-sm px-3 py-2 outline-none focus:ring-2 focus:ring-brand-blue/30">
+                            <input id="canteenSearchInput" oninput="filterCanteenDropdown()" type="text" placeholder="Tìm căn tin..." class="w-full bg-gray-100 rounded-xl text-sm px-3 py-2 outline-none focus:ring-2 focus:ring-brand-blue/30">
                         </div>
                         <div class="overflow-y-auto max-h-80 p-2" id="canteenDropdownList"></div>
                     </div>
                 </div>
                 <div id="headerCanteenPrompt" class="flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-600 bg-amber-50 py-2 px-3 sm:px-4 rounded-full border border-amber-200">
                     <i class="fa-solid fa-circle text-amber-500" style="font-size:.5rem"></i>
-                    <span>Chọn căng tin để bắt đầu</span>
+                    <span>Chọn căn tin để bắt đầu</span>
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -107,10 +107,10 @@
         <div id="viewCanteenSelect" class="max-w-3xl mx-auto py-4">
             <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 text-center mb-6">
                 <h1 class="text-2xl font-extrabold text-brand-navy">Chào mừng đến với canTee!</h1>
-                <p class="text-sm text-gray-500 mt-1 max-w-md mx-auto">Vui lòng chọn căng tin bạn muốn đặt đồ ăn.</p>
+                <p class="text-sm text-gray-500 mt-1 max-w-md mx-auto">Vui lòng chọn căn tin bạn muốn đặt đồ ăn.</p>
                 <div class="relative mt-6 max-w-md mx-auto">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                    <input type="text" id="welcomeSearch" oninput="renderCanteenSelect()" placeholder="Tìm kiếm căng tin..." class="w-full bg-gray-50 text-sm pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-blue">
+                    <input type="text" id="welcomeSearch" oninput="renderCanteenSelect()" placeholder="Tìm kiếm căn tin..." class="w-full bg-gray-50 text-sm pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-blue">
                 </div>
             </div>
             <div id="canteenGrid" class="space-y-3"></div>
@@ -147,7 +147,7 @@
                                 <span id="cartTotal" class="text-xl font-bold text-brand-navy">0đ</span>
                             </div>
                             <button onclick="navigateTo('checkout')" id="checkoutBtn" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold py-3.5 px-4 rounded-xl shadow-sm transition-all transform active:scale-[.99] flex items-center justify-center gap-2 text-base disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fa-solid fa-receipt"></i><span>Thanh toán</span>
+                                <i class="fa-solid fa-receipt"></i><span>Xác nhận giỏ hàng</span>
                             </button>
                         </div>
                     </div>
@@ -188,23 +188,6 @@
                                 <label class="block text-xs font-bold text-gray-700 mb-1.5">Thời gian nhận</label>
                                 <select id="pickupSelect" onchange="onPickupChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-xs font-semibold text-gray-800 focus:outline-none focus:border-brand-blue">
                                     <option value="asap">Lấy ngay (sớm nhất)</option>
-                                    <option value="07:00">07:00</option>
-                                    <option value="07:30">07:30</option>
-                                    <option value="08:00">08:00</option>
-                                    <option value="08:30">08:30</option>
-                                    <option value="09:00">09:00</option>
-                                    <option value="09:30">09:30</option>
-                                    <option value="10:00">10:00</option>
-                                    <option value="10:30">10:30</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="11:30">11:30</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="12:30">12:30</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="16:30">16:30</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="17:30">17:30</option>
-                                    <option value="18:00">18:00</option>
                                 </select>
                             </div>
                         </div>
@@ -222,6 +205,19 @@
                     </div>
                 </div>
                 <div class="lg:col-span-4 space-y-4 sticky top-20">
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                        <h2 class="text-base font-bold text-brand-navy mb-4">Hình thức thanh toán</h2>
+                        <div class="space-y-2.5">
+                            <label class="flex items-center justify-between p-3 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer">
+                                <span class="flex items-center gap-3">
+                                    <input type="radio" name="paymentMethod" value="cash" checked="" class="text-brand-blue">
+                                    <i class="fa-solid fa-money-bill-wave text-emerald-600 text-base"></i>
+                                    <span class="text-xs font-bold text-gray-800">Tiền mặt tại quầy</span>
+                                </span>
+                            </label>
+
+                        </div>
+                    </div>
                     <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
                         <h2 class="text-base font-bold text-brand-navy pb-2 border-b border-gray-100">Thanh toán</h2>
                         <div class="flex justify-between text-xs text-gray-600">
@@ -329,7 +325,7 @@
                 <p class="flex items-center gap-2.5 text-gray-700"><i class="fa-solid fa-clock text-brand-blue text-sm"></i><span id="detailModalHours" class="font-medium"></span></p>
                 <div id="detailModalWeeklyHours" class="mt-2 bg-gray-50 rounded-xl p-3 space-y-1 text-xs"></div>
                 <p class="flex items-center gap-2.5 text-gray-700"><i class="fa-solid fa-phone text-brand-blue text-sm"></i><span id="detailModalPhone" class="font-medium"></span></p>
-                <button onclick="selectCanteenFromDetail()" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-extrabold py-3 rounded-xl shadow-sm text-xs">Chọn căng tin này</button>
+                <button onclick="selectCanteenFromDetail()" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-extrabold py-3 rounded-xl shadow-sm text-xs">Chọn căn tin này</button>
             </div>
         </div>
     </div>
@@ -350,6 +346,14 @@
                 <label class="block font-bold text-gray-700 mb-1.5">Ghi chú</label>
                 <input type="text" id="modalNote" placeholder="Ghi chú cho món này..." class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-xs focus:outline-none focus:border-brand-blue">
             </div>
+            <div class="flex items-center justify-between">
+                <label class="font-bold text-gray-700">Số lượng</label>
+                <div class="flex items-center gap-2">
+                    <button onclick="modalDecreaseQty()" id="modalQtyDec" class="w-7 h-7 rounded-md bg-gray-100 text-gray-600 font-bold flex items-center justify-center hover:bg-gray-200 text-xs">-</button>
+                    <span id="modalQtyValue" class="text-sm font-extrabold text-brand-navy w-6 text-center">1</span>
+                    <button onclick="modalIncreaseQty()" id="modalQtyInc" class="w-7 h-7 rounded-md bg-brand-yellow text-brand-navy font-bold flex items-center justify-center hover:bg-brand-yellowHover text-xs">+</button>
+                </div>
+            </div>
             <button onclick="confirmAddToCart()" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-extrabold py-3 rounded-xl shadow-sm text-xs">Thêm vào giỏ</button>
         </div>
     </div>
@@ -360,7 +364,7 @@
             <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl"><i class="fa-solid fa-check"></i></div>
             <div>
                 <h3 class="text-xl font-extrabold text-brand-navy">Đặt món thành công!</h3>
-                <p class="text-xs text-gray-500 mt-1">Đơn hàng của bạn đã được gửi tới bếp căng tin.</p>
+                <p class="text-xs text-gray-500 mt-1">Đơn hàng của bạn đã được gửi tới bếp căn tin.</p>
             </div>
             <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">
                 <span class="text-[10px] uppercase font-bold text-gray-400">MÃ ĐƠN HÀNG</span>
@@ -394,6 +398,7 @@
             isAsap: true,
             pickupTime: null,
             note: '',
+            modalQty: 1,
             orderFilter: 'all',
             customizingProductId: null,
             customizingProduct: null,
@@ -453,7 +458,7 @@
             if (location.hash.slice(1) !== view) history.pushState(null, '', '#' + view);
             var needsCanteen = ['menu','checkout'];
             if (!state.currentCanteen && needsCanteen.indexOf(view) !== -1) {
-                showToast('Vui lòng chọn căng tin trước!', 'info');
+                showToast('Vui lòng chọn căn tin trước!', 'info');
                 view = 'canteen-select';
             }
 
@@ -469,7 +474,7 @@
                 showView('viewCanteenSelect');
                 renderCanteenSelect();
             } else {
-                var hideCanteenPill = (view === 'checkout');
+                var hideCanteenPill = (view === 'order-history');
                 if (hideCanteenPill) {
                     wrapper.classList.add('hidden');
                 } else {
@@ -494,6 +499,7 @@
                     renderCart();
                 } else if (view === 'checkout') {
                     showView('viewCheckout');
+                    generatePickupOptions();
                     renderCheckout();
                 } else if (view === 'order-history') {
                     if (!state.orders || state.orders.length === 0) await loadOrders();
@@ -529,7 +535,7 @@
             });
             var grid = document.getElementById('canteenGrid');
             if (list.length === 0) {
-                grid.innerHTML = '<div class="text-center text-gray-400 py-10"><i class="fa-solid fa-store-slash text-3xl mb-2 block"></i><p class="text-sm">Không tìm thấy căng tin</p></div>';
+                grid.innerHTML = '<div class="text-center text-gray-400 py-10"><i class="fa-solid fa-store-slash text-3xl mb-2 block"></i><p class="text-sm">Không tìm thấy căn tin</p></div>';
                 return;
             }
             grid.innerHTML = list.map(function(c) {
@@ -572,7 +578,7 @@
                 renderCanteenSelect();
                 navigateTo('menu');
             } catch(e) {
-                showToast('Lỗi tải dữ liệu căng tin: ' + (e.message || ''), 'error');
+                showToast('Lỗi tải dữ liệu căn tin: ' + (e.message || ''), 'error');
             }
         }
 
@@ -607,7 +613,7 @@
                     '<button onclick="event.stopPropagation();openCanteenDetail('+c.id+');document.getElementById(\'canteenDropdown\').classList.add(\'hidden\')" class="text-xs font-bold text-brand-blue hover:underline shrink-0 px-2">Chi tiết</button>'+
                 '</div>';
             }).join('');
-            if (list.length === 0) el.innerHTML = '<div class="text-center text-gray-400 text-xs py-6">Không tìm thấy căng tin</div>';
+            if (list.length === 0) el.innerHTML = '<div class="text-center text-gray-400 text-xs py-6">Không tìm thấy căn tin</div>';
         }
 
         // ---- CANTEEN DETAIL ----
@@ -713,8 +719,6 @@
             }
 
             grid.innerHTML = state.products.map(function(p) {
-                var cartItem = (state.cart && state.cart.items) ? state.cart.items.find(function(i) { return i.productId === p.id; }) : null;
-                var qty = cartItem ? cartItem.quantity : 0;
                 var fav = isFavorited(p.id);
                 var outOfStock = p.status === 'OutOfStock';
 
@@ -736,14 +740,8 @@
                     '<div class="p-3.5 pt-0 flex items-center justify-between">'+
                         '<span class="font-bold text-sm text-brand-navy">'+formatMoney(p.basePriceAmount)+'</span>'+
                         (outOfStock ? '<span class="text-xs text-red-500 font-bold">Tạm hết</span>' :
-                         (qty > 0 ?
-                            '<div class="flex items-center gap-2 bg-gray-100 rounded-lg px-2 py-1">'+
-                                '<button onclick="updateCartQty('+p.id+','+(qty-1)+')" class="w-6 h-6 rounded bg-white text-gray-700 font-bold flex items-center justify-center hover:bg-gray-200 text-xs">-</button>'+
-                                '<span class="text-xs font-bold text-brand-navy px-1">'+qty+'</span>'+
-                                '<button onclick="openCustomizeModal('+p.id+')" class="w-6 h-6 rounded bg-brand-yellow text-brand-navy font-bold flex items-center justify-center hover:bg-brand-yellowHover text-xs">+</button>'+
-                            '</div>' :
-                            '<button onclick="openCustomizeModal('+p.id+')" class="w-7 h-7 rounded-lg bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold flex items-center justify-center shadow-sm transition-transform active:scale-95"><i class="fa-solid fa-plus text-xs"></i></button>'
-                        ))+
+                         '<button onclick="openCustomizeModal('+p.id+')" class="w-7 h-7 rounded-lg bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold flex items-center justify-center shadow-sm transition-transform active:scale-95"><i class="fa-solid fa-plus text-xs"></i></button>'
+                        )+
                     '</div>'+
                 '</div>';
             }).join('');
@@ -767,7 +765,7 @@
             var badge = document.getElementById('cartBadge');
             var totalEl = document.getElementById('cartTotal');
             var btn = document.getElementById('checkoutBtn');
-            var items = (state.cart && state.cart.items) ? state.cart.items : [];
+            var items = (state.cart && state.cart.items) ? state.cart.items.slice().sort(function(a, b) { return a.id - b.id; }) : [];
 
             var info = getCartTotal();
             badge.innerText = info.qty + ' món';
@@ -844,6 +842,8 @@
                 state.customizingProductId = productId;
                 state.customizingProduct = detail;
                 state.selectedModifiers = {};
+                state.modalQty = 1;
+                document.getElementById('modalQtyValue').innerText = '1';
 
                 document.getElementById('modalProductName').innerText = detail.name;
                 document.getElementById('modalProductPrice').innerText = formatMoney(detail.basePriceAmount);
@@ -917,7 +917,19 @@
             }
         }
 
-        function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); state.customizingProductId = null; state.customizingProduct = null; }
+        function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); state.customizingProductId = null; state.customizingProduct = null; state.modalQty = 1; }
+
+        function modalDecreaseQty() {
+            if (state.modalQty <= 1) return;
+            state.modalQty--;
+            document.getElementById('modalQtyValue').innerText = state.modalQty;
+        }
+
+        function modalIncreaseQty() {
+            if (state.modalQty >= 99) return;
+            state.modalQty++;
+            document.getElementById('modalQtyValue').innerText = state.modalQty;
+        }
 
         function getProductById(id) {
             return (state.products || []).find(function(p) { return p.id === id; });
@@ -941,7 +953,7 @@
 
             var body = {
                 productId: state.customizingProductId,
-                quantity: 1,
+                quantity: state.modalQty,
                 note: noteVal || undefined,
                 selectedModifiersJson: modsPayload.length > 0 ? JSON.stringify(modsPayload) : undefined
             };
@@ -955,6 +967,54 @@
         }
 
         // ---- CHECKOUT ----
+        function generatePickupOptions() {
+            var sel = document.getElementById('pickupSelect');
+            sel.innerHTML = '<option value="asap">Lấy ngay (sớm nhất)</option>';
+            sel.value = 'asap';
+            state.isAsap = true;
+            state.pickupTime = null;
+
+            var c = state.currentCanteen;
+            if (!c) return;
+
+            if (!c.operatingHours) {
+                api.operatingHours.list(c.id).then(function(list) {
+                    if (c && list) c.operatingHours = list;
+                    generatePickupOptions();
+                }).catch(function(){});
+                return;
+            }
+
+            var today = new Date().getDay();
+            var hours = c.operatingHours.find(function(h) {
+                return normalizeDayOfWeek(h.dayOfWeek) === today;
+            });
+            if (!hours || hours.isClosed) return;
+
+            var openStr = formatTimeOnly(hours.openTime);
+            var closeStr = formatTimeOnly(hours.closeTime);
+            if (!openStr || !closeStr) return;
+
+            var now = new Date();
+            var nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+            var openParts = openStr.split(':');
+            var openMinutes = parseInt(openParts[0]) * 60 + parseInt(openParts[1]);
+
+            var closeParts = closeStr.split(':');
+            var closeMinutes = parseInt(closeParts[0]) * 60 + parseInt(closeParts[1]);
+
+            var startMinutes = Math.max(nowMinutes, openMinutes);
+            startMinutes = Math.ceil(startMinutes / 30) * 30;
+
+            for (var m = startMinutes; m <= closeMinutes - 30; m += 30) {
+                var hh = String(Math.floor(m / 60)).padStart(2, '0');
+                var mm = String(m % 60).padStart(2, '0');
+                var val = hh + ':' + mm;
+                sel.innerHTML += '<option value="' + val + '">' + val + '</option>';
+            }
+        }
+
         function setOrderType(type) {
             state.orderType = type;
             document.getElementById('btnDineIn').className = type === 'DineIn' ? 'flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 transition-all font-bold text-xs bg-blue-50 border-brand-blue text-brand-blue' : 'flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:border-gray-300 transition-all font-bold text-xs';
@@ -968,7 +1028,7 @@
         }
 
         function renderCheckout() {
-            var items = (state.cart && state.cart.items) ? state.cart.items : [];
+            var items = (state.cart && state.cart.items) ? state.cart.items.slice().sort(function(a, b) { return a.id - b.id; }) : [];
             var totalQty = 0, subtotal = 0;
             items.forEach(function(i) { totalQty += i.quantity; subtotal += i.unitPrice * i.quantity; });
 
@@ -1007,7 +1067,7 @@
         }
 
         async function placeOrder() {
-            var items = (state.cart && state.cart.items) ? state.cart.items : [];
+            var items = (state.cart && state.cart.items) ? state.cart.items.slice().sort(function(a, b) { return a.id - b.id; }) : [];
             if (items.length === 0) { showToast('Giỏ hàng trống!', 'error'); return; }
             var btn = document.getElementById('placeOrderBtn');
             btn.disabled = true; btn.innerText = 'Đang đặt...';
@@ -1037,7 +1097,7 @@
 
         function getCanteenName(canteenId) {
             var c = state.canteens.find(function(x) { return x.id === canteenId; });
-            return c ? c.name : ('Căng tin #'+canteenId);
+            return c ? c.name : ('Căn tin #'+canteenId);
         }
 
         function setOrderFilter(filter) {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Backend.Services;
+namespace Backend.Helpers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -66,8 +66,10 @@ public class AuthController : ControllerBase
         var (success, _, _, _) = _authChecker.RequireLogin(Request);
         if (success) return Conflict("Bạn đã đăng nhập. Vui lòng đăng xuất trước khi đăng ký.");
 
-        var user = _db.Users.FirstOrDefault(u => u.Username == request.Username && u.IsActive);
+        var user = _db.Users.FirstOrDefault(u => u.Username == request.Username);
         if (user == null) return Unauthorized("Tên đăng nhập hoặc mật khẩu không đúng.");
+
+        if (!user.IsActive) return Unauthorized("Tài khoản đã bị vô hiệu hóa.");
 
         if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             return Unauthorized("Tên đăng nhập hoặc mật khẩu không đúng");

@@ -4,7 +4,7 @@ using Backend.Data;
 using Backend.DTOs;
 using Backend.Enums;
 using Backend.Models;
-using Backend.Services;
+using Backend.Helpers;
 
 namespace Backend.Controllers;
 
@@ -63,7 +63,7 @@ public class DashboardController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == canteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var orders = _db.Orders.Where(o => o.CanteenId == canteenId);
 
@@ -89,7 +89,7 @@ public class DashboardController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == canteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var list = _db.Orders
             .Include(o => o.Items)
@@ -134,7 +134,7 @@ public class DashboardController : ControllerBase
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
         var canteen = _db.Canteens.FirstOrDefault(c => c.Id == canteenId);
-        if (canteen == null) return NotFound("Không tìm thấy căng tin.");
+        if (canteen == null) return NotFound("Không tìm thấy căn tin.");
 
         var list = _db.Products
             .Include(p => p.Category)

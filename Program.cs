@@ -2,7 +2,7 @@ using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
-using Backend.Services;
+using Backend.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,16 +34,15 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 
-// Seed data (reset on every dev run for fresh data)
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<MyDbContext>();
-    if (app.Environment.IsDevelopment())
-    {
-        await db.Database.EnsureDeletedAsync();
-        await db.Database.MigrateAsync();
-    }
-    await DataSeeder.SeedAsync(db);
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var db = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+//     if (app.Environment.IsDevelopment())
+//     {
+//         await db.Database.EnsureDeletedAsync();
+//         await db.Database.MigrateAsync();
+//     }
+//     await DataSeeder.SeedAsync(db);
+// }
 
 app.Run();

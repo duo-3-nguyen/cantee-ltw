@@ -39,6 +39,7 @@ public class UpdateProductRequest
     public string? Description { get; set; }
     public decimal? BasePriceAmount { get; set; }
     public int? CategoryId { get; set; }
+    public StockStatus? Status { get; set; }
 }
 
 public class UpdateProductStatusRequest
