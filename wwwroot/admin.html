@@ -240,6 +240,208 @@
         <span id="toastMessage">Thông báo</span>
     </div>
 
+    <template id="template-stat-card">
+        <div class="thẻ-chỉ-số">
+            <div class="biểu-tượng-chỉ-số"><i class="fa-solid"></i></div>
+            <div>
+                <p class="nhãn-chỉ-số"></p>
+                <p class="giá-trị-chỉ-số"></p>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-recent-order-row">
+        <tr>
+            <td style="padding:8px;font-weight:700;color:var(--blue-main)" class="cột-mã-đơn"></td>
+            <td style="padding:8px" class="cột-khách"></td>
+            <td style="padding:8px;text-align:right;font-weight:600" class="cột-tiền"></td>
+            <td style="padding:8px;text-align:right;color:var(--text-muted)" class="cột-thời-gian"></td>
+            <td style="padding:8px;text-align:center" class="cột-trạng-thái"></td>
+        </tr>
+    </template>
+
+    <template id="template-top-product-item">
+        <div class="hàng-top-sp">
+            <div style="display:flex;align-items:center;gap:8px">
+                <span class="thứ-hạng"></span>
+                <span class="tên-top-sp"></span>
+            </div>
+            <span class="số-bán"></span>
+        </div>
+    </template>
+
+    <template id="template-kanban-column">
+        <div class="cột-kanban">
+            <div class="đầu-cột">
+                <span class="tiêu-đề-cột"></span>
+                <span class="đếm-cột"></span>
+            </div>
+            <div class="danh-sách-cột"></div>
+        </div>
+    </template>
+
+    <template id="template-order-card-kanban">
+        <div class="thẻ-đơn-kanban">
+            <div class="đầu-thẻ-đơn">
+                <span class="mã-đơn-kanban"></span>
+                <span class="giờ-đơn-kanban"></span>
+            </div>
+            <p class="món-đơn-kanban"></p>
+            <div class="dòng-tiền-kanban">
+                <span class="tổng-tiền-kanban"></span>
+                <span class="trạng-thái-thanh-toán-kanban"></span>
+            </div>
+            <div class="nhóm-nút-kanban">
+                <button class="nút-kanban-nhỏ mũi-tên-trái"><i class="fa-solid fa-arrow-left"></i></button>
+                <button class="nút-kanban-nhỏ mũi-tên-phải"><i class="fa-solid fa-arrow-right"></i></button>
+                <button class="nút-kanban-nhỏ giao-hàng"><i class="fa-solid fa-check"></i> Giao</button>
+                <button class="nút-kanban-nhỏ hủy-đơn"><i class="fa-solid fa-xmark"></i></button>
+                <button class="nút-kanban-nhỏ thanh-toán-chưa"><i class="fa-solid fa-money-bill"></i></button>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-completed-order-row">
+        <tr>
+            <td style="padding:12px;font-weight:700;color:var(--blue-main)" class="cột-mã-đơn"></td>
+            <td style="padding:12px" class="cột-khách"></td>
+            <td style="padding:12px;color:var(--text-muted);max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" class="cột-món"></td>
+            <td style="padding:12px;text-align:right;font-weight:600" class="cột-tiền"></td>
+            <td style="padding:12px;text-align:center" class="cột-trạng-thái"></td>
+            <td style="padding:12px;text-align:right;color:var(--text-muted)" class="cột-thời-gian"></td>
+        </tr>
+    </template>
+
+    <template id="template-category-row">
+        <tr>
+            <td style="padding:12px;font-weight:700;color:var(--text-dark)" class="cột-tên-dm"></td>
+            <td style="padding:12px;text-align:center;color:var(--text-muted)" class="cột-thứ-tự"></td>
+            <td style="padding:12px;text-align:center;font-weight:600;color:var(--blue-main)" class="cột-số-món"></td>
+            <td style="padding:12px;text-align:right">
+                <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px">
+                    <button class="nút-bảng-nhỏ trong-bảng sửa nút-sửa-dm"><i class="fa-solid fa-pen"></i></button>
+                    <button class="nút-bảng-nhỏ trong-bảng xóa nút-xóa-dm"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </td>
+        </tr>
+    </template>
+
+    <template id="template-category-tab-admin">
+        <button class="nút-tab" style="white-space:nowrap"></button>
+    </template>
+
+    <template id="template-product-row-admin">
+        <div class="hàng-sản-phẩm">
+            <div class="đầu-hàng-sp">
+                <div class="thông-tin-sp">
+                    <div class="ảnh-sp-nhỏ"><img src="" onerror="this.style.display='none'"></div>
+                    <div style="flex:1">
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <span class="tên-sp"></span>
+                            <button class="nhãn nút-trạng-thái-sp" style="font-size:0.625rem;cursor:pointer"></button>
+                        </div>
+                        <p class="giá-sp"></p>
+                    </div>
+                </div>
+                <div class="nhóm-nút-sp">
+                    <button class="nút-bảng-nhỏ sửa nút-sửa-sp"><i class="fa-solid fa-pen"></i></button>
+                    <button class="nút-bảng-nhỏ xóa nút-xóa-sp"><i class="fa-solid fa-trash"></i></button>
+                    <button class="nút-bảng-nhỏ mở-rộng nút-mở-rộng-sp"><i class="fa-solid fa-chevron-down"></i></button>
+                </div>
+            </div>
+            <div class="khung-tùy-chọn-con ẩn thân-sản-phẩm">
+                <div class="danh-sách-mg-sp" style="display:flex;flex-direction:column;gap:8px;font-size:0.75rem"></div>
+                <button class="nút-xanh nút-thêm-nhóm-sp" style="margin-top:8px;font-size:0.625rem"><i class="fa-solid fa-plus" style="margin-right:4px"></i>Thêm nhóm</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-modifier-group-admin">
+        <div style="background:#f8fafc;border-radius:8px;padding:8px;margin-bottom:4px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <span style="font-weight:700;color:var(--text-muted);font-size:0.75rem" class="tên-nhóm-mg"></span>
+                <div style="display:flex;align-items:center;gap:4px;font-size:0.625rem">
+                    <span style="color:var(--text-muted)" class="thông-tin-mg"></span>
+                    <button class="nút-sửa-mg" style="color:var(--text-muted);background:none;border:none;cursor:pointer"><i class="fa-solid fa-pen"></i></button>
+                    <button class="nút-xóa-mg" style="color:#f87171;background:none;border:none;cursor:pointer"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="danh-sách-option-mg" style="margin-left:12px"></div>
+            <button class="nút-thêm-option-mg" style="margin-top:4px;font-size:0.625rem;color:var(--blue-main);font-weight:700;background:none;border:none;cursor:pointer"><i class="fa-solid fa-plus" style="margin-right:2px"></i>Thêm option</button>
+        </div>
+    </template>
+
+    <template id="template-modifier-option-admin">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">
+            <span style="color:var(--text-dark)" class="tên-option-admin"></span>
+            <div style="display:flex;align-items:center;gap:4px">
+                <span style="color:var(--text-muted)" class="giá-option-admin"></span>
+                <button class="nút-sửa-option-admin" style="color:var(--text-muted);background:none;border:none;cursor:pointer;font-size:0.625rem"><i class="fa-solid fa-pen"></i></button>
+                <button class="nút-xóa-option-admin" style="color:#f87171;background:none;border:none;cursor:pointer;font-size:0.625rem"><i class="fa-solid fa-times"></i></button>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-operating-hours-row">
+        <div class="dòng-giờ-mở">
+            <span class="ngày-giờ"></span>
+            <input type="time" value="" data-day="" data-field="open">
+            <span style="font-size:0.75rem;color:var(--text-muted)">đến</span>
+            <input type="time" value="" data-day="" data-field="close">
+            <label style="display:flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--text-muted)">
+                <input type="checkbox" data-day="" data-field="closed" style="width:12px;height:12px"> Đóng
+            </label>
+        </div>
+    </template>
+
+    <template id="template-user-row">
+        <tr>
+            <td style="padding:12px;font-weight:700" class="cột-username"></td>
+            <td style="padding:12px" class="cột-email"></td>
+            <td style="padding:12px" class="cột-họ-tên"></td>
+            <td style="padding:12px;text-align:center" class="cột-vai-trò-người-dùng"></td>
+            <td style="padding:12px;text-align:center" class="cột-trạng-thái-người-dùng"></td>
+            <td style="padding:12px;text-align:right">
+                <button class="nút-đổi-trạng-thái-người-dùng" style="font-size:0.75rem;font-weight:700;background:none;border:none;cursor:pointer"></button>
+            </td>
+        </tr>
+    </template>
+
+    <template id="template-reg-request-card">
+        <div class="thẻ-yêu-cầu">
+            <div class="đầu-yêu-cầu">
+                <div>
+                    <p class="tên-người-dùng"></p>
+                    <p class="email-người-dùng"></p>
+                    <div class="chi-tiết-căn-tin"></div>
+                </div>
+                <div style="text-align:right">
+                    <span class="nhãn trạng-thái-yêu-cầu"></span>
+                    <div class="nhóm-nút-duyệt" style="justify-content:flex-end">
+                        <button class="nút-duyệt-nhỏ đồng-ý">Duyệt</button>
+                        <button class="nút-duyệt-nhỏ từ-chối">Từ chối</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-revenue-row">
+        <tr>
+            <td style="padding:12px;font-weight:700;color:var(--text-dark)" class="cột-tên-căn-tin-dt"></td>
+            <td style="padding:12px;text-align:right;font-weight:600" class="cột-tổng-đơn-dt"></td>
+            <td style="padding:12px;text-align:right;font-weight:700;color:var(--blue-main)" class="cột-doanh-thu-dt"></td>
+        </tr>
+    </template>
+
+    <template id="template-order-status-badge">
+        <span class="nhãn"></span>
+    </template>
+
+    <template id="template-role-badge">
+        <span class="nhãn"></span>
+    </template>
+
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/admin.js"></script>

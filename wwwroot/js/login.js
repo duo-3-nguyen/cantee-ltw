@@ -27,7 +27,8 @@ function toggleAuthMode() {
         document.getElementById('fieldFullName').classList.remove('ẩn');
         document.getElementById('fieldEmail').classList.remove('ẩn');
         document.getElementById('authSubmitBtn').innerText = 'ĐĂNG KÝ';
-        document.getElementById('authToggleText').innerHTML = '<span>Đã có tài khoản? </span><a href="javascript:void(0)" onclick="toggleAuthMode()" class="liên-kết">Đăng nhập</a>';
+        document.getElementById('authToggleLabel').textContent = 'Đã có tài khoản? ';
+        document.getElementById('authToggleLink').textContent = 'Đăng nhập';
         document.getElementById('formError').classList.add('ẩn');
         if (registerRole === 'canteen') {
             document.getElementById('canteenExtraFields').classList.remove('ẩn');
@@ -42,7 +43,8 @@ function toggleAuthMode() {
         document.getElementById('fieldEmail').classList.add('ẩn');
         document.getElementById('canteenExtraFields').classList.add('ẩn');
         document.getElementById('authSubmitBtn').innerText = 'ĐĂNG NHẬP';
-        document.getElementById('authToggleText').innerHTML = '<span>Chưa có tài khoản? </span><a href="javascript:void(0)" onclick="toggleAuthMode()" class="liên-kết">Đăng ký</a>';
+        document.getElementById('authToggleLabel').textContent = 'Chưa có tài khoản? ';
+        document.getElementById('authToggleLink').textContent = 'Đăng ký';
         document.getElementById('formError').classList.add('ẩn');
     }
 }

@@ -331,6 +331,158 @@
         <span id="toastMessage">Thông báo</span>
     </div>
 
+    <template id="template-canteen-card">
+        <div class="thẻ-căn-tin">
+            <div class="bên-trái-thẻ">
+                <img class="ảnh-căn-tin-thẻ" src="" alt="">
+                <div>
+                    <div class="nhóm-nhãn">
+                        <h3 class="tên-căn-tin"></h3>
+                        <span class="nhãn nhãn-trạng-thái-căn-tin"></span>
+                        <span class="nhãn nhãn-mở-đóng"></span>
+                    </div>
+                    <p class="địa-chỉ-căn-tin"></p>
+                    <span class="thông-tin-phụ"></span>
+                </div>
+            </div>
+            <div class="nhóm-nút-phải">
+                <button class="nút-xanh nút-chi-tiết-căn-tin"><i class="fa-solid fa-circle-info"></i><span class="ẩn" style="display:none">Chi tiết</span></button>
+                <button class="nút-chọn-căn-tin">Chọn</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-canteen-dropdown-item">
+        <div class="dòng-căn-tin-dd">
+            <div class="bấm-chọn">
+                <div style="width:40px;height:40px;border-radius:8px;background:#f1f5f9;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;flex-shrink:0"><i class="fa-solid fa-store"></i></div>
+                <div style="flex:1;min-width:0;margin-left:12px">
+                    <h4 class="tên-căn-tin-dd"></h4>
+                    <p class="địa-chỉ-căn-tin-dd"></p>
+                </div>
+            </div>
+            <button class="liên-kết nút-chi-tiết-dd" style="font-size:0.75rem;flex-shrink:0;padding:0 8px">Chi tiết</button>
+        </div>
+    </template>
+
+    <template id="template-category-tab">
+        <button class="nút-tab"></button>
+    </template>
+
+    <template id="template-product-card">
+        <div class="thẻ-món-ăn">
+            <div>
+                <div class="ảnh-món">
+                    <img src="" alt="">
+                    <div class="lớp-hết-hàng ẩn"><span>Hết hàng</span></div>
+                    <button class="nút-yêu-thích"><i class="fa-heart" style="font-size:0.875rem"></i></button>
+                </div>
+                <div class="chi-tiết-món">
+                    <h3 class="tên-món"></h3>
+                    <p class="mô-tả-món"></p>
+                    <span class="chỉ-số-phụ"></span>
+                </div>
+            </div>
+            <div class="chân-món">
+                <span class="giá-món"></span>
+                <button class="nút-thêm"><i class="fa-solid fa-plus"></i></button>
+                <span class="tạm-hết ẩn">Tạm hết</span>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-cart-item">
+        <div class="dòng-món-giỏ">
+            <div style="flex:1;min-width:0">
+                <h4 class="tên-món-giỏ"></h4>
+                <div class="tùy-chọn-giỏ-khung"></div>
+                <p class="ghi-chú-giỏ ẩn">Ghi chú: <span class="nội-dung-ghi-chú-giỏ"></span></p>
+                <div class="dòng-giá-số-lượng">
+                    <span class="giá-đơn-vị"></span>
+                    <div class="bộ-chọn-số-lượng-nhỏ">
+                        <button class="nút-giảm">-</button>
+                        <span class="số-lượng">1</span>
+                        <button class="nút-tăng">+</button>
+                    </div>
+                </div>
+            </div>
+            <button class="nút-xóa-món"><i class="fa-solid fa-trash"></i></button>
+        </div>
+    </template>
+
+    <template id="template-checkout-item">
+        <div class="dòng-món-checkout">
+            <div style="display:flex;align-items:flex-start;gap:12px">
+                <span class="số-lượng-x"></span>
+                <div>
+                    <h3 class="tên-món-ck"></h3>
+                    <div class="tùy-chọn-ck-khung"></div>
+                    <p class="ghi-chú-ck ẩn">GC: <span class="nội-dung-ghi-chú-ck"></span></p>
+                </div>
+            </div>
+            <span class="giá-món-ck"></span>
+        </div>
+    </template>
+
+    <template id="template-order-item">
+        <div class="dòng-món-ls">
+            <span class="sl-đơn"></span>
+            <span class="tên-món-ls"></span>
+            <span class="tùy-chọn-ls ẩn"></span>
+            <span class="giá-ls"></span>
+        </div>
+    </template>
+
+    <template id="template-order-card">
+        <div class="thẻ-đơn-hàng">
+            <div class="đầu-đơn">
+                <div style="display:flex;align-items:center;gap:8px">
+                    <span class="mã-đơn"></span>
+                    <span class="nhãn nhãn-trạng-thái-đơn"></span>
+                    <span class="nhãn nhãn-thanh-toán-đơn"></span>
+                </div>
+                <span class="nhãn-loại-đơn"></span>
+            </div>
+            <div class="thời-gian-đơn"></div>
+            <div class="thân-đơn" style="padding:12px 0"></div>
+            <div class="chân-đơn">
+                <div><span style="font-size:0.75rem;color:var(--text-muted);display:block">Tổng thanh toán</span><span class="tổng-đơn"></span></div>
+                <span class="ghi-chú-đơn ẩn" style="font-size:0.75rem;color:var(--text-muted);font-style:italic"></span>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-modifier-radio">
+        <label class="dòng-tùy-chọn">
+            <input type="radio" name="" value="">
+            <span class="tên-tùy-chọn"></span>
+            <span class="giá-tùy-chọn ẩn"></span>
+        </label>
+    </template>
+
+    <template id="template-modifier-checkbox">
+        <label class="dòng-tùy-chọn">
+            <input type="checkbox" name="" value="">
+            <span class="tên-tùy-chọn"></span>
+            <span class="giá-tùy-chọn ẩn"></span>
+        </label>
+    </template>
+
+    <template id="template-modifier-group">
+        <div class="nhóm-tùy-chọn">
+            <label class="tên-nhóm"><span class="tên-nhóm-chữ"></span><span class="bắt-buộc ẩn"> *</span></label>
+            <div class="tùy-chọn-con"></div>
+        </div>
+    </template>
+
+    <template id="template-pickup-option">
+        <option value="asap">Lấy ngay (sớm nhất)</option>
+    </template>
+
+    <template id="template-weekly-hours-row">
+        <div class="dòng-lịch"><span class="ngày-lịch"></span><span class="giờ-lịch"></span></div>
+    </template>
+
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
     <script src="js/customer.js"></script>

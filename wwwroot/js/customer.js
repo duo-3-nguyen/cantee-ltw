@@ -131,32 +131,37 @@ function renderCanteenSelect() {
         return !q || c.name.toLowerCase().indexOf(q.toLowerCase()) !== -1 || c.address.toLowerCase().indexOf(q.toLowerCase()) !== -1;
     });
     var grid = document.getElementById('canteenGrid');
+    grid.innerHTML = '';
     if (list.length === 0) {
         grid.innerHTML = '<div class="chỗ-trống"><i class="fa-solid fa-store-slash" style="font-size:1.875rem;display:block;margin-bottom:8px"></i><p style="font-size:0.875rem">Không tìm thấy căn tin</p></div>';
         return;
     }
-    grid.innerHTML = list.map(function(c) {
+    var tmpl = document.getElementById('template-canteen-card');
+    list.forEach(function(c) {
+        var clone = tmpl.content.cloneNode(true);
         var isSel = state.currentCanteen && state.currentCanteen.id === c.id;
         var open = isCanteenOpen(c);
-        return '<div class="thẻ-căn-tin' + (isSel ? ' đang-chọn-căn-tin' : '') + '">'+
-            '<div class="bên-trái-thẻ" onclick="selectCanteen('+c.id+')">'+
-                '<img src="'+imageUrl(c.imageUrl)+'" onerror="this.src=\''+CONFIG.PLACEHOLDER_IMAGE+'\'">'+
-                '<div>'+
-                    '<div class="nhóm-nhãn">'+
-                        '<h3 class="tên-căn-tin">'+c.name+'</h3>'+
-                        '<span class="nhãn '+(ENUM_LABELS.canteenStatus[c.status]||{}).cls+'">'+(ENUM_LABELS.canteenStatus[c.status]||{}).label+'</span>'+
-                        (open ? '<span class="nhãn nhãn-xanh-lá">Đang mở</span>' : '<span class="nhãn nhãn-đỏ">Đóng</span>')+
-                    '</div>'+
-                    '<p class="địa-chỉ-căn-tin">'+c.address+'</p>'+
-                    '<span class="thông-tin-phụ">'+c.phoneNumber+' &middot; '+getTodayHours(c)+'</span>'+
-                '</div>'+
-            '</div>'+
-            '<div class="nhóm-nút-phải">'+
-                '<button onclick="event.stopPropagation();openCanteenDetail('+c.id+')" class="nút-xanh"><i class="fa-solid fa-circle-info"></i><span class="ẩn" style="display:none">Chi tiết</span></button>'+
-                '<button onclick="selectCanteen('+c.id+')" class="nút-chọn-căn-tin' + (isSel ? ' đã-chọn' : '') + '">'+(isSel ? 'Đang chọn' : 'Chọn')+'</button>'+
-            '</div>'+
-        '</div>';
-    }).join('');
+        if (isSel) clone.querySelector('.thẻ-căn-tin').classList.add('đang-chọn-căn-tin');
+        clone.querySelector('.bên-trái-thẻ').addEventListener('click', function() { selectCanteen(c.id); });
+        var img = clone.querySelector('.ảnh-căn-tin-thẻ');
+        img.src = imageUrl(c.imageUrl);
+        img.onerror = function() { this.src = CONFIG.PLACEHOLDER_IMAGE; };
+        clone.querySelector('.tên-căn-tin').textContent = c.name;
+        var statusSpan = clone.querySelector('.nhãn-trạng-thái-căn-tin');
+        var statusLabel = ENUM_LABELS.canteenStatus[c.status] || {};
+        statusSpan.className = 'nhãn ' + (statusLabel.cls || '');
+        statusSpan.textContent = statusLabel.label || '';
+        var openSpan = clone.querySelector('.nhãn-mở-đóng');
+        openSpan.className = 'nhãn ' + (open ? 'nhãn-xanh-lá' : 'nhãn-đỏ');
+        openSpan.textContent = open ? 'Đang mở' : 'Đóng';
+        clone.querySelector('.địa-chỉ-căn-tin').textContent = c.address;
+        clone.querySelector('.thông-tin-phụ').innerHTML = c.phoneNumber + ' &middot; ' + getTodayHours(c);
+        clone.querySelector('.nút-chi-tiết-căn-tin').addEventListener('click', function(e) { e.stopPropagation(); openCanteenDetail(c.id); });
+        var btn = clone.querySelector('.nút-chọn-căn-tin');
+        btn.addEventListener('click', function() { selectCanteen(c.id); });
+        if (isSel) { btn.classList.add('đã-chọn'); btn.textContent = 'Đang chọn'; }
+        grid.appendChild(clone);
+    });
 }
 
 async function selectCanteen(id) {
@@ -198,20 +203,29 @@ function filterCanteenDropdown() {
 
 function renderCanteenDropdown(list) {
     var el = document.getElementById('canteenDropdownList');
-    el.innerHTML = list.map(function(c) {
+    el.innerHTML = '';
+    if (list.length === 0) {
+        el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:0.75rem;padding:24px 0">Không tìm thấy căn tin</div>';
+        return;
+    }
+    var tmpl = document.getElementById('template-canteen-dropdown-item');
+    list.forEach(function(c) {
+        var clone = tmpl.content.cloneNode(true);
         var isSel = state.currentCanteen && state.currentCanteen.id === c.id;
-        return '<div class="dòng-căn-tin-dd' + (isSel ? ' đang-chọn' : '') + '">'+
-            '<div class="bấm-chọn" onclick="selectCanteen('+c.id+');document.getElementById(\'canteenDropdown\').classList.add(\'ẩn\')">'+
-                '<div style="width:40px;height:40px;border-radius:8px;background:#f1f5f9;color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.875rem;flex-shrink:0"><i class="fa-solid fa-store"></i></div>'+
-                '<div style="flex:1;min-width:0;margin-left:12px">'+
-                    '<h4 class="tên-căn-tin-dd">'+c.name+'</h4>'+
-                    '<p class="địa-chỉ-căn-tin-dd">'+c.address+'</p>'+
-                '</div>'+
-            '</div>'+
-            '<button onclick="event.stopPropagation();openCanteenDetail('+c.id+');document.getElementById(\'canteenDropdown\').classList.add(\'ẩn\')" class="liên-kết" style="font-size:0.75rem;flex-shrink:0;padding:0 8px">Chi tiết</button>'+
-        '</div>';
-    }).join('');
-    if (list.length === 0) el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:0.75rem;padding:24px 0">Không tìm thấy căn tin</div>';
+        if (isSel) clone.querySelector('.dòng-căn-tin-dd').classList.add('đang-chọn');
+        clone.querySelector('.bấm-chọn').addEventListener('click', function() {
+            selectCanteen(c.id);
+            document.getElementById('canteenDropdown').classList.add('ẩn');
+        });
+        clone.querySelector('.tên-căn-tin-dd').textContent = c.name;
+        clone.querySelector('.địa-chỉ-căn-tin-dd').textContent = c.address;
+        clone.querySelector('.nút-chi-tiết-dd').addEventListener('click', function(ev) {
+            ev.stopPropagation();
+            openCanteenDetail(c.id);
+            document.getElementById('canteenDropdown').classList.add('ẩn');
+        });
+        el.appendChild(clone);
+    });
 }
 
 function openCanteenDetail(id) {
@@ -225,12 +239,19 @@ function openCanteenDetail(id) {
     document.getElementById('detailModalImage').src = imageUrl(c.imageUrl);
     var today = new Date().getDay();
     var days = ['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
-    document.getElementById('detailModalWeeklyHours').innerHTML = days.map(function(name, i) {
+    var hoursContainer = document.getElementById('detailModalWeeklyHours');
+    hoursContainer.innerHTML = '';
+    var rowTmpl = document.getElementById('template-weekly-hours-row');
+    days.forEach(function(name, i) {
         var h = (c.operatingHours||[]).find(function(x) { return normalizeDayOfWeek(x.dayOfWeek) === i; }) || {};
+        var clone = rowTmpl.content.cloneNode(true);
         var isToday = i === today;
         var line = h.isClosed ? 'Đóng cửa' : ((formatTimeOnly(h.openTime)||'--:--') + ' - ' + (formatTimeOnly(h.closeTime)||'--:--'));
-        return '<div class="dòng-lịch' + (isToday ? ' hôm-nay' : '') + '"><span>'+name+'</span><span>'+line+'</span></div>';
-    }).join('');
+        if (isToday) clone.querySelector('.dòng-lịch').classList.add('hôm-nay');
+        clone.querySelector('.ngày-lịch').textContent = name;
+        clone.querySelector('.giờ-lịch').textContent = line;
+        hoursContainer.appendChild(clone);
+    });
     document.getElementById('canteenDetailModal').classList.remove('ẩn');
 }
 
@@ -263,13 +284,23 @@ async function loadProducts() {
 
 function renderCategories() {
     var tabs = document.getElementById('categoryTabs');
-    var cats = state.categories || [];
+    tabs.innerHTML = '';
     var isAll = !state.activeCategoryId;
-    tabs.innerHTML = '<button onclick="setCategory(null)" class="nút-tab' + (isAll ? ' đang-chọn' : '') + '">Tất cả</button>' +
-        cats.map(function(cat) {
-            var isActive = cat.id === state.activeCategoryId;
-            return '<button onclick="setCategory('+cat.id+')" class="nút-tab' + (isActive ? ' đang-chọn' : '') + '">'+cat.name+'</button>';
-        }).join('');
+    var tmpl = document.getElementById('template-category-tab');
+    var allBtn = tmpl.content.cloneNode(true).querySelector('.nút-tab');
+    allBtn.textContent = 'Tất cả';
+    allBtn.className = 'nút-tab' + (isAll ? ' đang-chọn' : '');
+    allBtn.addEventListener('click', function() { setCategory(null); });
+    tabs.appendChild(allBtn);
+    var cats = state.categories || [];
+    cats.forEach(function(cat) {
+        var clone = tmpl.content.cloneNode(true);
+        var btn = clone.querySelector('.nút-tab');
+        btn.textContent = cat.name;
+        btn.className = 'nút-tab' + (cat.id === state.activeCategoryId ? ' đang-chọn' : '');
+        btn.addEventListener('click', function() { setCategory(cat.id); });
+        tabs.appendChild(clone);
+    });
 }
 
 async function setCategory(id) {
@@ -304,37 +335,50 @@ function renderProducts() {
     document.getElementById('categoryTitle').innerText = found ? found.name : 'Tất cả món';
     document.getElementById('productCount').innerText = (state.products||[]).length + ' món';
 
+    grid.innerHTML = '';
     if ((state.products||[]).length === 0) {
         grid.innerHTML = '<div class="chỗ-trống" style="grid-column:1/-1"><i class="fa-solid fa-utensils" style="font-size:2.25rem;margin-bottom:12px;opacity:0.3"></i><p style="font-size:0.875rem;font-weight:500">Không tìm thấy món ăn</p></div>';
         return;
     }
 
-    grid.innerHTML = state.products.map(function(p) {
-        var fav = isFavorited(p.id);
+    var tmpl = document.getElementById('template-product-card');
+    state.products.forEach(function(p) {
+        var clone = tmpl.content.cloneNode(true);
         var outOfStock = p.status === 'OutOfStock';
-        return '<div class="thẻ-món-ăn">'+
-            '<div>'+
-                '<div class="ảnh-món">'+
-                    '<img src="'+imageUrl(p.imageUrl)+'" alt="'+p.name+'" onerror="this.src=\''+CONFIG.PLACEHOLDER_IMAGE+'\'">'+
-                    (outOfStock ? '<div class="lớp-hết-hàng"><span>Hết hàng</span></div>' : '')+
-                    '<button onclick="event.stopPropagation();toggleFavorite('+p.id+')" class="nút-yêu-thích">'+
-                        '<i class="fa-'+(fav ? 'solid' : 'regular')+' fa-heart" style="color:'+(fav ? '#ef4444' : 'var(--text-muted)')+';font-size:0.875rem"></i>'+
-                    '</button>'+
-                '</div>'+
-                '<div class="chi-tiết-món">'+
-                    '<h3 class="tên-món" title="'+p.name+'">'+p.name+'</h3>'+
-                    '<p class="mô-tả-món">'+(p.description || '')+'</p>'+
-                    '<span class="chỉ-số-phụ">'+p.soldCount+' đã bán &middot; <i class="fa-regular fa-heart" style="color:#f87171"></i> '+p.favoriteCount+'</span>'+
-                '</div>'+
-            '</div>'+
-            '<div class="chân-món">'+
-                '<span class="giá-món">'+formatMoney(p.basePriceAmount)+'</span>'+
-                (outOfStock ? '<span class="tạm-hết">Tạm hết</span>' :
-                 '<button onclick="openCustomizeModal('+p.id+')" class="nút-thêm"><i class="fa-solid fa-plus"></i></button>'
-                )+
-            '</div>'+
-        '</div>';
-    }).join('');
+        var fav = isFavorited(p.id);
+
+        var img = clone.querySelector('.ảnh-món img');
+        img.src = imageUrl(p.imageUrl);
+        img.alt = p.name;
+        img.onerror = function() { this.src = CONFIG.PLACEHOLDER_IMAGE; };
+
+        if (outOfStock) {
+            clone.querySelector('.lớp-hết-hàng').classList.remove('ẩn');
+        }
+
+        var favBtn = clone.querySelector('.nút-yêu-thích');
+        var favIcon = favBtn.querySelector('i');
+        favIcon.className = 'fa-' + (fav ? 'solid' : 'regular') + ' fa-heart';
+        favIcon.style.color = fav ? '#ef4444' : 'var(--text-muted)';
+        favBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleFavorite(p.id); });
+
+        clone.querySelector('.tên-món').textContent = p.name;
+        clone.querySelector('.tên-món').title = p.name;
+        clone.querySelector('.mô-tả-món').textContent = p.description || '';
+        clone.querySelector('.chỉ-số-phụ').innerHTML = p.soldCount + ' đã bán &middot; <i class="fa-regular fa-heart" style="color:#f87171"></i> ' + p.favoriteCount;
+
+        clone.querySelector('.giá-món').textContent = formatMoney(p.basePriceAmount);
+
+        if (outOfStock) {
+            clone.querySelector('.nút-thêm').classList.add('ẩn');
+            clone.querySelector('.tạm-hết').classList.remove('ẩn');
+        } else {
+            clone.querySelector('.tạm-hết').classList.add('ẩn');
+            clone.querySelector('.nút-thêm').addEventListener('click', function(e) { e.stopPropagation(); openCustomizeModal(p.id); });
+        }
+
+        grid.appendChild(clone);
+    });
 }
 
 async function refreshCart() {
@@ -353,36 +397,43 @@ function renderCart() {
     totalEl.innerText = formatMoney(info.total);
     btn.disabled = info.qty === 0;
 
+    list.innerHTML = '';
     if (items.length === 0) {
         list.innerHTML = '<div class="chỗ-trống"><i class="fa-solid fa-basket-shopping" style="font-size:1.875rem;margin-bottom:8px;color:#cbd5e1"></i><p style="font-size:0.75rem;font-weight:500">Giỏ hàng trống</p></div>';
         return;
     }
 
-    list.innerHTML = items.map(function(item) {
+    var tmpl = document.getElementById('template-cart-item');
+    items.forEach(function(item) {
+        var clone = tmpl.content.cloneNode(true);
         var mods = parseModifiersJson(item.selectedModifiersJson);
-        var modLines = '';
+
+        clone.querySelector('.tên-món-giỏ').textContent = item.productName;
+
+        var modKhung = clone.querySelector('.tùy-chọn-giỏ-khung');
         mods.forEach(function(mg) {
             if (mg.modifiers && mg.modifiers.length) {
-                modLines += '<p class="tùy-chọn-giỏ">'+mg.groupName+': '+mg.modifiers.map(function(m){ return m.name + (m.priceAmount > 0 ? ' (+'+formatMoney(m.priceAmount)+')' : ''); }).join(', ')+'</p>';
+                var mp = document.createElement('p');
+                mp.className = 'tùy-chọn-giỏ';
+                mp.textContent = mg.groupName + ': ' + mg.modifiers.map(function(m) { return m.name + (m.priceAmount > 0 ? ' (+' + formatMoney(m.priceAmount) + ')' : ''); }).join(', ');
+                modKhung.appendChild(mp);
             }
         });
-        return '<div class="dòng-món-giỏ">'+
-            '<div style="flex:1;min-width:0">'+
-                '<h4 class="tên-món-giỏ">'+item.productName+'</h4>'+
-                modLines +
-                (item.note ? '<p class="ghi-chú-giỏ">Ghi chú: '+item.note+'</p>' : '')+
-                '<div class="dòng-giá-số-lượng">'+
-                    '<span class="giá-đơn-vị">'+formatMoney(item.unitPrice)+'</span>'+
-                    '<div class="bộ-chọn-số-lượng-nhỏ">'+
-                        '<button onclick="updateCartQtyByItemId('+item.id+','+(item.quantity-1)+')" class="nút-giảm">-</button>'+
-                        '<span class="số-lượng">'+item.quantity+'</span>'+
-                        '<button onclick="updateCartQtyByItemId('+item.id+','+(item.quantity+1)+')" class="nút-tăng">+</button>'+
-                    '</div>'+
-                '</div>'+
-            '</div>'+
-            '<button onclick="removeCartItem('+item.id+')" class="nút-xóa-món"><i class="fa-solid fa-trash"></i></button>'+
-        '</div>';
-    }).join('');
+
+        if (item.note) {
+            clone.querySelector('.ghi-chú-giỏ').classList.remove('ẩn');
+            clone.querySelector('.nội-dung-ghi-chú-giỏ').textContent = item.note;
+        }
+
+        clone.querySelector('.giá-đơn-vị').textContent = formatMoney(item.unitPrice);
+        clone.querySelector('.số-lượng').textContent = item.quantity;
+
+        clone.querySelector('.nút-giảm').addEventListener('click', function() { updateCartQtyByItemId(item.id, item.quantity - 1); });
+        clone.querySelector('.nút-tăng').addEventListener('click', function() { updateCartQtyByItemId(item.id, item.quantity + 1); });
+        clone.querySelector('.nút-xóa-món').addEventListener('click', function() { removeCartItem(item.id); });
+
+        list.appendChild(clone);
+    });
 }
 
 async function updateCartQtyByItemId(itemId, newQty) {
@@ -422,41 +473,52 @@ async function openCustomizeModal(productId) {
         document.getElementById('modalProductImage').src = imageUrl(detail.imageUrl);
         document.getElementById('modalNote').value = '';
 
-        var groupsHtml = '';
+        var groupsContainer = document.getElementById('modalModifierGroups');
+        groupsContainer.innerHTML = '';
         var groups = detail.modifierGroups || [];
+        var groupTmpl = document.getElementById('template-modifier-group');
+        var radioTmpl = document.getElementById('template-modifier-radio');
+        var checkboxTmpl = document.getElementById('template-modifier-checkbox');
+
         groups.forEach(function(mg) {
             if (mg.status !== 'Available') return;
             state.selectedModifiers[mg.id] = [];
             var mods = (mg.modifiers || []).filter(function(m) { return m.status === 'Available'; });
+            if (mods.length === 0) return;
 
-            groupsHtml += '<div class="nhóm-tùy-chọn">'+
-                '<label class="tên-nhóm">'+mg.name+(mg.required ? ' <span class="bắt-buộc">*</span>' : '')+'</label>';
+            var groupClone = groupTmpl.content.cloneNode(true);
+            groupClone.querySelector('.tên-nhóm-chữ').textContent = mg.name;
+            if (mg.required) groupClone.querySelector('.bắt-buộc').classList.remove('ẩn');
 
-            if (mg.maxSelected <= 1) {
-                groupsHtml += '<div>';
-                mods.forEach(function(m) {
-                    groupsHtml += '<label class="dòng-tùy-chọn">'+
-                        '<input type="radio" name="modgrp_'+mg.id+'" value="'+m.id+'" onchange="selectModifier('+mg.id+','+m.id+',true,'+m.priceAmount+',\''+m.name.replace(/'/g,"\\'")+'\')" '+(m.isDefault ? 'checked' : '')+'>'+
-                        '<span class="tên-tùy-chọn">'+m.name+'</span>'+
-                        (m.priceAmount > 0 ? '<span class="giá-tùy-chọn">+'+formatMoney(m.priceAmount)+'</span>' : '')+
-                    '</label>';
+            var conDiv = groupClone.querySelector('.tùy-chọn-con');
+            var isRadio = mg.maxSelected <= 1;
+            var optTmpl = isRadio ? radioTmpl : checkboxTmpl;
+
+            mods.forEach(function(m) {
+                var optClone = optTmpl.content.cloneNode(true);
+                var input = optClone.querySelector('input');
+                input.type = isRadio ? 'radio' : 'checkbox';
+                input.name = 'modgrp_' + mg.id;
+                input.value = m.id;
+                if (m.isDefault) input.checked = true;
+                input.addEventListener('change', function() {
+                    selectModifier(mg.id, m.id, isRadio, m.priceAmount, m.name);
                 });
-                groupsHtml += '</div>';
-            } else {
-                groupsHtml += '<div>';
-                mods.forEach(function(m) {
-                    groupsHtml += '<label class="dòng-tùy-chọn">'+
-                        '<input type="checkbox" name="modgrp_'+mg.id+'" value="'+m.id+'" onchange="selectModifier('+mg.id+','+m.id+',false,'+m.priceAmount+',\''+m.name.replace(/'/g,"\\'")+'\')" '+(m.isDefault ? 'checked' : '')+'>'+
-                        '<span class="tên-tùy-chọn">'+m.name+'</span>'+
-                        (m.priceAmount > 0 ? '<span class="giá-tùy-chọn">+'+formatMoney(m.priceAmount)+'</span>' : '')+
-                    '</label>';
-                });
-                groupsHtml += '</div>';
-            }
-            groupsHtml += '</div>';
+
+                optClone.querySelector('.tên-tùy-chọn').textContent = m.name;
+                if (m.priceAmount > 0) {
+                    optClone.querySelector('.giá-tùy-chọn').classList.remove('ẩn');
+                    optClone.querySelector('.giá-tùy-chọn').textContent = '+' + formatMoney(m.priceAmount);
+                }
+                conDiv.appendChild(optClone);
+            });
+
+            groupsContainer.appendChild(groupClone);
         });
 
-        document.getElementById('modalModifierGroups').innerHTML = groupsHtml || '<p style="font-size:0.75rem;color:var(--text-muted)">Món này không có tùy chọn thêm.</p>';
+        if (!groups.some(function(g) { return g.status === 'Available' && (g.modifiers || []).some(function(m) { return m.status === 'Available'; }); })) {
+            groupsContainer.innerHTML = '<p style="font-size:0.75rem;color:var(--text-muted)">Món này không có tùy chọn thêm.</p>';
+        }
 
         var detailGroups = detail.modifierGroups || [];
         detailGroups.forEach(function(mg) {
@@ -528,7 +590,8 @@ async function confirmAddToCart() {
 
 function generatePickupOptions() {
     var sel = document.getElementById('pickupSelect');
-    sel.innerHTML = '<option value="asap">Lấy ngay (sớm nhất)</option>';
+    sel.innerHTML = '';
+    sel.appendChild(document.getElementById('template-pickup-option').content.cloneNode(true));
     sel.value = 'asap';
     state.isAsap = true;
     state.pickupTime = null;
@@ -553,7 +616,10 @@ function generatePickupOptions() {
     for (var m = startMinutes; m <= closeMinutes - 30; m += 30) {
         var hh = String(Math.floor(m / 60)).padStart(2, '0');
         var mm = String(m % 60).padStart(2, '0');
-        sel.innerHTML += '<option value="' + hh + ':' + mm + '">' + hh + ':' + mm + '</option>';
+        var opt = document.createElement('option');
+        opt.value = hh + ':' + mm;
+        opt.textContent = hh + ':' + mm;
+        sel.appendChild(opt);
     }
 }
 
@@ -583,30 +649,33 @@ function renderCheckout() {
     document.getElementById('summaryTotal').innerText = formatMoney(subtotal);
     document.getElementById('placeOrderBtn').disabled = items.length === 0;
     var container = document.getElementById('checkoutItems');
+    container.innerHTML = '';
     if (items.length === 0) {
         container.innerHTML = '<div class="chỗ-trống"><i class="fa-solid fa-basket-shopping" style="font-size:1.875rem;margin-bottom:8px;opacity:0.3"></i><p style="font-size:0.75rem">Chưa có món nào</p></div>';
         return;
     }
-    container.innerHTML = items.map(function(item) {
+    var tmpl = document.getElementById('template-checkout-item');
+    items.forEach(function(item) {
+        var clone = tmpl.content.cloneNode(true);
         var mods = parseModifiersJson(item.selectedModifiersJson);
-        var modLines = '';
+        clone.querySelector('.số-lượng-x').textContent = item.quantity + 'X';
+        clone.querySelector('.tên-món-ck').textContent = item.productName;
+        var modKhung = clone.querySelector('.tùy-chọn-ck-khung');
         mods.forEach(function(mg) {
             if (mg.modifiers && mg.modifiers.length) {
-                modLines += '<p class="tùy-chọn-ck">'+mg.groupName+': '+mg.modifiers.map(function(m){ return m.name; }).join(', ')+'</p>';
+                var mp = document.createElement('p');
+                mp.className = 'tùy-chọn-ck';
+                mp.textContent = mg.groupName + ': ' + mg.modifiers.map(function(m) { return m.name; }).join(', ');
+                modKhung.appendChild(mp);
             }
         });
-        return '<div class="dòng-món-checkout">'+
-            '<div style="display:flex;align-items:flex-start;gap:12px">'+
-                '<span class="số-lượng-x">'+item.quantity+'X</span>'+
-                '<div>'+
-                    '<h3 class="tên-món-ck">'+item.productName+'</h3>'+
-                    modLines +
-                    (item.note ? '<p class="ghi-chú-ck">GC: '+item.note+'</p>' : '')+
-                '</div>'+
-            '</div>'+
-            '<span class="giá-món-ck">'+formatMoney(item.unitPrice * item.quantity)+'</span>'+
-        '</div>';
-    }).join('');
+        if (item.note) {
+            clone.querySelector('.ghi-chú-ck').classList.remove('ẩn');
+            clone.querySelector('.nội-dung-ghi-chú-ck').textContent = item.note;
+        }
+        clone.querySelector('.giá-món-ck').textContent = formatMoney(item.unitPrice * item.quantity);
+        container.appendChild(clone);
+    });
 }
 
 async function placeOrder() {
@@ -649,6 +718,7 @@ function setOrderFilter(filter) {
 
 function renderOrderHistory() {
     var list = document.getElementById('orderList');
+    list.innerHTML = '';
     var orders = state.orders || [];
     var activeStatuses = ['Pending','Preparing','ReadyForPickup'];
     var completedStatuses = ['Delivered','Cancelled'];
@@ -658,38 +728,47 @@ function renderOrderHistory() {
         list.innerHTML = '<div class="thẻ-trắng" style="text-align:center;padding:40px"><i class="fa-solid fa-clock-rotate-left" style="font-size:2.25rem;margin-bottom:12px;opacity:0.3"></i><p style="font-size:0.875rem">Chưa có đơn hàng nào</p></div>';
         return;
     }
-    list.innerHTML = orders.map(function(o) {
+    var cardTmpl = document.getElementById('template-order-card');
+    var itemTmpl = document.getElementById('template-order-item');
+    orders.forEach(function(o) {
+        var clone = cardTmpl.content.cloneNode(true);
         var st = ENUM_LABELS.orderStatus[o.status] || {label:o.status,cls:'nhãn nhãn-xám'};
         var pm = ENUM_LABELS.paymentStatus[o.paymentStatus] || {label:o.paymentStatus,cls:'nhãn nhãn-xám'};
-        return '<div class="thẻ-đơn-hàng">'+
-            '<div class="đầu-đơn">'+
-                '<div style="display:flex;align-items:center;gap:8px">'+
-                    '<span class="mã-đơn">#'+o.id+'</span>'+
-                    '<span class="nhãn '+st.cls+'">'+st.label+'</span>'+
-                    '<span class="nhãn '+pm.cls+'">'+pm.label+'</span>'+
-                '</div>'+
-                '<span class="nhãn-loại-đơn">'+(ENUM_LABELS.orderType[o.orderType]||{}).label+'</span>'+
-            '</div>'+
-            '<div class="thời-gian-đơn">'+formatDateTime(o.createdAt)+' &middot; '+getCanteenName(o.canteenId)+'</div>'+
-            '<div style="padding:12px 0">'+
-                (o.items||[]).map(function(i) {
-                    var mods = parseModifiersJson(i.selectedModifiersJson);
-                    var desc = '';
-                    mods.forEach(function(mg) { if (mg.modifiers && mg.modifiers.length) desc += mg.modifiers.map(function(m){ return m.name; }).join(', '); });
-                    return '<div class="dòng-món-ls">'+
-                        '<span class="sl-đơn">'+i.quantity+'x</span>'+
-                        '<span class="tên-món-ls">'+i.productName+'</span>'+
-                        (desc ? '<span class="tùy-chọn-ls">('+desc+')</span>' : '')+
-                        '<span class="giá-ls">'+formatMoney(i.subTotal)+'</span>'+
-                    '</div>';
-                }).join('')+
-            '</div>'+
-            '<div class="chân-đơn">'+
-                '<div><span style="font-size:0.75rem;color:var(--text-muted);display:block">Tổng thanh toán</span><span class="tổng-đơn">'+formatMoney(o.totalAmount)+'</span></div>'+
-                (o.note ? '<span style="font-size:0.75rem;color:var(--text-muted);font-style:italic">GC: '+o.note+'</span>' : '')+
-            '</div>'+
-        '</div>';
-    }).join('');
+
+        clone.querySelector('.mã-đơn').textContent = '#' + o.id;
+        var statusSpan = clone.querySelector('.nhãn-trạng-thái-đơn');
+        statusSpan.className = 'nhãn ' + st.cls;
+        statusSpan.textContent = st.label;
+        var pmSpan = clone.querySelector('.nhãn-thanh-toán-đơn');
+        pmSpan.className = 'nhãn ' + pm.cls;
+        pmSpan.textContent = pm.label;
+        clone.querySelector('.nhãn-loại-đơn').textContent = (ENUM_LABELS.orderType[o.orderType] || {}).label || '';
+        clone.querySelector('.thời-gian-đơn').innerHTML = formatDateTime(o.createdAt) + ' &middot; ' + getCanteenName(o.canteenId);
+
+        var thân = clone.querySelector('.thân-đơn');
+        (o.items || []).forEach(function(i) {
+            var iClone = itemTmpl.content.cloneNode(true);
+            var mods = parseModifiersJson(i.selectedModifiersJson);
+            var desc = '';
+            mods.forEach(function(mg) { if (mg.modifiers && mg.modifiers.length) desc += mg.modifiers.map(function(m) { return m.name; }).join(', '); });
+            iClone.querySelector('.sl-đơn').textContent = i.quantity + 'x';
+            iClone.querySelector('.tên-món-ls').textContent = i.productName;
+            if (desc) {
+                iClone.querySelector('.tùy-chọn-ls').classList.remove('ẩn');
+                iClone.querySelector('.tùy-chọn-ls').textContent = '(' + desc + ')';
+            }
+            iClone.querySelector('.giá-ls').textContent = formatMoney(i.subTotal);
+            thân.appendChild(iClone);
+        });
+
+        clone.querySelector('.tổng-đơn').textContent = formatMoney(o.totalAmount);
+        if (o.note) {
+            clone.querySelector('.ghi-chú-đơn').classList.remove('ẩn');
+            clone.querySelector('.ghi-chú-đơn').textContent = 'GC: ' + o.note;
+        }
+
+        list.appendChild(clone);
+    });
 }
 
 function renderProfile() {
