@@ -1,0 +1,291 @@
+.trang-đăng-nhập {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ── Khung chứa chính ── */
+.khung-chính-đăng-nhập {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: hiện-dần 0.25s ease-in-out forwards;
+}
+
+.khung-xác-thực {
+    max-width: 900px;
+    width: 100%;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+    min-height: 600px;
+    border: 1px solid #f1f5f9;
+}
+
+/* ── Panel trái (giới thiệu) ── */
+.panel-giới-thiệu {
+    background: linear-gradient(135deg, #1068B2 0%, #0d5a9e 40%, #0a4c8a 100%);
+    color: #fff;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.họa-tiết-to {
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 160px;
+    height: 160px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    filter: blur(24px);
+    pointer-events: none;
+}
+.họa-tiết-nhỏ-1 {
+    position: absolute;
+    bottom: 25%;
+    left: 24px;
+    width: 32px;
+    height: 32px;
+    background: rgba(255,196,24,0.15);
+    transform: rotate(12deg);
+    pointer-events: none;
+}
+.họa-tiết-nhỏ-2 {
+    position: absolute;
+    top: 25%;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255,196,24,0.2);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+.họa-tiết-vòng-lớn {
+    position: absolute;
+    bottom: 40px;
+    right: -40px;
+    width: 192px;
+    height: 192px;
+    background: rgba(255,196,24,0.1);
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+.logo-xác-thực {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+.logo-xác-thực .chữ-can {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+.logo-xác-thực .chữ-tee {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--yellow-main);
+}
+.logo-xác-thực .chấm-vàng {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--yellow-main);
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+.thông-điệp-xác-thực {
+    margin: auto 0;
+    position: relative;
+    z-index: 1;
+    padding: 40px 0;
+    text-align: center;
+}
+.thông-điệp-xác-thực h1 {
+    font-size: 1.875rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: #fff;
+}
+.thông-điệp-xác-thực p {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+.chân-panel-giới-thiệu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.688rem;
+    color: rgba(255,255,255,0.5);
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    z-index: 1;
+}
+.chân-panel-giới-thiệu .phiên-bản {
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+}
+
+/* ── Panel phải (form) ── */
+.panel-form {
+    background: #fff;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.panel-form .tiêu-đề-form {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--blue-main);
+    letter-spacing: -0.02em;
+    text-align: center;
+}
+
+/* ── Chọn vai trò ── */
+.nhóm-chọn-vai-trò {
+    display: flex;
+    justify-content: center;
+    margin: 4px 0;
+}
+.vỏ-chọn-vai-trò {
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 9999px;
+    border: 1px solid #e2e8f0;
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.nút-vai-trò {
+    padding: 6px 16px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    font-family: var(--font-chinh);
+}
+.nút-vai-trò:hover {
+    color: var(--text-dark);
+}
+.nút-vai-trò.đang-chọn {
+    background: #fff;
+    color: var(--blue-main);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ── Nút xem mật khẩu trong ô nhập ── */
+.nút-xem-mật-khẩu {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+}
+.nút-xem-mật-khẩu:hover {
+    color: var(--text-muted);
+}
+
+/* ── Ô chứa mật khẩu (có nút xem) ── */
+.nhóm-ô-nhập.có-nút-xem {
+    position: relative;
+}
+.nhóm-ô-nhập.có-nút-xem input {
+    padding-right: 28px;
+}
+
+.panel-form__nội-dung {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.panel-form__biểu-mẫu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ── Khung submit ── */
+.khung-gửi-form {
+    padding-top: 16px;
+    text-align: center;
+}
+
+.chuyển-chế-độ {
+    margin-top: 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ── Responsive ── */
+@media (min-width: 768px) {
+    .khung-xác-thực {
+        grid-template-columns: 5fr 7fr;
+    }
+    .panel-giới-thiệu {
+        padding: 40px 40px;
+    }
+    .panel-form {
+        padding: 48px 48px;
+    }
+    .thông-điệp-xác-thực {
+        text-align: left;
+    }
+    .thông-điệp-xác-thực h1 {
+        font-size: 2.25rem;
+    }
+    .thông-điệp-xác-thực p {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .khung-chính-đăng-nhập {
+        padding: 32px;
+    }
+    .panel-giới-thiệu {
+        padding: 40px 40px;
+    }
+    .panel-form {
+        padding: 48px 40px;
+    }
+    .thông-điệp-xác-thực h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 480px) {
+    .panel-giới-thiệu {
+        padding: 40px 32px;
+    }
+}

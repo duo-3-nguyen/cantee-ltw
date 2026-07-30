@@ -1,0 +1,523 @@
+.trang-quản-lý {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── Thanh bên ── */
+.thanh-bên {
+    width: 240px;
+    background: var(--navy);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+.thương-hiệu-bên {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+}
+.thương-hiệu-bên .chữ-can {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+.thương-hiệu-bên .chữ-tee {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--yellow-main);
+}
+.thương-hiệu-bên .chấm-vàng {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--yellow-main);
+    margin-bottom: 6px;
+    margin-left: 2px;
+}
+.huy-hiệu-vai-trò {
+    font-size: 0.625rem;
+    font-weight: 700;
+    background: rgba(255,196,24,0.2);
+    color: var(--yellow-main);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.điều-hướng-bên {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mục-menu {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s, color 0.15s;
+    font-family: var(--font-chinh);
+}
+.mục-menu:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+.mục-menu.đang-chọn {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+.mục-menu i { width: 16px; text-align: center; }
+.mục-menu .icon-vàng { color: var(--yellow-main); }
+
+.chia-cách-bên {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin: 8px 0;
+}
+
+.chân-bên {
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ── Đầu trang quản lý ── */
+.đầu-trang-quản-lý {
+    background: #fff;
+    border-bottom: 1px solid #f1f5f9;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+@media (min-width: 640px) {
+    .đầu-trang-quản-lý { padding: 0 24px; }
+}
+.tiêu-đề-quản-lý {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.chọn-căn-tin {
+    font-size: 0.75rem;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-weight: 600;
+    color: var(--text-dark);
+    outline: none;
+    font-family: var(--font-chinh);
+}
+
+.tên-người-dùng-quản-lý {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: none;
+}
+@media (min-width: 640px) {
+    .tên-người-dùng-quản-lý { display: inline; }
+}
+
+/* ── Nội dung quản lý ── */
+.nội-dung-quản-lý {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+}
+@media (min-width: 640px) {
+    .nội-dung-quản-lý { padding: 24px; }
+}
+
+/* ── Dashboard ── */
+.lưới-chỉ-số {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+@media (min-width: 640px) {
+    .lưới-chỉ-số { grid-template-columns: repeat(4, 1fr); }
+}
+
+.thẻ-chỉ-số {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.thẻ-chỉ-số .biểu-tượng-chỉ-số {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+}
+.thẻ-chỉ-số .nhãn-chỉ-số {
+    font-size: 0.625rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.thẻ-chỉ-số .giá-trị-chỉ-số {
+    font-size: 1.125rem;
+    font-weight: 900;
+    color: var(--navy);
+}
+
+.lưới-dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+@media (min-width: 1024px) {
+    .lưới-dashboard { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Kanban ── */
+.bảng-kanban {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+@media (min-width: 768px) {
+    .bảng-kanban { grid-template-columns: repeat(3, 1fr); }
+}
+
+.cột-kanban {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.cột-kanban .đầu-cột {
+    padding: 12px 16px;
+    border-bottom: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.cột-kanban .tiêu-đề-cột {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--text-dark);
+}
+.cột-kanban .đếm-cột {
+    font-size: 0.625rem;
+    font-weight: 700;
+    background: #e5e7eb;
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 9999px;
+}
+.cột-kanban .danh-sách-cột {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.thẻ-đơn-kanban {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    font-size: 0.75rem;
+    transition: box-shadow 0.15s;
+}
+.thẻ-đơn-kanban:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+.thẻ-đơn-kanban .đầu-thẻ-đơn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+.thẻ-đơn-kanban .mã-đơn-kanban {
+    font-weight: 700;
+    color: var(--blue-main);
+}
+.thẻ-đơn-kanban .giờ-đơn-kanban {
+    font-size: 0.625rem;
+    color: var(--text-muted);
+}
+.thẻ-đơn-kanban .món-đơn-kanban {
+    color: var(--text-muted);
+    margin-bottom: 2px;
+    font-size: 0.75rem;
+}
+.thẻ-đơn-kanban .dòng-tiền-kanban {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.thẻ-đơn-kanban .tổng-tiền-kanban {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+.thẻ-đơn-kanban .trạng-thái-thanh-toán-kanban {
+    font-size: 0.625rem;
+}
+.thẻ-đơn-kanban .nhóm-nút-kanban {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.nút-kanban-nhỏ {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-family: var(--font-chinh);
+}
+.nút-kanban-nhỏ.mũi-tên-trái { background: #f1f5f9; color: var(--text-muted); }
+.nút-kanban-nhỏ.mũi-tên-trái:hover { background: #e2e8f0; }
+.nút-kanban-nhỏ.mũi-tên-phải { background: var(--blue-main); color: #fff; }
+.nút-kanban-nhỏ.mũi-tên-phải:hover { background: var(--blue-hover); }
+.nút-kanban-nhỏ.giao-hàng { background: #10b981; color: #fff; }
+.nút-kanban-nhỏ.giao-hàng:hover { background: #059669; }
+.nút-kanban-nhỏ.hủy-đơn { background: #fee2e2; color: #dc2626; }
+.nút-kanban-nhỏ.hủy-đơn:hover { background: #fecaca; }
+.nút-kanban-nhỏ.thanh-toán-đã { background: #d1fae5; color: #065f46; }
+.nút-kanban-nhỏ.thanh-toán-chưa { background: #f1f5f9; color: var(--text-muted); }
+.nút-kanban-nhỏ.thanh-toán-chưa:hover { background: #e2e8f0; }
+
+/* ── Sản phẩm (menu) ── */
+.hàng-sản-phẩm {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    padding: 16px;
+    margin-bottom: 8px;
+}
+.hàng-sản-phẩm .đầu-hàng-sp {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.hàng-sản-phẩm .thông-tin-sp {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+.hàng-sản-phẩm .ảnh-sp-nhỏ {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+.hàng-sản-phẩm .ảnh-sp-nhỏ img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hàng-sản-phẩm .tên-sp { font-weight: 700; font-size: 0.875rem; color: var(--text-dark); }
+.hàng-sản-phẩm .giá-sp { font-size: 0.75rem; color: var(--text-muted); }
+.hàng-sản-phẩm .nhóm-nút-sp {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nút-bảng-nhỏ {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: background 0.15s, color 0.15s;
+    font-family: var(--font-chinh);
+}
+.nút-bảng-nhỏ.sửa { background: #f1f5f9; color: var(--text-muted); }
+.nút-bảng-nhỏ.sửa:hover { background: #e2e8f0; }
+.nút-bảng-nhỏ.xóa { background: #fef2f2; color: #f87171; }
+.nút-bảng-nhỏ.xóa:hover { background: #fee2e2; color: #ef4444; }
+.nút-bảng-nhỏ.mở-rộng { background: #eff6ff; color: var(--blue-main); }
+.nút-bảng-nhỏ.mở-rộng:hover { background: #dbeafe; }
+.nút-bảng-nhỏ.trong-bảng { width: 24px; height: 24px; font-size: 0.625rem; }
+
+.khung-tùy-chọn-con {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* ── Form căn tin ── */
+.lưới-form-hai-cột {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+@media (min-width: 480px) {
+    .lưới-form-hai-cột { grid-template-columns: 1fr 1fr; }
+}
+
+.dòng-giờ-mở {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-size: 0.75rem;
+}
+.dòng-giờ-mở .ngày-giờ {
+    width: 80px;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+.dòng-giờ-mở input[type="time"] {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    width: 112px;
+    font-family: var(--font-chinh);
+}
+
+/* ── Bảng trong quản lý ── */
+.bảng-quản-lý {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+}
+.bảng-quản-lý .khung-cuộn {
+    overflow-x: auto;
+}
+
+/* ── Thẻ yêu cầu đăng ký ── */
+.thẻ-yêu-cầu {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid #f1f5f9;
+    padding: 16px;
+}
+.thẻ-yêu-cầu .đầu-yêu-cầu {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.thẻ-yêu-cầu .tên-người-dùng { font-size: 0.75rem; font-weight: 700; color: var(--text-dark); }
+.thẻ-yêu-cầu .email-người-dùng { font-size: 0.75rem; color: var(--text-muted); }
+.thẻ-yêu-cầu .chi-tiết-căn-tin {
+    margin-top: 4px;
+    font-size: 0.688rem;
+    color: var(--text-muted);
+}
+.thẻ-yêu-cầu .nhóm-nút-duyệt {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.nút-duyệt-nhỏ {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.15s;
+    font-family: var(--font-chinh);
+}
+.nút-duyệt-nhỏ.đồng-ý { background: #10b981; }
+.nút-duyệt-nhỏ.đồng-ý:hover { background: #059669; }
+.nút-duyệt-nhỏ.từ-chối { background: #ef4444; }
+.nút-duyệt-nhỏ.từ-chối:hover { background: #dc2626; }
+
+/* ── Hàng top products ── */
+.hàng-top-sp {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    padding: 4px 0;
+}
+.hàng-top-sp .thứ-hạng { font-weight: 700; color: var(--text-muted); width: 20px; }
+.hàng-top-sp .tên-top-sp { font-weight: 600; color: var(--text-dark); }
+.hàng-top-sp .số-bán { color: var(--text-muted); }
+
+/* ── Nhóm nút lọc ── */
+.nhóm-nút-lọc {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 8px;
+}
+
+/* ── Các màu nền phụ cho dashboard ── */
+.nền-xanh-nhạt { background: #eff6ff; }
+.nền-lục-nhạt { background: #ecfdf5; }
+.nền-hổ-phách-nhạt { background: #fffbeb; }
+.nền-cam-nhạt { background: #fff7ed; }
+.nền-cam-nhạt i { color: #ea580c; }
+
+/* ── Viền kanban theo trạng thái ── */
+.viền-cam { border-color: #fcd34d; background: rgba(255,251,235,0.3); }
+.viền-xanh-dương { border-color: #93c5fd; background: rgba(239,246,255,0.3); }
+.viền-xanh-ngọc { border-color: #67e8f9; background: rgba(236,254,255,0.3); }
+
+/* ── Responsive cho thanh bên trên mobile ── */
+@media (max-width: 767px) {
+    .thanh-bên { width: 200px; }
+}

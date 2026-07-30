@@ -7,27 +7,27 @@ const CONFIG = {
 
 const ENUM_LABELS = {
     canteenStatus: {
-        Active:     { label: 'Đang hoạt động', cls: 'bg-emerald-100 text-emerald-800' },
-        Suspended:  { label: 'Tạm ngưng',       cls: 'bg-red-100 text-red-800' }
+        Active:     { label: 'Đang hoạt động', cls: 'nhãn nhãn-xanh-lá' },
+        Suspended:  { label: 'Tạm ngưng',       cls: 'nhãn nhãn-đỏ' }
     },
     orderStatus: {
-        Pending:        { label: 'Chờ xác nhận',   cls: 'bg-amber-100 text-amber-800' },
-        Preparing:      { label: 'Đang chuẩn bị',   cls: 'bg-blue-100 text-blue-800' },
-        ReadyForPickup: { label: 'Sẵn sàng nhận',   cls: 'bg-cyan-100 text-cyan-800' },
-        Delivered:      { label: 'Đã giao',         cls: 'bg-emerald-100 text-emerald-800' },
-        Cancelled:      { label: 'Đã hủy',          cls: 'bg-red-100 text-red-800' }
+        Pending:        { label: 'Chờ xác nhận',   cls: 'nhãn nhãn-cam' },
+        Preparing:      { label: 'Đang chuẩn bị',   cls: 'nhãn nhãn-xanh-dương' },
+        ReadyForPickup: { label: 'Sẵn sàng nhận',   cls: 'nhãn nhãn-xanh-ngọc' },
+        Delivered:      { label: 'Đã giao',         cls: 'nhãn nhãn-xanh-lá' },
+        Cancelled:      { label: 'Đã hủy',          cls: 'nhãn nhãn-đỏ' }
     },
     orderType: {
         DineIn:  { label: 'Ăn tại chỗ', icon: 'fa-utensils' },
         TakeAway:{ label: 'Mang về',     icon: 'fa-box-archive' }
     },
     paymentStatus: {
-        Unpaid: { label: 'Chưa TT', cls: 'bg-gray-100 text-gray-700' },
-        Paid:   { label: 'Đã TT',   cls: 'bg-emerald-100 text-emerald-800' }
+        Unpaid: { label: 'Chưa TT', cls: 'nhãn nhãn-xám' },
+        Paid:   { label: 'Đã TT',   cls: 'nhãn nhãn-xanh-lá' }
     },
     stockStatus: {
-        Available:  { label: 'Còn hàng',    cls: 'bg-emerald-100 text-emerald-700' },
-        OutOfStock: { label: 'Hết hàng',    cls: 'bg-red-100 text-red-700' }
+        Available:  { label: 'Còn hàng',    cls: 'nhãn nhãn-xanh-lá' },
+        OutOfStock: { label: 'Hết hàng',    cls: 'nhãn nhãn-đỏ' }
     },
     weekDay: ['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy']
 };
@@ -65,13 +65,13 @@ function showToast(msg, type) {
     var msgEl = document.getElementById('toastMessage');
     if (icon) {
         var icons = { info:'fa-circle-info', success:'fa-circle-check', error:'fa-circle-exclamation' };
-        icon.className = 'fa-solid ' + (icons[type] || icons.info) + ' text-sm';
+        icon.className = 'fa-solid ' + (icons[type] || icons.info);
     }
     if (msgEl) msgEl.innerText = msg;
-    toast.classList.remove('translate-y-20','opacity-0');
+    toast.classList.add('hiện');
     clearTimeout(toast._timeout);
     toast._timeout = setTimeout(function() {
-        toast.classList.add('translate-y-20','opacity-0');
+        toast.classList.remove('hiện');
     }, 3000);
 }
 

@@ -4,1242 +4,335 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>canTee - Đặt Món Căng Tin</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter','sans-serif'] },
-                    colors: {
-                        brand: {
-                            blue: '#1068B2', navy: '#0a3d6b',
-                            yellow: '#FFC418', yellowHover: '#E5B016',
-                            grayBg: '#f4f6f8', cardBg: '#ffffff',
-                            textDark: '#1e293b', textMuted: '#64748b'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .no-scrollbar::-webkit-scrollbar{display:none}
-        .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
-        .modal-animate{animation:popIn .2s ease-out forwards}
-        @keyframes popIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
-        .dropdown-animate{animation:slideDown .2s ease-out forwards;transform-origin:top center}
-        @keyframes slideDown{from{opacity:0;transform:translateY(-8px) scaleY(.97)}to{opacity:1;transform:translateY(0) scaleY(1)}}
-    </style>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/customer.css">
 </head>
-<body class="bg-[#f5f7fa] text-brand-textDark font-sans min-h-screen flex flex-col relative">
+<body class="trang-khách-hàng">
 
-    <!-- HEADER -->
-    <header class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 sm:gap-6">
-                <a href="javascript:void(0)" onclick="selectCanteenView()" class="flex items-center gap-0 group">
-                    <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-blue">can</span>
-                    <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-yellow">Tee</span>
-                    <span class="w-2 h-2 rounded-full bg-brand-yellow mb-3 inline-block"></span>
+    <header class="đầu-trang-khách">
+        <div class="vỏ-đầu-trang">
+            <div class="nhóm-trái-đầu-trang">
+                <a href="javascript:void(0)" onclick="selectCanteenView()" class="logo-khách">
+                    <span class="chữ-can">can</span>
+                    <span class="chữ-tee">Tee</span>
+                    <span class="chấm-vàng"></span>
                 </a>
-                <div class="flex items-center gap-2 relative" id="headerCanteenWrapper">
-                    <button id="headerCanteenPill" onclick="toggleCanteenDropdown()" class="hidden items-center gap-2 bg-gray-50 hover:bg-blue-50/80 border border-gray-200 hover:border-brand-blue text-xs sm:text-sm font-medium py-2 px-3 sm:px-4 rounded-full transition-all">
-                        <span class="font-bold text-[10px] sm:text-xs uppercase tracking-wider text-brand-navy bg-yellow-100 px-2 py-0.5 rounded-full shrink-0">CĂNG TIN</span>
-                        <i class="fa-solid fa-location-dot text-brand-blue text-sm shrink-0"></i>
-                        <span id="headerCanteenName" class="text-gray-800 font-semibold truncate max-w-[160px] sm:max-w-[320px]">Chưa chọn</span>
-                        <i class="fa-solid fa-chevron-down text-gray-400 text-xs ml-auto"></i>
+                <div style="position:relative;display:flex;align-items:center;gap:8px" id="headerCanteenWrapper">
+                    <button id="headerCanteenPill" onclick="toggleCanteenDropdown()" class="viên-căn-tin ẩn">
+                        <span class="nhãn-loại">CĂNG TIN</span>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span id="headerCanteenName" class="tên-đã-chọn">Chưa chọn</span>
+                        <i class="fa-solid fa-chevron-down mũi-tên-xuống"></i>
                     </button>
-                    <span id="headerCanteenStatus" class="hidden text-[10px] font-bold px-2 py-1.5 rounded-full whitespace-nowrap"></span>
-                    <div id="canteenDropdown" class="hidden absolute top-full left-0 z-50 mt-1 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 dropdown-animate overflow-hidden" style="max-height:60vh">
-                        <div class="p-3 border-b border-gray-100">
-                            <input id="canteenSearchInput" oninput="filterCanteenDropdown()" type="text" placeholder="Tìm căn tin..." class="w-full bg-gray-100 rounded-xl text-sm px-3 py-2 outline-none focus:ring-2 focus:ring-brand-blue/30">
+                    <span id="headerCanteenStatus" class="trạng-thái-căn-tin ẩn"></span>
+                    <div id="canteenDropdown" class="menu-thả-xuống ẩn">
+                        <div class="tìm-kiếm-thả-xuống">
+                            <input id="canteenSearchInput" oninput="filterCanteenDropdown()" type="text" placeholder="Tìm căn tin...">
                         </div>
-                        <div class="overflow-y-auto max-h-80 p-2" id="canteenDropdownList"></div>
+                        <div class="danh-sách-thả-xuống" id="canteenDropdownList"></div>
                     </div>
                 </div>
-                <div id="headerCanteenPrompt" class="flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-600 bg-amber-50 py-2 px-3 sm:px-4 rounded-full border border-amber-200">
-                    <i class="fa-solid fa-circle text-amber-500" style="font-size:.5rem"></i>
+                <div id="headerCanteenPrompt" class="nhắc-chọn-căn-tin">
+                    <i class="fa-solid fa-circle" style="font-size:0.5rem;color:#f59e0b"></i>
                     <span>Chọn căn tin để bắt đầu</span>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="navigateTo('order-history')" class="hidden sm:flex items-center gap-2 bg-gray-50 hover:bg-blue-50 border border-gray-200 text-brand-navy px-3 py-1.5 rounded-full text-xs font-bold transition-all">
-                    <i class="fa-solid fa-clock-rotate-left text-brand-blue"></i>
+            <div class="nhóm-phải-đầu-trang">
+                <button onclick="navigateTo('order-history')" class="nút-lịch-sử-đầu-trang">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
                     <span>Lịch sử đơn</span>
                 </button>
-                <div class="relative">
-                    <button onclick="toggleUserDropdown()" class="flex items-center gap-2.5 bg-gray-50 hover:bg-gray-100 p-1.5 px-3 rounded-full border border-gray-200 transition-all">
-                        <img id="headerUserAvatar" src="" alt="Avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover bg-gray-200">
-                        <span class="text-xs font-medium text-gray-600 hidden sm:inline">Xin chào, <strong id="headerUserName" class="font-bold text-brand-navy"></strong></span>
-                        <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+                <div style="position:relative">
+                    <button onclick="toggleUserDropdown()" class="nút-người-dùng">
+                        <img id="headerUserAvatar" src="" alt="Avatar">
+                        <span class="lời-chào">Xin chào, <strong id="headerUserName"></strong></span>
+                        <i class="fa-solid fa-chevron-down mũi-tên-xuống"></i>
                     </button>
-                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 z-50 modal-animate">
-                        <div class="px-4 py-2 border-b border-gray-100">
-                            <p class="text-xs font-bold text-brand-navy truncate" id="dropdownUserName"></p>
-                            <p class="text-[10px] text-gray-400 mt-0.5" id="dropdownUserRole"></p>
+                    <div id="userDropdown" class="menu-thả-user ẩn">
+                        <div class="mục-thả-user__đầu">
+                            <p class="mục-thả-user__tên" id="dropdownUserName"></p>
+                            <p class="mục-thả-user__vai-trò" id="dropdownUserRole"></p>
                         </div>
-                        <a href="javascript:void(0)" onclick="navigateTo('profile');closeUserDropdown()" class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-blue-50 hover:text-brand-blue">
-                            <i class="fa-regular fa-user text-sm w-4"></i><span>Thông tin cá nhân</span>
-                        </a>
-                        <a href="javascript:void(0)" onclick="navigateTo('order-history');closeUserDropdown()" class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-blue-50 hover:text-brand-blue">
-                            <i class="fa-solid fa-clock-rotate-left text-sm w-4"></i><span>Lịch sử đơn hàng</span>
-                        </a>
-                        <a href="javascript:void(0)" onclick="navigateTo('change-password');closeUserDropdown()" class="flex items-center gap-2.5 px-4 py-2 text-xs font-medium text-gray-700 hover:bg-blue-50 hover:text-brand-blue">
-                            <i class="fa-solid fa-key text-sm w-4"></i><span>Đổi mật khẩu</span>
-                        </a>
-                        <div class="border-t border-gray-100 my-1"></div>
-                        <a href="javascript:void(0)" onclick="doLogout()" class="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-sm w-4"></i><span>Đăng xuất</span>
-                        </a>
+                        <a href="javascript:void(0)" onclick="navigateTo('profile');closeUserDropdown()" class="mục-thả-user"><i class="fa-regular fa-user"></i><span>Thông tin cá nhân</span></a>
+                        <a href="javascript:void(0)" onclick="navigateTo('order-history');closeUserDropdown()" class="mục-thả-user"><i class="fa-solid fa-clock-rotate-left"></i><span>Lịch sử đơn hàng</span></a>
+                        <a href="javascript:void(0)" onclick="navigateTo('change-password');closeUserDropdown()" class="mục-thả-user"><i class="fa-solid fa-key"></i><span>Đổi mật khẩu</span></a>
+                        <div class="mục-thả-user__chia-cách"></div>
+                        <a href="javascript:void(0)" onclick="doLogout()" class="mục-thả-user nguy-hiểm"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Đăng xuất</span></a>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    <main class="nội-dung-khách">
 
-        <!-- VIEW: CANTEEN SELECT -->
-        <div id="viewCanteenSelect" class="max-w-3xl mx-auto py-4">
-            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 text-center mb-6">
-                <h1 class="text-2xl font-extrabold text-brand-navy">Chào mừng đến với canTee!</h1>
-                <p class="text-sm text-gray-500 mt-1 max-w-md mx-auto">Vui lòng chọn căn tin bạn muốn đặt đồ ăn.</p>
-                <div class="relative mt-6 max-w-md mx-auto">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                    <input type="text" id="welcomeSearch" oninput="renderCanteenSelect()" placeholder="Tìm kiếm căn tin..." class="w-full bg-gray-50 text-sm pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-blue">
+        <div id="viewCanteenSelect" class="khung-chọn-căn-tin">
+            <div class="lời-chào-căn-tin">
+                <h1>Chào mừng đến với canTee!</h1>
+                <p>Vui lòng chọn căn tin bạn muốn đặt đồ ăn.</p>
+                <div class="ô-tìm-kiếm" style="margin-top:24px;max-width:448px;margin-left:auto;margin-right:auto">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="welcomeSearch" oninput="renderCanteenSelect()" placeholder="Tìm kiếm căn tin...">
                 </div>
             </div>
-            <div id="canteenGrid" class="space-y-3"></div>
+            <div id="canteenGrid" class="lưới-căn-tin"></div>
         </div>
 
-        <!-- VIEW: MENU -->
-        <div id="viewMenu" class="hidden">
-            <div class="relative mb-5">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-base"></i>
-                <input type="text" id="menuSearch" oninput="handleSearch(this.value)" placeholder="Tìm kiếm món ăn..." class="w-full bg-gray-100/80 hover:bg-gray-100 text-sm sm:text-base pl-11 pr-4 py-3 rounded-xl border border-gray-200/60 focus:border-brand-blue focus:bg-white focus:outline-none transition-all shadow-sm">
+        <div id="viewMenu" class="ẩn">
+            <div class="ô-tìm-kiếm" style="margin-bottom:20px">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="menuSearch" oninput="handleSearch(this.value)" placeholder="Tìm kiếm món ăn...">
             </div>
-            <div class="flex items-center justify-between mb-6 relative">
-                <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 pr-10 scroll-smooth w-full"></div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div class="lg:col-span-8">
-                    <div class="flex items-center justify-between mb-5">
-                        <h1 id="categoryTitle" class="text-2xl font-bold text-brand-navy"></h1>
-                        <span id="productCount" class="text-sm font-medium text-gray-500"></span>
-                    </div>
-                    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
-                </div>
-                <!-- Cart Sidebar -->
-                <div class="lg:col-span-4 sticky top-20">
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 class="text-xl font-bold text-brand-navy">Giỏ hàng</h2>
-                            <span id="cartBadge" class="bg-yellow-100 text-brand-navy text-xs font-bold px-2.5 py-1 rounded-full">0 món</span>
-                        </div>
-                        <div id="cartItems" class="space-y-3 max-h-[360px] overflow-y-auto pr-1"></div>
-                        <div id="cartFooter" class="mt-6 pt-4 border-t border-gray-100">
-                            <div class="flex items-center justify-between mb-4">
-                                <span class="text-sm font-semibold text-gray-600">Tạm tính</span>
-                                <span id="cartTotal" class="text-xl font-bold text-brand-navy">0đ</span>
-                            </div>
-                            <button onclick="navigateTo('checkout')" id="checkoutBtn" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold py-3.5 px-4 rounded-xl shadow-sm transition-all transform active:scale-[.99] flex items-center justify-center gap-2 text-base disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fa-solid fa-receipt"></i><span>Xác nhận giỏ hàng</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- VIEW: CHECKOUT -->
-        <div id="viewCheckout" class="hidden">
-            <div class="flex items-center justify-between mb-6">
+            <div class="trang-menu">
                 <div>
-                    <h1 class="text-2xl font-extrabold text-brand-navy">Đơn hàng của bạn</h1>
-                    <p class="text-xs text-gray-500 mt-0.5">Kiểm tra món đã chọn và hoàn tất đặt món</p>
+                    <div class="thanh-danh-mục" id="categoryTabs"></div>
+                    <div class="tiêu-đề-danh-mục">
+                        <h1 id="categoryTitle"></h1>
+                        <span id="productCount" class="số-lượng"></span>
+                    </div>
+                    <div id="productGrid" class="lưới-món-ăn"></div>
                 </div>
-                <button onclick="navigateTo('menu')" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-brand-navy hover:bg-gray-50 flex items-center gap-2">
+                <div class="giỏ-hàng">
+                    <div class="đầu-giỏ">
+                        <h2>Giỏ hàng</h2>
+                        <span id="cartBadge" class="viên-đếm-giỏ">0 món</span>
+                    </div>
+                    <div id="cartItems" class="danh-sách-giỏ"></div>
+                    <div id="cartFooter" class="chân-giỏ">
+                        <div class="dòng-tạm-tính">
+                            <span class="nhãn-tạm-tính">Tạm tính</span>
+                            <span id="cartTotal" class="số-tạm-tính">0đ</span>
+                        </div>
+                        <button onclick="navigateTo('checkout')" id="checkoutBtn" class="nút-thanh-toán" disabled>
+                            <i class="fa-solid fa-receipt"></i><span>Xác nhận giỏ hàng</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="viewCheckout" class="ẩn">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+                <div>
+                    <h1 style="font-size:1.5rem;font-weight:900;color:var(--navy)">Đơn hàng của bạn</h1>
+                    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Kiểm tra món đã chọn và hoàn tất đặt món</p>
+                </div>
+                <button onclick="navigateTo('menu')" class="nút-quay-lại">
                     <i class="fa-solid fa-arrow-left"></i><span>Thêm món khác</span>
                 </button>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                <div class="lg:col-span-8 space-y-6">
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                        <h2 class="text-base font-bold text-brand-navy mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-store text-brand-yellow"></i><span>Thông tin phục vụ</span>
+            <div class="khung-thanh-toán">
+                <div>
+                    <div class="thẻ-trắng" style="margin-bottom:24px">
+                        <h2 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px">
+                            <i class="fa-solid fa-store" style="color:var(--yellow-main)"></i><span>Thông tin phục vụ</span>
                         </h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div style="display:grid;grid-template-columns:1fr;gap:16px">
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">Hình thức</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="setOrderType('DineIn')" id="btnDineIn" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 transition-all font-bold text-xs bg-blue-50 border-brand-blue text-brand-blue">
+                                <label class="nhãn-ô">Hình thức</label>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                                    <button onclick="setOrderType('DineIn')" id="btnDineIn" class="nút-hình-thức đang-chọn dine-in">
                                         <i class="fa-solid fa-utensils"></i><span>Ăn tại chỗ</span>
                                     </button>
-                                    <button onclick="setOrderType('TakeAway')" id="btnTakeaway" class="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:border-gray-300 transition-all font-bold text-xs">
+                                    <button onclick="setOrderType('TakeAway')" id="btnTakeaway" class="nút-hình-thức">
                                         <i class="fa-solid fa-box-archive"></i><span>Mang về</span>
                                     </button>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">Thời gian nhận</label>
-                                <select id="pickupSelect" onchange="onPickupChange()" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-xs font-semibold text-gray-800 focus:outline-none focus:border-brand-blue">
+                                <label class="nhãn-ô">Thời gian nhận</label>
+                                <select id="pickupSelect" onchange="onPickupChange()" class="ô-chọn">
                                     <option value="asap">Lấy ngay (sớm nhất)</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <label class="block text-xs font-bold text-gray-700 mb-1.5">Ghi chú cho nhà bếp</label>
-                            <input type="text" id="orderNote" placeholder="Ví dụ: ít đá, thêm rau..." class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-xs focus:outline-none focus:border-brand-blue">
+                        <div style="margin-top:12px">
+                            <label class="nhãn-ô">Ghi chú cho nhà bếp</label>
+                            <input type="text" id="orderNote" placeholder="Ví dụ: ít đá, thêm rau..." class="ô-nhập">
                         </div>
                     </div>
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
-                            <h2 class="text-base font-bold text-brand-navy">ĐƠN HÀNG (<span id="checkoutItemCount">0</span> món)</h2>
-                            <button onclick="navigateTo('menu')" class="text-xs font-bold text-brand-blue hover:underline">+ Thêm món</button>
+                    <div class="thẻ-trắng">
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
+                            <h2 style="font-size:1rem;font-weight:700;color:var(--navy)">ĐƠN HÀNG (<span id="checkoutItemCount">0</span> món)</h2>
+                            <button onclick="navigateTo('menu')" class="liên-kết" style="font-size:0.75rem">+ Thêm món</button>
                         </div>
-                        <div id="checkoutItems" class="divide-y divide-gray-100"></div>
+                        <div id="checkoutItems"></div>
                     </div>
                 </div>
-                <div class="lg:col-span-4 space-y-4 sticky top-20">
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-                        <h2 class="text-base font-bold text-brand-navy mb-4">Hình thức thanh toán</h2>
-                        <div class="space-y-2.5">
-                            <label class="flex items-center justify-between p-3 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer">
-                                <span class="flex items-center gap-3">
-                                    <input type="radio" name="paymentMethod" value="cash" checked="" class="text-brand-blue">
-                                    <i class="fa-solid fa-money-bill-wave text-emerald-600 text-base"></i>
-                                    <span class="text-xs font-bold text-gray-800">Tiền mặt tại quầy</span>
-                                </span>
-                            </label>
-
-                        </div>
+                <div>
+                    <div class="thẻ-trắng" style="margin-bottom:16px">
+                        <h2 style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:16px">Hình thức thanh toán</h2>
+                        <label class="phương-thức-thanh-toán">
+                            <span class="bên-trái-tt">
+                                <input type="radio" name="paymentMethod" value="cash" checked>
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span>Tiền mặt tại quầy</span>
+                            </span>
+                        </label>
                     </div>
-                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3">
-                        <h2 class="text-base font-bold text-brand-navy pb-2 border-b border-gray-100">Thanh toán</h2>
-                        <div class="flex justify-between text-xs text-gray-600">
+                    <div class="mục-thanh-toán">
+                        <h2>Thanh toán</h2>
+                        <div class="dòng-tiền">
                             <span id="summaryCount">Tạm tính (0 món)</span>
-                            <span id="summarySubtotal" class="font-bold text-gray-800">0đ</span>
+                            <span id="summarySubtotal" style="font-weight:700">0đ</span>
                         </div>
-                        <div class="pt-3 border-t border-gray-100 flex justify-between items-baseline">
-                            <span class="text-sm font-bold text-brand-navy">Tổng cộng</span>
-                            <span id="summaryTotal" class="text-xl font-extrabold text-brand-blue">0đ</span>
+                        <div class="dòng-tổng-cộng">
+                            <span class="nhãn-tổng">Tổng cộng</span>
+                            <span id="summaryTotal" class="số-tổng">0đ</span>
                         </div>
-                        <button onclick="placeOrder()" id="placeOrderBtn" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-extrabold py-3.5 px-4 rounded-xl shadow-md transition-transform active:scale-[.98] mt-2 disabled:opacity-50 disabled:cursor-not-allowed">Đặt món</button>
+                        <button onclick="placeOrder()" id="placeOrderBtn" class="nút-vàng nút-toàn-rộng" disabled>Đặt món</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- VIEW: ORDER HISTORY -->
-        <div id="viewOrderHistory" class="hidden max-w-4xl mx-auto">
-            <div class="flex items-center justify-between mb-6">
+        <div id="viewOrderHistory" class="lịch-sử-đơn ẩn">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
                 <div>
-                    <h1 class="text-2xl font-extrabold text-brand-navy">Lịch sử đơn hàng</h1>
-                    <p class="text-xs text-gray-500 mt-0.5">Theo dõi trạng thái các đơn hàng đã đặt</p>
+                    <h1 style="font-size:1.5rem;font-weight:900;color:var(--navy)">Lịch sử đơn hàng</h1>
+                    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Theo dõi trạng thái các đơn hàng đã đặt</p>
                 </div>
-                <button onclick="navigateTo('menu')" class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold text-brand-navy hover:bg-gray-50 flex items-center gap-2">
+                <button onclick="navigateTo('menu')" class="nút-quay-lại">
                     <i class="fa-solid fa-arrow-left"></i><span>Quay lại thực đơn</span>
                 </button>
             </div>
-            <div class="flex items-center gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
-                <button onclick="setOrderFilter('all')" id="filterAll" class="px-5 py-2.5 rounded-full text-xs font-bold bg-brand-navy text-white">Tất cả</button>
-                <button onclick="setOrderFilter('active')" id="filterActive" class="px-5 py-2.5 rounded-full text-xs font-bold bg-gray-200/80 text-gray-700 hover:bg-gray-300">Đang xử lý</button>
-                <button onclick="setOrderFilter('completed')" id="filterCompleted" class="px-5 py-2.5 rounded-full text-xs font-bold bg-gray-200/80 text-gray-700 hover:bg-gray-300">Đã hoàn thành</button>
+            <div class="thanh-danh-mục">
+                <button onclick="setOrderFilter('all')" id="filterAll" class="nút-tab-lọc đang-chọn">Tất cả</button>
+                <button onclick="setOrderFilter('active')" id="filterActive" class="nút-tab-lọc">Đang xử lý</button>
+                <button onclick="setOrderFilter('completed')" id="filterCompleted" class="nút-tab-lọc">Đã hoàn thành</button>
             </div>
-            <div id="orderList" class="space-y-3"></div>
+            <div id="orderList"></div>
         </div>
 
-        <!-- VIEW: PROFILE -->
-        <div id="viewProfile" class="hidden max-w-lg mx-auto">
-            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100">
-                <h1 class="text-xl font-extrabold text-brand-navy mb-6">Thông tin cá nhân</h1>
-                <form onsubmit="saveProfile(event)" class="space-y-4 text-sm">
-                    <div class="py-2 border-b border-gray-100 flex justify-between items-center">
-                        <span class="text-gray-500">Tên đăng nhập</span>
-                        <span id="profUsername" class="font-bold text-brand-navy"></span>
+        <div id="viewProfile" class="trang-hồ-sơ ẩn">
+            <div class="thẻ-trắng" style="padding:24px">
+                <h1 style="font-size:1.25rem;font-weight:900;color:var(--navy);margin-bottom:24px">Thông tin cá nhân</h1>
+                <form onsubmit="saveProfile(event)" style="display:flex;flex-direction:column;gap:16px;font-size:0.875rem">
+                    <div class="dòng-thông-tin">
+                        <span class="nhãn-dòng">Tên đăng nhập</span>
+                        <span id="profUsername" class="giá-trị-dòng"></span>
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">Họ và tên</label>
-                        <input type="text" id="inputFullName" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold text-gray-800 focus:outline-none focus:border-brand-blue">
+                        <label class="nhãn-ô">Họ và tên</label>
+                        <input type="text" id="inputFullName" required class="ô-nhập">
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">Email</label>
-                        <input type="email" id="inputEmail" required class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs font-semibold text-gray-800 focus:outline-none focus:border-brand-blue">
+                        <label class="nhãn-ô">Email</label>
+                        <input type="email" id="inputEmail" required class="ô-nhập">
                     </div>
-                    <div class="py-2 border-b border-gray-100 flex justify-between items-center">
-                        <span class="text-gray-500">Vai trò</span>
-                        <span id="profRole" class="font-bold text-brand-navy"></span>
+                    <div class="dòng-thông-tin">
+                        <span class="nhãn-dòng">Vai trò</span>
+                        <span id="profRole" class="giá-trị-dòng"></span>
                     </div>
-                    <div id="profileError" class="hidden bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg p-3"></div>
-                    <div class="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
-                        <button type="button" onclick="navigateTo('change-password')" class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 text-xs">
-                            Đổi mật khẩu
-                        </button>
-                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold text-xs shadow-sm">
-                            Lưu thông tin
-                        </button>
+                    <div id="profileError" class="khung-lỗi ẩn"></div>
+                    <div style="padding-top:16px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:flex-end;gap:12px">
+                        <button type="button" onclick="navigateTo('change-password')" class="nút-viền">Đổi mật khẩu</button>
+                        <button type="submit" class="nút-vàng">Lưu thông tin</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- VIEW: CHANGE PASSWORD -->
-        <div id="viewChangePassword" class="hidden max-w-lg mx-auto">
-            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100">
-                <h1 class="text-xl font-extrabold text-brand-navy mb-6">Đổi mật khẩu</h1>
-                <form onsubmit="changePassword(event)" class="space-y-4 text-xs">
+        <div id="viewChangePassword" class="trang-hồ-sơ ẩn">
+            <div class="thẻ-trắng" style="padding:24px">
+                <h1 style="font-size:1.25rem;font-weight:900;color:var(--navy);margin-bottom:24px">Đổi mật khẩu</h1>
+                <form onsubmit="changePassword(event)" style="display:flex;flex-direction:column;gap:16px;font-size:0.75rem">
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">Mật khẩu hiện tại</label>
-                        <input type="password" id="oldPassword" required placeholder="Nhập mật khẩu cũ" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs focus:outline-none focus:border-brand-blue">
+                        <label class="nhãn-ô">Mật khẩu hiện tại</label>
+                        <input type="password" id="oldPassword" required placeholder="Nhập mật khẩu cũ" class="ô-nhập">
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1">Mật khẩu mới</label>
-                        <input type="password" id="newPassword" required placeholder="Tối thiểu 6 ký tự" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs focus:outline-none focus:border-brand-blue">
+                        <label class="nhãn-ô">Mật khẩu mới</label>
+                        <input type="password" id="newPassword" required placeholder="Tối thiểu 6 ký tự" class="ô-nhập">
                     </div>
-                    <div id="pwdError" class="hidden bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg p-3"></div>
-                    <div class="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
-                        <button type="button" onclick="navigateTo('profile')" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 text-xs">Hủy bỏ</button>
-                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold shadow-sm text-xs">Cập nhật</button>
+                    <div id="pwdError" class="khung-lỗi ẩn"></div>
+                    <div style="padding-top:16px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:flex-end;gap:12px">
+                        <button type="button" onclick="navigateTo('profile')" class="nút-viền">Hủy bỏ</button>
+                        <button type="submit" class="nút-vàng">Cập nhật</button>
                     </div>
                 </form>
             </div>
         </div>
     </main>
 
-    <!-- Canteen Detail Modal -->
-    <div id="canteenDetailModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl modal-animate">
-            <div class="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
-                <h2 id="detailModalTitle" class="text-base font-extrabold text-brand-navy">Chi Tiết Căng Tin</h2>
-                <button onclick="closeCanteenDetail()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-sm"><i class="fa-solid fa-xmark"></i></button>
+    <div id="canteenDetailModal" class="lớp-phủ-modal ẩn">
+        <div class="hộp-modal rộng">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #f1f5f9;margin-bottom:16px">
+                <h2 id="detailModalTitle" style="font-size:1rem;font-weight:900;color:var(--navy)">Chi Tiết Căng Tin</h2>
+                <button onclick="closeCanteenDetail()" style="width:32px;height:32px;border-radius:50%;background:#f1f5f9;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.875rem">&#x2715;</button>
             </div>
-            <div class="space-y-3 text-xs">
-                <div class="h-36 rounded-xl overflow-hidden bg-gray-100">
-                    <img id="detailModalImage" src="" class="w-full h-full object-cover" alt="">
+            <div style="display:flex;flex-direction:column;gap:12px;font-size:0.75rem">
+                <div class="ảnh-bìa-modal">
+                    <img id="detailModalImage" src="" alt="">
                 </div>
-                <p class="flex items-start gap-2.5 text-gray-700"><i class="fa-solid fa-location-dot text-brand-blue text-sm mt-0.5"></i><span id="detailModalAddress" class="font-medium"></span></p>
-                <p class="flex items-center gap-2.5 text-gray-700"><i class="fa-solid fa-clock text-brand-blue text-sm"></i><span id="detailModalHours" class="font-medium"></span></p>
-                <div id="detailModalWeeklyHours" class="mt-2 bg-gray-50 rounded-xl p-3 space-y-1 text-xs"></div>
-                <p class="flex items-center gap-2.5 text-gray-700"><i class="fa-solid fa-phone text-brand-blue text-sm"></i><span id="detailModalPhone" class="font-medium"></span></p>
-                <button onclick="selectCanteenFromDetail()" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-extrabold py-3 rounded-xl shadow-sm text-xs">Chọn căn tin này</button>
+                <p style="display:flex;align-items:center;gap:10px;color:var(--text-dark)">
+                    <i class="fa-solid fa-location-dot" style="color:var(--blue-main)"></i><span id="detailModalAddress" style="font-weight:500"></span>
+                </p>
+                <p style="display:flex;align-items:center;gap:10px;color:var(--text-dark)">
+                    <i class="fa-solid fa-clock" style="color:var(--blue-main)"></i><span id="detailModalHours" style="font-weight:500"></span>
+                </p>
+                <div id="detailModalWeeklyHours" class="lịch-tuần"></div>
+                <p style="display:flex;align-items:center;gap:10px;color:var(--text-dark)">
+                    <i class="fa-solid fa-phone" style="color:var(--blue-main)"></i><span id="detailModalPhone" style="font-weight:500"></span>
+                </p>
+                <button onclick="selectCanteenFromDetail()" class="nút-chọn-từ-modal">Chọn căn tin này</button>
             </div>
         </div>
     </div>
 
-    <!-- Product Customize Modal -->
-    <div id="productModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl modal-animate space-y-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-start gap-3 border-b border-gray-100 pb-3">
-                <img id="modalProductImage" src="" class="w-16 h-16 rounded-xl object-cover bg-gray-100">
-                <div class="flex-1">
-                    <h3 id="modalProductName" class="font-bold text-base text-brand-navy"></h3>
-                    <p id="modalProductPrice" class="font-extrabold text-sm text-brand-blue mt-0.5"></p>
+    <div id="productModal" class="lớp-phủ-modal ẩn">
+        <div class="hộp-modal rộng dạng-form">
+            <div class="đầu-modal-món">
+                <img id="modalProductImage" src="">
+                <div style="flex:1">
+                    <h3 id="modalProductName" class="tên-món-modal"></h3>
+                    <p id="modalProductPrice" class="giá-món-modal"></p>
                 </div>
-                <button onclick="closeProductModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeProductModal()" class="nút-đóng-modal"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="modalModifierGroups" class="space-y-3 text-xs"></div>
+            <div id="modalModifierGroups" style="display:flex;flex-direction:column;gap:12px;font-size:0.75rem"></div>
             <div>
-                <label class="block font-bold text-gray-700 mb-1.5">Ghi chú</label>
-                <input type="text" id="modalNote" placeholder="Ghi chú cho món này..." class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-xs focus:outline-none focus:border-brand-blue">
+                <label class="nhãn-ô">Ghi chú</label>
+                <input type="text" id="modalNote" placeholder="Ghi chú cho món này..." class="ô-nhập">
             </div>
-            <div class="flex items-center justify-between">
-                <label class="font-bold text-gray-700">Số lượng</label>
-                <div class="flex items-center gap-2">
-                    <button onclick="modalDecreaseQty()" id="modalQtyDec" class="w-7 h-7 rounded-md bg-gray-100 text-gray-600 font-bold flex items-center justify-center hover:bg-gray-200 text-xs">-</button>
-                    <span id="modalQtyValue" class="text-sm font-extrabold text-brand-navy w-6 text-center">1</span>
-                    <button onclick="modalIncreaseQty()" id="modalQtyInc" class="w-7 h-7 rounded-md bg-brand-yellow text-brand-navy font-bold flex items-center justify-center hover:bg-brand-yellowHover text-xs">+</button>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+                <label style="font-weight:700;color:var(--text-dark);font-size:0.875rem">Số lượng</label>
+                <div class="bộ-chọn-số-lượng">
+                    <button onclick="modalDecreaseQty()" class="nút-giảm">-</button>
+                    <span id="modalQtyValue" class="số-lượng">1</span>
+                    <button onclick="modalIncreaseQty()" class="nút-tăng">+</button>
                 </div>
             </div>
-            <button onclick="confirmAddToCart()" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-extrabold py-3 rounded-xl shadow-sm text-xs">Thêm vào giỏ</button>
+            <button onclick="confirmAddToCart()" class="nút-vàng nút-toàn-rộng">Thêm vào giỏ</button>
         </div>
     </div>
 
-    <!-- Success Modal -->
-    <div id="successModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 text-center shadow-2xl modal-animate space-y-4">
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl"><i class="fa-solid fa-check"></i></div>
+    <div id="successModal" class="lớp-phủ-modal ẩn">
+        <div class="hộp-modal modal-thành-công">
+            <div class="vòng-thành-công"><i class="fa-solid fa-check"></i></div>
             <div>
-                <h3 class="text-xl font-extrabold text-brand-navy">Đặt món thành công!</h3>
-                <p class="text-xs text-gray-500 mt-1">Đơn hàng của bạn đã được gửi tới bếp căn tin.</p>
+                <h3 style="font-size:1.25rem;font-weight:900;color:var(--navy);margin-top:8px">Đặt món thành công!</h3>
+                <p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">Đơn hàng của bạn đã được gửi tới bếp căn tin.</p>
             </div>
-            <div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">
-                <span class="text-[10px] uppercase font-bold text-gray-400">MÃ ĐƠN HÀNG</span>
-                <p id="successOrderId" class="text-2xl font-black tracking-wider text-brand-blue"></p>
+            <div class="mã-đơn">
+                <span class="nhãn-mã">MÃ ĐƠN HÀNG</span>
+                <p id="successOrderId" class="số-mã"></p>
             </div>
-            <button onclick="closeSuccessModal()" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold py-3 rounded-xl text-xs shadow-sm">Xem lịch sử đơn hàng</button>
+            <button onclick="closeSuccessModal()" class="nút-vàng nút-toàn-rộng">Xem lịch sử đơn hàng</button>
         </div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-brand-navy text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0 z-50 text-xs font-bold border border-gray-700">
-        <i id="toastIcon" class="fa-solid fa-circle-info text-brand-yellow text-sm"></i>
+    <div id="toast" class="thông-báo-toast">
+        <i id="toastIcon" class="fa-solid fa-circle-info"></i>
         <span id="toastMessage">Thông báo</span>
     </div>
 
     <script src="js/config.js"></script>
     <script src="js/api.js"></script>
-    <script>
-        var state = {
-            user: null,
-            canteens: [],
-            currentCanteen: null,
-            categories: [],
-            products: [],
-            cart: null,
-            orders: [],
-            favorites: [],
-            activeCategoryId: null,
-            searchQuery: '',
-            orderType: 'DineIn',
-            isAsap: true,
-            pickupTime: null,
-            note: '',
-            modalQty: 1,
-            orderFilter: 'all',
-            customizingProductId: null,
-            customizingProduct: null,
-            selectedModifiers: {},
-            detailCanteen: null
-        };
-
-        var allViews = ['viewCanteenSelect','viewMenu','viewCheckout','viewOrderHistory','viewProfile','viewChangePassword'];
-
-        async function bootstrap() {
-            try {
-                var user = await api.auth.me();
-                state.user = user;
-                if (user.role !== 'Customer') {
-                    showToast('Trang này dành cho khách hàng. Vui lòng đăng nhập với tài khoản Customer.', 'error');
-                    setTimeout(function(){ window.location.href = 'login.html'; }, 2000);
-                    return;
-                }
-                updateUserUI();
-                var canteens = await api.canteens.list('Active');
-                state.canteens = canteens || [];
-                window.addEventListener('popstate', function() {
-                    navigateTo(location.hash.slice(1) || 'canteen-select');
-                });
-                var lastId = parseInt(localStorage.getItem('lastCanteenId') || '');
-                if (lastId && canteens && canteens.some(function(c) { return c.id === lastId; })) {
-                    await selectCanteen(lastId);
-                } else {
-                    navigateTo('canteen-select');
-                }
-            } catch(e) {
-                if (e.status === 401) {
-                    window.location.href = 'login.html';
-                } else {
-                    showToast('Lỗi kết nối: ' + (e.message || 'Không thể kết nối server'), 'error');
-                    setTimeout(function(){ window.location.href = 'login.html'; }, 2000);
-                }
-            }
-        }
-
-        function updateUserUI() {
-            if (!state.user) return;
-            document.getElementById('headerUserName').innerText = state.user.fullName || state.user.username;
-            document.getElementById('dropdownUserName').innerText = state.user.fullName || state.user.username;
-            document.getElementById('dropdownUserRole').innerText = 'Khách hàng';
-            document.getElementById('headerUserAvatar').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(state.user.fullName || state.user.username) + '&background=003b7a&color=fff&size=80';
-        }
-
-        function showView(name) {
-            allViews.forEach(function(v) { var el = document.getElementById(v); if (el) el.classList.add('hidden'); });
-            var target = document.getElementById(name);
-            if (target) target.classList.remove('hidden');
-            window.scrollTo({top:0,behavior:'smooth'});
-        }
-
-        async function navigateTo(view) {
-            if (location.hash.slice(1) !== view) history.pushState(null, '', '#' + view);
-            var needsCanteen = ['menu','checkout'];
-            if (!state.currentCanteen && needsCanteen.indexOf(view) !== -1) {
-                showToast('Vui lòng chọn căn tin trước!', 'info');
-                view = 'canteen-select';
-            }
-
-            var pill = document.getElementById('headerCanteenPill');
-            var prompt = document.getElementById('headerCanteenPrompt');
-            var wrapper = document.getElementById('headerCanteenWrapper');
-            var statusEl = document.getElementById('headerCanteenStatus');
-
-            if (view === 'canteen-select') {
-                pill.classList.add('hidden'); pill.style.display = 'none';
-                prompt.classList.remove('hidden');
-                statusEl.classList.add('hidden');
-                showView('viewCanteenSelect');
-                renderCanteenSelect();
-            } else {
-                var hideCanteenPill = (view === 'order-history');
-                if (hideCanteenPill) {
-                    wrapper.classList.add('hidden');
-                } else {
-                    wrapper.classList.remove('hidden');
-                    if (state.currentCanteen) {
-                        prompt.classList.add('hidden');
-                        pill.classList.remove('hidden'); pill.style.display = 'flex';
-                        document.getElementById('headerCanteenName').innerText = state.currentCanteen.name;
-                        updateHeaderCanteenStatus();
-                    } else {
-                        pill.classList.add('hidden'); pill.style.display = 'none';
-                        prompt.classList.remove('hidden');
-                        statusEl.classList.add('hidden');
-                    }
-                }
-
-                if (view === 'menu') {
-                    await loadMenuData();
-                    showView('viewMenu');
-                    renderCategories();
-                    renderProducts();
-                    renderCart();
-                } else if (view === 'checkout') {
-                    showView('viewCheckout');
-                    generatePickupOptions();
-                    renderCheckout();
-                } else if (view === 'order-history') {
-                    if (!state.orders || state.orders.length === 0) await loadOrders();
-                    showView('viewOrderHistory');
-                    renderOrderHistory();
-                } else if (view === 'profile') {
-                    showView('viewProfile');
-                    renderProfile();
-                } else if (view === 'change-password') {
-                    showView('viewChangePassword');
-                    document.getElementById('pwdError').classList.add('hidden');
-                }
-            }
-        }
-
-        function selectCanteenView() { navigateTo('canteen-select'); }
-
-        function updateHeaderCanteenStatus() {
-            var el = document.getElementById('headerCanteenStatus');
-            if (!state.currentCanteen) { el.classList.add('hidden'); return; }
-            var open = isCanteenOpen(state.currentCanteen);
-            var hours = getTodayHours(state.currentCanteen);
-            el.classList.remove('hidden');
-            el.className = 'text-[10px] font-bold px-2 py-1 rounded-full ml-1 ' + (open ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700');
-            el.innerHTML = (open ? '<i class="fa-solid fa-circle text-[6px] mr-1"></i>Đang mở' : '<i class="fa-solid fa-circle text-[6px] mr-1"></i>Đã đóng') + ' &middot; ' + hours;
-        }
-
-        // ---- CANTEEN SELECT ----
-        function renderCanteenSelect() {
-            var q = (document.getElementById('welcomeSearch')||{}).value || '';
-            var list = state.canteens.filter(function(c) {
-                return !q || c.name.toLowerCase().indexOf(q.toLowerCase()) !== -1 || c.address.toLowerCase().indexOf(q.toLowerCase()) !== -1;
-            });
-            var grid = document.getElementById('canteenGrid');
-            if (list.length === 0) {
-                grid.innerHTML = '<div class="text-center text-gray-400 py-10"><i class="fa-solid fa-store-slash text-3xl mb-2 block"></i><p class="text-sm">Không tìm thấy căn tin</p></div>';
-                return;
-            }
-            grid.innerHTML = list.map(function(c) {
-                var isSel = state.currentCanteen && state.currentCanteen.id === c.id;
-                var open = isCanteenOpen(c);
-                return '<div class="p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 '+
-                    (isSel ? 'border-brand-blue bg-blue-50/70 shadow-sm' : 'border-gray-200 bg-white hover:border-brand-blue/50 hover:shadow-sm') + '">'+
-                    '<div class="flex items-center gap-3.5 cursor-pointer flex-1">'+
-                        '<img src="'+imageUrl(c.imageUrl)+'" class="w-16 h-16 rounded-xl object-cover bg-gray-100 shrink-0" onerror="this.src=\''+CONFIG.PLACEHOLDER_IMAGE+'\'">'+
-                        '<div>'+
-                            '<div class="flex items-center gap-2">'+
-                                '<h3 class="font-bold text-sm text-brand-navy">'+c.name+'</h3>'+
-                                '<span class="text-[10px] px-2 py-0.5 rounded-full font-bold '+(ENUM_LABELS.canteenStatus[c.status]||{}).cls+'">'+(ENUM_LABELS.canteenStatus[c.status]||{}).label+'</span>'+
-                                (open ? '<span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-700">Đang mở</span>' : '<span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-red-100 text-red-700">Đóng</span>')+
-                            '</div>'+
-                            '<p class="text-xs text-gray-500 mt-0.5">'+c.address+'</p>'+
-                            '<span class="text-[11px] text-gray-400">'+c.phoneNumber+' &middot; '+getTodayHours(c)+'</span>'+
-                        '</div>'+
-                    '</div>'+
-                    '<div class="flex items-center gap-2 self-end sm:self-center">'+
-                        '<button onclick="event.stopPropagation();openCanteenDetail('+c.id+')" class="px-3 py-2 rounded-xl text-xs font-bold bg-blue-50 hover:bg-blue-100 text-brand-blue flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i><span class="hidden sm:inline">Chi tiết</span></button>'+
-                        '<button onclick="selectCanteen('+c.id+')" class="px-4 py-2 rounded-xl text-xs font-bold '+(isSel ? 'bg-brand-blue text-white' : 'bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy')+'">'+(isSel ? 'Đang chọn' : 'Chọn')+'</button>'+
-                    '</div>'+
-                '</div>';
-            }).join('');
-        }
-
-        async function selectCanteen(id) {
-            var c = state.canteens.find(function(x) { return x.id === id; });
-            if (!c) return;
-            state.currentCanteen = c;
-            state.cart = null;
-            state.categories = [];
-            state.products = [];
-            state.activeCategoryId = null;
-            localStorage.setItem('lastCanteenId', c.id);
-            try {
-                state.cart = await api.cart.get(c.id);
-                state.favorites = await api.favorites.list();
-                renderCanteenSelect();
-                navigateTo('menu');
-            } catch(e) {
-                showToast('Lỗi tải dữ liệu căn tin: ' + (e.message || ''), 'error');
-            }
-        }
-
-        // ---- CANTEEN DROPDOWN ----
-        function toggleCanteenDropdown() {
-            var dd = document.getElementById('canteenDropdown');
-            if (dd.classList.contains('hidden')) {
-                document.getElementById('canteenSearchInput').value = '';
-                renderCanteenDropdown(state.canteens);
-                dd.classList.remove('hidden');
-                setTimeout(function(){ document.getElementById('canteenSearchInput').focus(); }, 100);
-            } else {
-                dd.classList.add('hidden');
-            }
-        }
-
-        function filterCanteenDropdown() {
-            var q = document.getElementById('canteenSearchInput').value.toLowerCase();
-            var filtered = q ? state.canteens.filter(function(c) { return c.name.toLowerCase().indexOf(q) !== -1 || c.address.toLowerCase().indexOf(q) !== -1; }) : state.canteens;
-            renderCanteenDropdown(filtered);
-        }
-
-        function renderCanteenDropdown(list) {
-            var el = document.getElementById('canteenDropdownList');
-            el.innerHTML = list.map(function(c) {
-                var isSel = state.currentCanteen && state.currentCanteen.id === c.id;
-                return '<div class="p-3 rounded-xl border flex items-center justify-between gap-2 '+(isSel ? 'border-brand-blue bg-blue-50/50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50')+' transition-all">'+
-                    '<div class="flex items-center gap-3 cursor-pointer flex-1 min-w-0" onclick="selectCanteen('+c.id+');document.getElementById(\'canteenDropdown\').classList.add(\'hidden\')">'+
-                        '<div class="w-10 h-10 rounded-lg bg-gray-100 text-brand-navy flex items-center justify-center font-bold text-sm shrink-0"><i class="fa-solid fa-store"></i></div>'+
-                        '<div class="min-w-0"><h4 class="font-bold text-sm text-brand-navy truncate">'+c.name+'</h4><p class="text-xs text-gray-500 truncate">'+c.address+'</p></div>'+
-                    '</div>'+
-                    '<button onclick="event.stopPropagation();openCanteenDetail('+c.id+');document.getElementById(\'canteenDropdown\').classList.add(\'hidden\')" class="text-xs font-bold text-brand-blue hover:underline shrink-0 px-2">Chi tiết</button>'+
-                '</div>';
-            }).join('');
-            if (list.length === 0) el.innerHTML = '<div class="text-center text-gray-400 text-xs py-6">Không tìm thấy căn tin</div>';
-        }
-
-        // ---- CANTEEN DETAIL ----
-        function openCanteenDetail(id) {
-            var c = state.canteens.find(function(x) { return x.id === id; });
-            if (!c) return;
-            state.detailCanteen = c;
-            document.getElementById('detailModalTitle').innerText = c.name;
-            document.getElementById('detailModalAddress').innerText = c.address;
-            document.getElementById('detailModalHours').innerText = 'Giờ: ' + getTodayHours(c);
-            document.getElementById('detailModalPhone').innerText = 'SĐT: ' + c.phoneNumber;
-            document.getElementById('detailModalImage').src = imageUrl(c.imageUrl);
-            var today = new Date().getDay();
-            var days = ['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
-            document.getElementById('detailModalWeeklyHours').innerHTML = days.map(function(name, i) {
-                var h = (c.operatingHours||[]).find(function(x) { return normalizeDayOfWeek(x.dayOfWeek) === i; }) || {};
-                var isToday = i === today;
-                var line = h.isClosed ? 'Đóng cửa' : ((formatTimeOnly(h.openTime)||'--:--') + ' - ' + (formatTimeOnly(h.closeTime)||'--:--'));
-                return '<div class="flex items-center justify-between py-1.5 px-2 rounded-lg '+(isToday?'bg-brand-blue text-white font-bold':'text-gray-600')+'"><span>'+name+'</span><span>'+line+'</span></div>';
-            }).join('');
-            document.getElementById('canteenDetailModal').classList.remove('hidden');
-        }
-
-        function closeCanteenDetail() { document.getElementById('canteenDetailModal').classList.add('hidden'); state.detailCanteen = null; }
-
-        function selectCanteenFromDetail() {
-            if (state.detailCanteen) { selectCanteen(state.detailCanteen.id); closeCanteenDetail(); }
-        }
-
-        // ---- MENU ----
-        async function loadMenuData() {
-            if (!state.currentCanteen) return;
-            try {
-                state.categories = await api.categories.list(state.currentCanteen.id);
-                state.cart = await api.cart.get(state.currentCanteen.id);
-                state.favorites = await api.favorites.list();
-                loadProducts();
-            } catch(e) { showToast('Lỗi tải menu: ' + (e.message || ''), 'error'); }
-        }
-
-        async function loadProducts() {
-            if (!state.currentCanteen) return;
-            try {
-                var params = { canteenId: state.currentCanteen.id };
-                if (state.activeCategoryId) params.categoryId = state.activeCategoryId;
-                if (state.searchQuery) params.search = state.searchQuery;
-                state.products = await api.products.list(params);
-                renderProducts();
-            } catch(e) { showToast('Lỗi tải sản phẩm: ' + (e.message || ''), 'error'); }
-        }
-
-        function renderCategories() {
-            var tabs = document.getElementById('categoryTabs');
-            var cats = state.categories || [];
-            var isAll = !state.activeCategoryId;
-            tabs.innerHTML = '<button onclick="setCategory(null)" class="px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all '+
-                (isAll ? 'bg-brand-navy text-white shadow-md' : 'bg-gray-200/70 hover:bg-gray-200 text-gray-700')+'">Tất cả</button>' +
-                cats.map(function(cat) {
-                var isActive = cat.id === state.activeCategoryId;
-                return '<button onclick="setCategory('+cat.id+')" class="px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all '+
-                    (isActive ? 'bg-brand-navy text-white shadow-md' : 'bg-gray-200/70 hover:bg-gray-200 text-gray-700')+'">'+cat.name+'</button>';
-            }).join('');
-        }
-
-        async function setCategory(id) {
-            state.activeCategoryId = id;
-            renderCategories();
-            await loadProducts();
-        }
-
-        function handleSearch(val) {
-            state.searchQuery = val;
-            loadProducts();
-        }
-
-        function isFavorited(productId) {
-            return (state.favorites || []).some(function(f) { return f.productId === productId; });
-        }
-
-        async function toggleFavorite(productId) {
-            try {
-                if (isFavorited(productId)) {
-                    await api.favorites.remove(productId);
-                    state.favorites = state.favorites.filter(function(f) { return f.productId !== productId; });
-                    showToast('Đã bỏ yêu thích', 'info');
-                } else {
-                    await api.favorites.add(productId);
-                    state.favorites = await api.favorites.list();
-                    showToast('Đã thêm vào yêu thích', 'success');
-                }
-                renderProducts();
-            } catch(e) { showToast(e.message || 'Lỗi', 'error'); }
-        }
-
-        function renderProducts() {
-            var grid = document.getElementById('productGrid');
-            document.getElementById('categoryTitle').innerText = state.categories.find(function(c) { return c.id === state.activeCategoryId; }) ? (state.categories.find(function(c) { return c.id === state.activeCategoryId; }).name) : 'Tất cả món';
-            document.getElementById('productCount').innerText = (state.products||[]).length + ' món';
-
-            if ((state.products||[]).length === 0) {
-                grid.innerHTML = '<div class="col-span-full py-12 text-center text-gray-400"><i class="fa-solid fa-utensils text-4xl mb-3 opacity-30"></i><p class="text-sm font-medium">Không tìm thấy món ăn</p></div>';
-                return;
-            }
-
-            grid.innerHTML = state.products.map(function(p) {
-                var fav = isFavorited(p.id);
-                var outOfStock = p.status === 'OutOfStock';
-
-                return '<div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">'+
-                    '<div>'+
-                        '<div class="h-36 sm:h-40 w-full overflow-hidden bg-gray-100 relative">'+
-                            '<img src="'+imageUrl(p.imageUrl)+'" alt="'+p.name+'" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" onerror="this.src=\''+CONFIG.PLACEHOLDER_IMAGE+'\'">'+
-                            (outOfStock ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center"><span class="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Hết hàng</span></div>' : '')+
-                            '<button onclick="event.stopPropagation();toggleFavorite('+p.id+')" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow">'+
-                                '<i class="fa-'+(fav ? 'solid' : 'regular')+' fa-heart '+(fav ? 'text-red-500' : 'text-gray-400')+' text-sm"></i>'+
-                            '</button>'+
-                        '</div>'+
-                        '<div class="p-3.5 pb-2">'+
-                            '<h3 class="font-bold text-sm text-brand-navy truncate mb-1" title="'+p.name+'">'+p.name+'</h3>'+
-                            '<p class="text-xs text-gray-400 line-clamp-2 h-8 leading-relaxed mb-3">'+(p.description || '')+'</p>'+
-                            '<span class="text-[11px] text-gray-400">'+p.soldCount+' đã bán &middot; <i class="fa-regular fa-heart text-red-400"></i> '+p.favoriteCount+'</span>'+
-                        '</div>'+
-                    '</div>'+
-                    '<div class="p-3.5 pt-0 flex items-center justify-between">'+
-                        '<span class="font-bold text-sm text-brand-navy">'+formatMoney(p.basePriceAmount)+'</span>'+
-                        (outOfStock ? '<span class="text-xs text-red-500 font-bold">Tạm hết</span>' :
-                         '<button onclick="openCustomizeModal('+p.id+')" class="w-7 h-7 rounded-lg bg-brand-yellow hover:bg-brand-yellowHover text-brand-navy font-bold flex items-center justify-center shadow-sm transition-transform active:scale-95"><i class="fa-solid fa-plus text-xs"></i></button>'
-                        )+
-                    '</div>'+
-                '</div>';
-            }).join('');
-        }
-
-        // ---- CART ----
-        async function refreshCart() {
-            if (!state.currentCanteen) return;
-            try { state.cart = await api.cart.get(state.currentCanteen.id); renderCart(); renderProducts(); } catch(e) { showToast('Lỗi giỏ hàng: ' + (e.message || ''), 'error'); }
-        }
-
-        function getCartTotal() {
-            if (!state.cart || !state.cart.items) return { qty: 0, total: 0 };
-            var qty = 0, total = 0;
-            state.cart.items.forEach(function(i) { qty += i.quantity; total += i.unitPrice * i.quantity; });
-            return { qty: qty, total: total };
-        }
-
-        function renderCart() {
-            var list = document.getElementById('cartItems');
-            var badge = document.getElementById('cartBadge');
-            var totalEl = document.getElementById('cartTotal');
-            var btn = document.getElementById('checkoutBtn');
-            var items = (state.cart && state.cart.items) ? state.cart.items.slice().sort(function(a, b) { return a.id - b.id; }) : [];
-
-            var info = getCartTotal();
-            badge.innerText = info.qty + ' món';
-            totalEl.innerText = formatMoney(info.total);
-            btn.disabled = info.qty === 0;
-
-            if (items.length === 0) {
-                list.innerHTML = '<div class="py-10 text-center text-gray-400"><i class="fa-solid fa-basket-shopping text-3xl mb-2 text-gray-300"></i><p class="text-xs font-medium">Giỏ hàng trống</p></div>';
-                return;
-            }
-
-            list.innerHTML = items.map(function(item, idx) {
-                var mods = parseModifiersJson(item.selectedModifiersJson);
-                var modLines = '';
-                mods.forEach(function(mg) {
-                    if (mg.modifiers && mg.modifiers.length) {
-                        modLines += '<p class="text-[11px] text-gray-400">'+mg.groupName+': '+mg.modifiers.map(function(m){ return m.name + (m.priceAmount > 0 ? ' (+'+formatMoney(m.priceAmount)+')' : ''); }).join(', ')+'</p>';
-                    }
-                });
-
-                return '<div class="flex items-start gap-3 pb-3 border-b border-gray-100">'+
-                    '<div class="flex-1 min-w-0">'+
-                        '<h4 class="font-bold text-xs text-brand-navy truncate">'+item.productName+'</h4>'+
-                        modLines +
-                        (item.note ? '<p class="text-[11px] text-gray-400 italic">Ghi chú: '+item.note+'</p>' : '')+
-                        '<div class="flex items-center justify-between mt-2">'+
-                            '<span class="font-bold text-xs text-brand-navy">'+formatMoney(item.unitPrice)+'</span>'+
-                            '<div class="flex items-center gap-2">'+
-                                '<button onclick="updateCartQtyByItemId('+item.id+','+(item.quantity-1)+')" class="w-6 h-6 rounded-md bg-gray-100 text-gray-600 font-bold flex items-center justify-center hover:bg-gray-200 text-xs">-</button>'+
-                                '<span class="text-xs font-bold text-brand-navy px-1">'+item.quantity+'</span>'+
-                                '<button onclick="updateCartQtyByItemId('+item.id+','+(item.quantity+1)+')" class="w-6 h-6 rounded-md bg-brand-yellow text-brand-navy font-bold flex items-center justify-center hover:bg-brand-yellowHover text-xs">+</button>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'+
-                    '<button onclick="removeCartItem('+item.id+')" class="text-gray-400 hover:text-red-500 text-xs p-0.5 mt-0.5"><i class="fa-solid fa-trash"></i></button>'+
-                '</div>';
-            }).join('');
-        }
-
-        async function updateCartQtyByItemId(itemId, newQty) {
-            if (!state.currentCanteen) return;
-            try {
-                if (newQty <= 0) {
-                    await api.cart.removeItem(state.currentCanteen.id, itemId);
-                } else {
-                    await api.cart.updateItem(state.currentCanteen.id, itemId, { quantity: newQty });
-                }
-                await refreshCart();
-            } catch(e) { showToast(e.message || 'Lỗi cập nhật giỏ', 'error'); }
-        }
-
-        async function updateCartQty(productId, newQty) {
-            if (!state.currentCanteen) return;
-            var existing = (state.cart && state.cart.items) ? state.cart.items.find(function(i) { return i.productId === productId; }) : null;
-            try {
-                if (!existing || newQty <= 0) {
-                    if (existing) await api.cart.removeItem(state.currentCanteen.id, existing.id);
-                } else {
-                    await api.cart.updateItem(state.currentCanteen.id, existing.id, { quantity: newQty });
-                }
-                await refreshCart();
-            } catch(e) { showToast(e.message || 'Lỗi', 'error'); }
-        }
-
-        async function removeCartItem(itemId) {
-            if (!state.currentCanteen) return;
-            try { await api.cart.removeItem(state.currentCanteen.id, itemId); await refreshCart(); } catch(e) { showToast(e.message || 'Lỗi', 'error'); }
-        }
-
-        // ---- PRODUCT CUSTOMIZE MODAL ----
-        async function openCustomizeModal(productId) {
-            try {
-                var detail = await api.products.get(productId);
-                state.customizingProductId = productId;
-                state.customizingProduct = detail;
-                state.selectedModifiers = {};
-                state.modalQty = 1;
-                document.getElementById('modalQtyValue').innerText = '1';
-
-                document.getElementById('modalProductName').innerText = detail.name;
-                document.getElementById('modalProductPrice').innerText = formatMoney(detail.basePriceAmount);
-                document.getElementById('modalProductImage').src = imageUrl(detail.imageUrl);
-                document.getElementById('modalNote').value = '';
-
-                var groupsHtml = '';
-                var groups = detail.modifierGroups || [];
-                groups.forEach(function(mg) {
-                    if (mg.status !== 'Available') return;
-                    state.selectedModifiers[mg.id] = [];
-                    var mods = (mg.modifiers || []).filter(function(m) { return m.status === 'Available'; });
-
-                    groupsHtml += '<div class="border border-gray-200 rounded-xl p-3">'+
-                        '<label class="block font-bold text-gray-700 mb-1.5">'+mg.name+(mg.required ? ' <span class="text-red-500">*</span>' : '')+'</label>';
-
-                    if (mg.maxSelected <= 1) {
-                        groupsHtml += '<div class="space-y-1">';
-                        mods.forEach(function(m) {
-                            groupsHtml += '<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-gray-50">'+
-                                '<input type="radio" name="modgrp_'+mg.id+'" value="'+m.id+'" onchange="selectModifier('+mg.id+','+m.id+',true,'+m.priceAmount+',\''+m.name.replace(/'/g,"\\'")+'\')" '+(m.isDefault ? 'checked' : '')+'>'+
-                                '<span class="text-xs font-semibold text-gray-800 flex-1">'+m.name+'</span>'+
-                                (m.priceAmount > 0 ? '<span class="text-xs font-bold text-gray-500">+'+formatMoney(m.priceAmount)+'</span>' : '')+
-                            '</label>';
-                        });
-                        groupsHtml += '</div>';
-                    } else {
-                        groupsHtml += '<div class="space-y-1">';
-                        mods.forEach(function(m) {
-                            groupsHtml += '<label class="flex items-center gap-2 cursor-pointer p-1.5 rounded hover:bg-gray-50">'+
-                                '<input type="checkbox" name="modgrp_'+mg.id+'" value="'+m.id+'" onchange="selectModifier('+mg.id+','+m.id+',false,'+m.priceAmount+',\''+m.name.replace(/'/g,"\\'")+'\')" '+(m.isDefault ? 'checked' : '')+'>'+
-                                '<span class="text-xs font-semibold text-gray-800 flex-1">'+m.name+'</span>'+
-                                (m.priceAmount > 0 ? '<span class="text-xs font-bold text-gray-500">+'+formatMoney(m.priceAmount)+'</span>' : '')+
-                            '</label>';
-                        });
-                        groupsHtml += '</div>';
-                    }
-
-                    groupsHtml += '</div>';
-                });
-
-                document.getElementById('modalModifierGroups').innerHTML = groupsHtml || '<p class="text-xs text-gray-400">Món này không có tùy chọn thêm.</p>';
-
-                // Init default selections from checked inputs
-                var detailGroups = detail.modifierGroups || [];
-                detailGroups.forEach(function(mg) {
-                    var checked = document.querySelectorAll('input[name="modgrp_'+mg.id+'"]:checked');
-                    state.selectedModifiers[mg.id] = [];
-                    checked.forEach(function(cb) {
-                        state.selectedModifiers[mg.id].push({ id: parseInt(cb.value), name: cb.parentElement.querySelector('.flex-1').innerText, priceAmount: 0 });
-                    });
-                });
-
-                document.getElementById('productModal').classList.remove('hidden');
-            } catch(e) { showToast('Lỗi tải chi tiết món: ' + (e.message || ''), 'error'); }
-        }
-
-        function selectModifier(groupId, modId, isRadio, priceAmount, name) {
-            if (isRadio) {
-                state.selectedModifiers[groupId] = [{ id: modId, name: name, priceAmount: priceAmount || 0 }];
-            } else {
-                if (!state.selectedModifiers[groupId]) state.selectedModifiers[groupId] = [];
-                // Re-scan checkboxes
-                var cbs = document.querySelectorAll('input[name="modgrp_'+groupId+'"]:checked');
-                state.selectedModifiers[groupId] = [];
-                cbs.forEach(function(cb) {
-                    var spanEl = cb.parentElement.querySelector('.flex-1');
-                    var n = spanEl ? spanEl.innerText : '';
-                    state.selectedModifiers[groupId].push({ id: parseInt(cb.value), name: n, priceAmount: 0 });
-                });
-            }
-        }
-
-        function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); state.customizingProductId = null; state.customizingProduct = null; state.modalQty = 1; }
-
-        function modalDecreaseQty() {
-            if (state.modalQty <= 1) return;
-            state.modalQty--;
-            document.getElementById('modalQtyValue').innerText = state.modalQty;
-        }
-
-        function modalIncreaseQty() {
-            if (state.modalQty >= 99) return;
-            state.modalQty++;
-            document.getElementById('modalQtyValue').innerText = state.modalQty;
-        }
-
-        function getProductById(id) {
-            return (state.products || []).find(function(p) { return p.id === id; });
-        }
-
-        async function confirmAddToCart() {
-            if (!state.currentCanteen || !state.customizingProductId) return;
-            var product = state.customizingProduct || getProductById(state.customizingProductId);
-            if (!product) return;
-
-            var noteVal = document.getElementById('modalNote').value.trim();
-
-            var modsPayload = [];
-            var detailGroups = (state.customizingProduct && state.customizingProduct.modifierGroups) || [];
-            detailGroups.forEach(function(mg) {
-                var sel = state.selectedModifiers[mg.id];
-                if (sel && sel.length > 0) {
-                    modsPayload.push({ groupId: mg.id, groupName: mg.name, modifiers: sel });
-                }
-            });
-
-            var body = {
-                productId: state.customizingProductId,
-                quantity: state.modalQty,
-                note: noteVal || undefined,
-                selectedModifiersJson: modsPayload.length > 0 ? JSON.stringify(modsPayload) : undefined
-            };
-
-            try {
-                await api.cart.addItem(state.currentCanteen.id, body);
-                closeProductModal();
-                await refreshCart();
-                showToast('Đã thêm vào giỏ!', 'success');
-            } catch(e) { showToast(e.message || 'Lỗi thêm vào giỏ', 'error'); }
-        }
-
-        // ---- CHECKOUT ----
-        function generatePickupOptions() {
-            var sel = document.getElementById('pickupSelect');
-            sel.innerHTML = '<option value="asap">Lấy ngay (sớm nhất)</option>';
-            sel.value = 'asap';
-            state.isAsap = true;
-            state.pickupTime = null;
-
-            var c = state.currentCanteen;
-            if (!c) return;
-
-            if (!c.operatingHours) {
-                api.operatingHours.list(c.id).then(function(list) {
-                    if (c && list) c.operatingHours = list;
-                    generatePickupOptions();
-                }).catch(function(){});
-                return;
-            }
-
-            var today = new Date().getDay();
-            var hours = c.operatingHours.find(function(h) {
-                return normalizeDayOfWeek(h.dayOfWeek) === today;
-            });
-            if (!hours || hours.isClosed) return;
-
-            var openStr = formatTimeOnly(hours.openTime);
-            var closeStr = formatTimeOnly(hours.closeTime);
-            if (!openStr || !closeStr) return;
-
-            var now = new Date();
-            var nowMinutes = now.getHours() * 60 + now.getMinutes();
-
-            var openParts = openStr.split(':');
-            var openMinutes = parseInt(openParts[0]) * 60 + parseInt(openParts[1]);
-
-            var closeParts = closeStr.split(':');
-            var closeMinutes = parseInt(closeParts[0]) * 60 + parseInt(closeParts[1]);
-
-            var startMinutes = Math.max(nowMinutes, openMinutes);
-            startMinutes = Math.ceil(startMinutes / 30) * 30;
-
-            for (var m = startMinutes; m <= closeMinutes - 30; m += 30) {
-                var hh = String(Math.floor(m / 60)).padStart(2, '0');
-                var mm = String(m % 60).padStart(2, '0');
-                var val = hh + ':' + mm;
-                sel.innerHTML += '<option value="' + val + '">' + val + '</option>';
-            }
-        }
-
-        function setOrderType(type) {
-            state.orderType = type;
-            document.getElementById('btnDineIn').className = type === 'DineIn' ? 'flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 transition-all font-bold text-xs bg-blue-50 border-brand-blue text-brand-blue' : 'flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:border-gray-300 transition-all font-bold text-xs';
-            document.getElementById('btnTakeaway').className = type === 'TakeAway' ? 'flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 transition-all font-bold text-xs bg-amber-50 border-amber-500 text-amber-700' : 'flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:border-gray-300 transition-all font-bold text-xs';
-        }
-
-        function onPickupChange() {
-            var val = document.getElementById('pickupSelect').value;
-            state.isAsap = (val === 'asap');
-            state.pickupTime = state.isAsap ? null : val;
-        }
-
-        function renderCheckout() {
-            var items = (state.cart && state.cart.items) ? state.cart.items.slice().sort(function(a, b) { return a.id - b.id; }) : [];
-            var totalQty = 0, subtotal = 0;
-            items.forEach(function(i) { totalQty += i.quantity; subtotal += i.unitPrice * i.quantity; });
-
-            document.getElementById('checkoutItemCount').innerText = totalQty;
-            document.getElementById('summaryCount').innerText = 'Tạm tính ('+totalQty+' món)';
-            document.getElementById('summarySubtotal').innerText = formatMoney(subtotal);
-            document.getElementById('summaryTotal').innerText = formatMoney(subtotal);
-            document.getElementById('placeOrderBtn').disabled = items.length === 0;
-
-            var container = document.getElementById('checkoutItems');
-            if (items.length === 0) {
-                container.innerHTML = '<div class="py-12 text-center text-gray-400"><i class="fa-solid fa-basket-shopping text-3xl mb-2 opacity-30"></i><p class="text-xs">Chưa có món nào</p></div>';
-                return;
-            }
-
-            container.innerHTML = items.map(function(item) {
-                var mods = parseModifiersJson(item.selectedModifiersJson);
-                var modLines = '';
-                mods.forEach(function(mg) {
-                    if (mg.modifiers && mg.modifiers.length) {
-                        modLines += '<p class="text-xs text-gray-400">'+mg.groupName+': '+mg.modifiers.map(function(m){ return m.name; }).join(', ')+'</p>';
-                    }
-                });
-                return '<div class="py-4 flex items-start justify-between gap-4">'+
-                    '<div class="flex items-start gap-3">'+
-                        '<span class="font-extrabold text-sm text-brand-navy bg-gray-100 px-2 py-1 rounded-lg">'+item.quantity+'X</span>'+
-                        '<div>'+
-                            '<h3 class="font-bold text-sm text-brand-navy">'+item.productName+'</h3>'+
-                            modLines +
-                            (item.note ? '<p class="text-xs text-gray-400 italic">GC: '+item.note+'</p>' : '')+
-                        '</div>'+
-                    '</div>'+
-                    '<span class="font-extrabold text-sm text-brand-navy">'+formatMoney(item.unitPrice * item.quantity)+'</span>'+
-                '</div>';
-            }).join('');
-        }
-
-        async function placeOrder() {
-            var items = (state.cart && state.cart.items) ? state.cart.items.slice().sort(function(a, b) { return a.id - b.id; }) : [];
-            if (items.length === 0) { showToast('Giỏ hàng trống!', 'error'); return; }
-            var btn = document.getElementById('placeOrderBtn');
-            btn.disabled = true; btn.innerText = 'Đang đặt...';
-
-            try {
-                var body = {
-                    canteenId: state.currentCanteen.id,
-                    orderType: state.orderType,
-                    isAsap: state.isAsap,
-                    pickupTime: state.isAsap ? null : (state.pickupTime || null),
-                    note: document.getElementById('orderNote').value.trim() || undefined
-                };
-                var order = await api.orders.create(body);
-                state.cart = null;
-                document.getElementById('successOrderId').innerText = '#' + order.id;
-                document.getElementById('successModal').classList.remove('hidden');
-            } catch(e) { showToast(e.message || 'Lỗi tạo đơn', 'error'); }
-            btn.disabled = false; btn.innerText = 'Đặt món';
-        }
-
-        function closeSuccessModal() { document.getElementById('successModal').classList.add('hidden'); navigateTo('order-history'); }
-
-        // ---- ORDER HISTORY ----
-        async function loadOrders() {
-            try { state.orders = await api.orders.list(); } catch(e) { showToast('Lỗi tải lịch sử đơn: ' + (e.message || ''), 'error'); }
-        }
-
-        function getCanteenName(canteenId) {
-            var c = state.canteens.find(function(x) { return x.id === canteenId; });
-            return c ? c.name : ('Căn tin #'+canteenId);
-        }
-
-        function setOrderFilter(filter) {
-            state.orderFilter = filter;
-            ['All','Active','Completed'].forEach(function(f) {
-                var el = document.getElementById('filter'+f);
-                if (!el) return;
-                if (f.toLowerCase() === filter) el.className = 'px-5 py-2.5 rounded-full text-xs font-bold bg-brand-navy text-white';
-                else el.className = 'px-5 py-2.5 rounded-full text-xs font-bold bg-gray-200/80 text-gray-700 hover:bg-gray-300';
-            });
-            renderOrderHistory();
-        }
-
-        function renderOrderHistory() {
-            var list = document.getElementById('orderList');
-            var orders = state.orders || [];
-            var activeStatuses = ['Pending','Preparing','ReadyForPickup'];
-            var completedStatuses = ['Delivered','Cancelled'];
-
-            if (state.orderFilter === 'active') orders = orders.filter(function(o) { return activeStatuses.indexOf(o.status) !== -1; });
-            else if (state.orderFilter === 'completed') orders = orders.filter(function(o) { return completedStatuses.indexOf(o.status) !== -1; });
-
-            if (orders.length === 0) {
-                list.innerHTML = '<div class="bg-white rounded-2xl p-10 text-center text-gray-400 border border-gray-100"><i class="fa-solid fa-clock-rotate-left text-4xl mb-3 opacity-30"></i><p class="text-sm">Chưa có đơn hàng nào</p></div>';
-                return;
-            }
-
-            list.innerHTML = orders.map(function(o) {
-                var st = ENUM_LABELS.orderStatus[o.status] || {label:o.status,cls:'bg-gray-100'};
-                var ot = ENUM_LABELS.orderType[o.orderType] || {label:o.orderType};
-                var pm = ENUM_LABELS.paymentStatus[o.paymentStatus] || {label:o.paymentStatus};
-
-                return '<div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">'+
-                    '<div class="flex items-center justify-between gap-2 pb-3 border-b border-gray-100">'+
-                        '<div class="flex items-center gap-2">'+
-                            '<span class="font-bold text-sm text-brand-navy">#'+o.id+'</span>'+
-                            '<span class="text-xs font-bold px-2.5 py-0.5 rounded-full '+st.cls+'">'+st.label+'</span>'+
-                            '<span class="text-xs font-bold px-2.5 py-0.5 rounded-full '+pm.cls+'">'+pm.label+'</span>'+
-                        '</div>'+
-                        '<span class="text-xs font-bold text-brand-blue bg-blue-50 px-2.5 py-1 rounded-full">'+ot.label+'</span>'+
-                    '</div>'+
-                    '<div class="text-xs text-gray-400 mt-1.5">'+formatDateTime(o.createdAt)+' &middot; '+getCanteenName(o.canteenId)+'</div>'+
-                    '<div class="space-y-1.5 py-3">'+
-                        (o.items||[]).map(function(i) {
-                            var mods = parseModifiersJson(i.selectedModifiersJson);
-                            var desc = '';
-                            mods.forEach(function(mg) { if (mg.modifiers && mg.modifiers.length) desc += mg.modifiers.map(function(m){ return m.name; }).join(', '); });
-                            return '<div class="flex items-center justify-between text-xs">'+
-                                '<div class="flex items-center gap-2 min-w-0 flex-1">'+
-                                    '<span class="font-bold text-brand-navy bg-gray-100 px-2 py-0.5 rounded-md shrink-0">'+i.quantity+'x</span>'+
-                                    '<span class="font-semibold text-gray-800 truncate">'+i.productName+'</span>'+
-                                    (desc ? '<span class="text-gray-400 truncate hidden sm:inline">('+desc+')</span>' : '')+
-                                '</div>'+
-                                '<span class="font-bold text-gray-700 shrink-0 ml-2">'+formatMoney(i.subTotal)+'</span>'+
-                            '</div>';
-                        }).join('')+
-                    '</div>'+
-                    '<div class="pt-3 border-t border-gray-100 flex items-center justify-between gap-3">'+
-                        '<div>'+
-                            '<span class="text-xs text-gray-400 block">Tổng thanh toán</span>'+
-                            '<span class="text-lg font-extrabold text-brand-navy">'+formatMoney(o.totalAmount)+'</span>'+
-                        '</div>'+
-                        (o.note ? '<span class="text-xs text-gray-400 italic">GC: '+o.note+'</span>' : '')+
-                    '</div>'+
-                '</div>';
-            }).join('');
-        }
-
-        // ---- PROFILE ----
-        function renderProfile() {
-            document.getElementById('profUsername').innerText = state.user.username;
-            document.getElementById('inputFullName').value = state.user.fullName || '';
-            document.getElementById('inputEmail').value = state.user.email || '';
-            document.getElementById('profRole').innerText = 'Khách hàng';
-            document.getElementById('profileError').classList.add('hidden');
-        }
-
-        async function saveProfile(e) {
-            e.preventDefault();
-            var errEl = document.getElementById('profileError');
-            errEl.classList.add('hidden');
-            var fullName = document.getElementById('inputFullName').value.trim();
-            var email = document.getElementById('inputEmail').value.trim();
-            if (!fullName || !email) { errEl.innerText = 'Vui lòng nhập đầy đủ.'; errEl.classList.remove('hidden'); return; }
-            if (fullName === state.user.fullName && email === state.user.email) {
-                showToast('Không có thông tin nào thay đổi.', 'info');
-                return;
-            }
-            try {
-                var updated = await api.auth.updateProfile({ fullName: fullName, email: email });
-                state.user = updated;
-                updateUserUI();
-                showToast('Cập nhật thông tin thành công!', 'success');
-            } catch(e) {
-                errEl.innerText = e.message || 'Lỗi cập nhật thông tin.';
-                errEl.classList.remove('hidden');
-            }
-        }
-
-        async function changePassword(e) {
-            e.preventDefault();
-            var oldPwd = document.getElementById('oldPassword').value;
-            var newPwd = document.getElementById('newPassword').value;
-            var errEl = document.getElementById('pwdError');
-            errEl.classList.add('hidden');
-            if (!oldPwd || !newPwd) { errEl.innerText = 'Vui lòng nhập đầy đủ.'; errEl.classList.remove('hidden'); return; }
-            if (newPwd.length < 6) { errEl.innerText = 'Mật khẩu mới tối thiểu 6 ký tự.'; errEl.classList.remove('hidden'); return; }
-            try {
-                await api.auth.changePassword(oldPwd, newPwd, true);
-                showToast('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.', 'success');
-                setTimeout(function(){ window.location.href = 'login.html'; }, 1500);
-            } catch(e) {
-                errEl.innerText = e.message || 'Lỗi đổi mật khẩu.';
-                errEl.classList.remove('hidden');
-            }
-        }
-
-        // ---- USER DROPDOWN ----
-        function toggleUserDropdown() {
-            var dd = document.getElementById('userDropdown');
-            dd.classList.toggle('hidden');
-        }
-        function closeUserDropdown() { document.getElementById('userDropdown').classList.add('hidden'); }
-
-        document.addEventListener('click', function(e) {
-            var ud = document.getElementById('userDropdown');
-            var btn = e.target.closest('button');
-            if (ud && !ud.classList.contains('hidden') && (!btn || btn.onclick.toString().indexOf('toggleUserDropdown') === -1)) ud.classList.add('hidden');
-            var cd = document.getElementById('canteenDropdown');
-            if (cd && !cd.classList.contains('hidden')) {
-                var pill = document.getElementById('headerCanteenPill');
-                if (!cd.contains(e.target) && (!pill || !pill.contains(e.target))) cd.classList.add('hidden');
-            }
-        });
-
-        async function doLogout() {
-            try { await api.auth.logout(); } catch(e) {}
-            window.location.href = 'login.html';
-        }
-
-        // ---- INIT ----
-        bootstrap();
-    </script>
+    <script src="js/customer.js"></script>
 </body>
 </html>
