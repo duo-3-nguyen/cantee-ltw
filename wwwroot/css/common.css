@@ -32,7 +32,6 @@ body {
     color: #fff;
 }
 
-/* ── Ẩn / Hiện ── */
 .ẩn {
     display: none !important;
 }
@@ -45,7 +44,6 @@ body {
     scrollbar-width: none;
 }
 
-/* ── Nút ── */
 .nút-vàng {
     display: inline-flex;
     align-items: center;
@@ -159,7 +157,6 @@ body {
     width: 100%;
 }
 
-/* ── Nhãn (Badge) ── */
 .nhãn {
     display: inline-block;
     font-size: 0.625rem;
@@ -194,7 +191,6 @@ body {
     color: #374151;
 }
 
-/* ── Thẻ ── */
 .thẻ-trắng {
     background: var(--white-card);
     border-radius: 16px;
@@ -203,7 +199,6 @@ body {
     padding: 20px;
 }
 
-/* ── Bảng ── */
 .bảng {
     width: 100%;
     font-size: 0.75rem;
@@ -223,7 +218,6 @@ body {
     border-bottom: 1px solid #f1f5f9;
 }
 
-/* ── Form ── */
 .ô-nhập {
     width: 100%;
     background: #f8fafc;
@@ -262,7 +256,6 @@ body {
     border-radius: 8px;
 }
 
-/* ── Nhóm ô nhập có icon (login) ── */
 .nhóm-ô-nhập {
     display: flex;
     align-items: center;
@@ -296,7 +289,6 @@ body {
     color: #94a3b8;
 }
 
-/* ── Khuôn tìm kiếm có icon ── */
 .ô-tìm-kiếm {
     position: relative;
 }
@@ -324,7 +316,6 @@ body {
     background: #fff;
 }
 
-/* ── Tab ── */
 .nút-tab {
     display: inline-block;
     padding: 6px 16px;
@@ -342,7 +333,6 @@ body {
     color: #fff;
 }
 
-/* ── Modal ── */
 .lớp-phủ-modal {
     position: fixed;
     inset: 0;
@@ -370,7 +360,6 @@ body {
     overflow-y: auto;
 }
 
-/* ── Toast ── */
 .thông-báo-toast {
     position: fixed;
     bottom: 24px;
@@ -402,7 +391,6 @@ body {
     font-size: 0.875rem;
 }
 
-/* ── Keyframes ── */
 @keyframes bung-nhỏ {
     from { opacity: 0; transform: scale(0.97); }
     to   { opacity: 1; transform: scale(1); }
@@ -424,7 +412,6 @@ body {
     transform-origin: top center;
 }
 
-/* ── Liên kết ── */
 .liên-kết {
     color: var(--blue-main);
     font-weight: 700;

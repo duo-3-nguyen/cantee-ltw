@@ -3,7 +3,6 @@
     min-height: 100vh;
 }
 
-/* ── Thanh bên ── */
 .thanh-bên {
     width: 240px;
     background: var(--navy);
@@ -99,7 +98,6 @@
     border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-/* ── Đầu trang quản lý ── */
 .đầu-trang-quản-lý {
     background: #fff;
     border-bottom: 1px solid #f1f5f9;
@@ -143,7 +141,6 @@
     .tên-người-dùng-quản-lý { display: inline; }
 }
 
-/* ── Nội dung quản lý ── */
 .nội-dung-quản-lý {
     flex: 1;
     min-width: 0;
@@ -153,7 +150,6 @@
     .nội-dung-quản-lý { padding: 24px; }
 }
 
-/* ── Dashboard ── */
 .lưới-chỉ-số {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -204,7 +200,6 @@
     .lưới-dashboard { grid-template-columns: 1fr 1fr; }
 }
 
-/* ── Kanban ── */
 .bảng-kanban {
     display: grid;
     grid-template-columns: 1fr;
@@ -326,7 +321,6 @@
 .nút-kanban-nhỏ.thanh-toán-chưa { background: #f1f5f9; color: var(--text-muted); }
 .nút-kanban-nhỏ.thanh-toán-chưa:hover { background: #e2e8f0; }
 
-/* ── Sản phẩm (menu) ── */
 .hàng-sản-phẩm {
     background: #fff;
     border-radius: 12px;
@@ -393,7 +387,6 @@
     border-top: 1px solid #f1f5f9;
 }
 
-/* ── Form căn tin ── */
 .lưới-form-hai-cột {
     display: grid;
     grid-template-columns: 1fr;
@@ -428,7 +421,6 @@
     font-family: var(--font-chinh);
 }
 
-/* ── Bảng trong quản lý ── */
 .bảng-quản-lý {
     background: #fff;
     border-radius: 12px;
@@ -440,7 +432,6 @@
     overflow-x: auto;
 }
 
-/* ── Thẻ yêu cầu đăng ký ── */
 .thẻ-yêu-cầu {
     background: #fff;
     border-radius: 12px;
@@ -483,7 +474,6 @@
 .nút-duyệt-nhỏ.từ-chối { background: #ef4444; }
 .nút-duyệt-nhỏ.từ-chối:hover { background: #dc2626; }
 
-/* ── Hàng top products ── */
 .hàng-top-sp {
     display: flex;
     align-items: center;
@@ -495,7 +485,6 @@
 .hàng-top-sp .tên-top-sp { font-weight: 600; color: var(--text-dark); }
 .hàng-top-sp .số-bán { color: var(--text-muted); }
 
-/* ── Nhóm nút lọc ── */
 .nhóm-nút-lọc {
     display: flex;
     align-items: center;
@@ -505,19 +494,16 @@
     padding-bottom: 8px;
 }
 
-/* ── Các màu nền phụ cho dashboard ── */
 .nền-xanh-nhạt { background: #eff6ff; }
 .nền-lục-nhạt { background: #ecfdf5; }
 .nền-hổ-phách-nhạt { background: #fffbeb; }
 .nền-cam-nhạt { background: #fff7ed; }
 .nền-cam-nhạt i { color: #ea580c; }
 
-/* ── Viền kanban theo trạng thái ── */
 .viền-cam { border-color: #fcd34d; background: rgba(255,251,235,0.3); }
 .viền-xanh-dương { border-color: #93c5fd; background: rgba(239,246,255,0.3); }
 .viền-xanh-ngọc { border-color: #67e8f9; background: rgba(236,254,255,0.3); }
 
-/* ── Responsive cho thanh bên trên mobile ── */
 @media (max-width: 767px) {
     .thanh-bên { width: 200px; }
 }

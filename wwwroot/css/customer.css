@@ -5,7 +5,6 @@
     background: #f5f7fa;
 }
 
-/* ── Đầu trang ── */
 .đầu-trang-khách {
     background: #fff;
     border-bottom: 1px solid #f1f5f9;
@@ -38,7 +37,6 @@
     gap: 12px;
 }
 
-/* ── Logo ── */
 .logo-khách {
     display: flex;
     align-items: center;
@@ -71,7 +69,6 @@
     .logo-khách .chữ-tee { font-size: 1.875rem; }
 }
 
-/* ── Viên căn tin (pill) ── */
 .viên-căn-tin {
     display: flex;
     align-items: center;
@@ -142,7 +139,6 @@
     .nhắc-chọn-căn-tin { padding: 8px 16px; font-size: 0.875rem; }
 }
 
-/* ── Menu thả xuống ── */
 .menu-thả-xuống {
     position: absolute;
     top: 100%;
@@ -218,7 +214,6 @@
     text-overflow: ellipsis;
 }
 
-/* ── Menu thả user ── */
 .menu-thả-user {
     position: absolute;
     right: 0;
@@ -285,7 +280,6 @@
     .nút-người-dùng img { width: 32px; height: 32px; }
 }
 
-/* ── Nội dung chính ── */
 .nội-dung-khách {
     max-width: 1280px;
     margin: 0 auto;
@@ -296,7 +290,6 @@
 @media (min-width: 640px) { .nội-dung-khách { padding: 24px; } }
 @media (min-width: 1024px) { .nội-dung-khách { padding: 24px 32px; } }
 
-/* ── Chọn căn tin ── */
 .khung-chọn-căn-tin { max-width: 768px; margin: 0 auto; padding-top: 16px; }
 .lời-chào-căn-tin {
     background: #fff;
@@ -342,7 +335,6 @@
     .thẻ-căn-tin .nhóm-nút-phải { align-self: center; }
 }
 
-/* ── Menu / Món ăn ── */
 .thanh-danh-mục {
     display: flex;
     align-items: center;
@@ -447,7 +439,6 @@
 .thẻ-món-ăn .nút-thêm:active { transform: scale(0.95); }
 .thẻ-món-ăn .tạm-hết { font-size: 0.75rem; color: #ef4444; font-weight: 700; }
 
-/* ── Giỏ hàng ── */
 .giỏ-hàng {
     background: #fff;
     border-radius: 16px;
@@ -539,7 +530,6 @@
 
 .chỗ-trống { padding: 40px 0; text-align: center; color: var(--text-muted); }
 
-/* ── Checkout ── */
 .khung-thanh-toán { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
 @media (min-width: 1024px) { .khung-thanh-toán { grid-template-columns: 8fr 4fr; } }
 
@@ -618,7 +608,6 @@
 .dòng-món-checkout .tùy-chọn-ck { font-size: 0.75rem; color: var(--text-muted); }
 .dòng-món-checkout .ghi-chú-ck { font-size: 0.75rem; color: var(--text-muted); font-style: italic; }
 
-/* ── Lịch sử đơn ── */
 .lịch-sử-đơn { max-width: 896px; margin: 0 auto; }
 
 .thẻ-đơn-hàng {
@@ -656,7 +645,6 @@
 }
 .thẻ-đơn-hàng .tổng-đơn { font-size: 1.125rem; font-weight: 900; color: var(--navy); }
 
-/* ── Hồ sơ / Đổi mật khẩu ── */
 .trang-hồ-sơ {
     max-width: 512px;
     margin: 0 auto;
@@ -671,7 +659,6 @@
 .dòng-thông-tin .nhãn-dòng { color: var(--text-muted); font-size: 0.875rem; }
 .dòng-thông-tin .giá-trị-dòng { font-weight: 700; color: var(--navy); font-size: 0.875rem; }
 
-/* ── Nút quay lại ── */
 .nút-quay-lại {
     display: flex;
     align-items: center;
@@ -722,7 +709,6 @@
 @media (min-width: 640px) { .nút-lịch-sử-đầu-trang { display: flex; } }
 @media (max-width: 639px) { .nút-lịch-sử-đầu-trang { display: none; } }
 
-/* ── Ô chọn (select) ── */
 .ô-chọn {
     width: 100%;
     background: #f8fafc;
@@ -737,7 +723,6 @@
 }
 .ô-chọn:focus { border-color: var(--blue-main); }
 
-/* ── Modal: Chi tiết căn tin ── */
 .ảnh-bìa-modal { height: 144px; border-radius: 12px; overflow: hidden; background: #f1f5f9; }
 .ảnh-bìa-modal img { width: 100%; height: 100%; object-fit: cover; }
 .lịch-tuần { margin-top: 8px; background: #f8fafc; border-radius: 12px; padding: 12px; }
@@ -759,7 +744,6 @@
 }
 .nút-chọn-từ-modal:hover { background: var(--yellow-hover); }
 
-/* ── Modal: Tùy chọn món ── */
 .đầu-modal-món {
     display: flex;
     align-items: flex-start;
@@ -811,7 +795,6 @@
 .bộ-chọn-số-lượng .nút-tăng:hover { background: var(--yellow-hover); }
 .bộ-chọn-số-lượng .số-lượng { font-size: 0.875rem; font-weight: 900; color: var(--navy); width: 24px; text-align: center; }
 
-/* ── Modal: Thành công ── */
 .modal-thành-công { text-align: center; }
 .vòng-thành-công {
     width: 64px;
@@ -835,10 +818,8 @@
 .mã-đơn .nhãn-mã { font-size: 0.625rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
 .mã-đơn .số-mã { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.05em; color: var(--blue-main); }
 
-/* ── Checkbox / Radio trong modal ── */
 input[type="checkbox"],
 input[type="radio"] { accent-color: var(--blue-main); }
 
-/* ── Grid layout menu + sidebar ── */
 .trang-menu { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
 @media (min-width: 1024px) { .trang-menu { grid-template-columns: 8fr 4fr; } }
