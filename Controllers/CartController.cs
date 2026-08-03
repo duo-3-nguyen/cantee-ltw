@@ -5,7 +5,6 @@ using Backend.DTOs;
 using Backend.Enums;
 using Backend.Models;
 using Backend.Helpers;
-using System.Text.Json;
 
 namespace Backend.Controllers;
 
@@ -80,35 +79,12 @@ public class CartController : ControllerBase
             _db.SaveChanges();
         }
 
-        decimal toppingPrice = 0;
-        if (!string.IsNullOrEmpty(request.SelectedModifiersJson))
-        {
-            try
-            {
-                var payload = JsonSerializer.Deserialize<List<SelectedModifierGroupPayload>>(
-                    request.SelectedModifiersJson,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                var modifierIds = (payload ?? new())
-                    .SelectMany(g => g.Modifiers ?? new())
-                    .Select(m => m.Id)
-                    .Distinct()
-                    .ToList();
-                toppingPrice = _db.Modifiers
-                    .Where(m => modifierIds.Contains(m.Id) && m.ModifierGroup.ProductId == product.Id)
-                    .Sum(m => m.PriceAmount);
-            }
-            catch (JsonException)
-            {
-                return BadRequest("Định dạng tùy chọn món không hợp lệ.");
-            }
-        }
-
         var item = new CartItem
         {
             CartId = cart.Id,
             ProductId = product.Id,
             ProductName = product.Name,
-            UnitPrice = product.BasePriceAmount + toppingPrice,
+            UnitPrice = product.BasePriceAmount,
             Quantity = request.Quantity,
             Note = request.Note,
             SelectedModifiersJson = request.SelectedModifiersJson

@@ -31,17 +31,3 @@ public class UpdateCartItemRequest
     public int? Quantity { get; set; }
     public string? Note { get; set; }
 }
-
-public class SelectedModifierGroupPayload
-{
-    public int GroupId { get; set; }
-    public string? GroupName { get; set; }
-    public List<SelectedModifierPayload>? Modifiers { get; set; }
-}
-
-public class SelectedModifierPayload
-{
-    public int Id { get; set; }
-    public string? Name { get; set; }
-    public decimal PriceAmount { get; set; }
-}
