@@ -19,7 +19,6 @@ public static class DataSeeder
         var allModifierGroups = new List<ModifierGroup>();
         var allModifiers = new List<Modifier>();
 
-        // ── Helper factory methods ──
         (string Mod, int Price, bool IsDef) M(string name, int price, bool isDef) => (name, price, isDef);
         (string MgName, bool Required, int Max, (string Mod, int Price, bool IsDef)[] Mgs) Mg(string name, bool req, int max, params (string Mod, int Price, bool IsDef)[] mods) => (name, req, max, mods);
         (string Prod, string Desc, int Price, StockStatus Status, (string MgName, bool Required, int Max, (string Mod, int Price, bool IsDef)[] Mgs)[] Mgs) Prod(string name, string desc, int price, StockStatus status, params (string MgName, bool Required, int Max, (string Mod, int Price, bool IsDef)[] Mgs)[] mgs) => (name, desc, price, status, mgs);
@@ -82,9 +81,6 @@ public static class DataSeeder
             }
         }
 
-        // ═══════════════════════════════
-        // ADMIN
-        // ═══════════════════════════════
         var admin = new User
         {
             Username = "admin",
@@ -98,9 +94,6 @@ public static class DataSeeder
         db.Users.Add(admin);
         await db.SaveChangesAsync();
 
-        // ═══════════════════════════════
-        // CANTEENS + STAFF
-        // ═══════════════════════════════
         var canteenDefs = new[]
         {
             new { Name = "Căn tin 1",           Addr = "Tầng 1, Tòa A, 123 Nguyễn Văn Cừ",         Phone = "0281000001", Email = "cantin1@cantee.com", StaffName = "Nguyễn Văn A" },
@@ -148,9 +141,6 @@ public static class DataSeeder
         db.Canteens.AddRange(canteenList);
         await db.SaveChangesAsync();
 
-        // ═══════════════════════════════
-        // CUSTOMERS
-        // ═══════════════════════════════
         var customerNames = new[] { "Nguyễn Văn An", "Trần Thị Bình", "Lê Văn Chiến", "Phạm Thị Dung", "Hoàng Văn Đức", "Đỗ Thị Hoa", "Vũ Văn Hùng", "Bùi Thị Lan", "Đặng Văn Minh", "Ngô Thị Nhung" };
         var customers = new List<User>();
         for (int i = 1; i <= 10; i++)
@@ -169,9 +159,6 @@ public static class DataSeeder
         db.Users.AddRange(customers);
         await db.SaveChangesAsync();
 
-        // ═══════════════════════════════
-        // OPERATING HOURS
-        // ═══════════════════════════════
         var hourDefs = new[]
         {
             new { Open = new TimeOnly(7,0), Close = new TimeOnly(17,0), ClosedSun = true },
@@ -202,11 +189,7 @@ public static class DataSeeder
         }
         await db.SaveChangesAsync();
 
-        // ═══════════════════════════════════════════════
-        // MENU DATA
-        // ═══════════════════════════════════════════════
 
-        // ── Căn tin 1 ──
         AddCategories(canteenList[0].Id,
             Cat("Cơm",
                 Prod("Cơm tấm sườn nướng", "Cơm tấm miếng sườn heo nướng đậm đà, ăn kèm bì chả trứng, mỡ hành và đồ chua", 30000, StockStatus.Available,
@@ -236,7 +219,6 @@ public static class DataSeeder
                 Prod("Nước cam ép", "Nước cam tươi ép nguyên chất, không đường nhân tạo", 15000, StockStatus.Available),
                 Prod("Coca Cola", "Nước ngọt Coca Cola lon 330ml", 8000, StockStatus.Available)));
 
-        // ── Căn tin 2 ──
         AddCategories(canteenList[1].Id,
             Cat("Cơm",
                 Prod("Cơm sườn cốt lết", "Sườn cốt lết chiên vàng giòn, cơm trắng, canh rau củ, đồ chua", 30000, StockStatus.Available,
@@ -262,7 +244,6 @@ public static class DataSeeder
                     Mg("Độ ngọt", true, 1, M("Ít ngọt", 0, false), M("Vừa", 0, true), M("Ngọt", 0, false))),
                 Prod("Nước suối", "Nước khoáng tinh khiết 500ml", 5000, StockStatus.Available)));
 
-        // ── Căn tin 3 ──
         AddCategories(canteenList[2].Id,
             Cat("Bánh mì",
                 Prod("Bánh mì thịt nướng", "Thịt heo nướng thơm lừng, đồ chua, pate, bơ, dưa leo, ngò, ớt", 20000, StockStatus.Available,
@@ -285,7 +266,6 @@ public static class DataSeeder
                 Prod("Nước ngọt", "Nước ngọt các loại (Coca, Pepsi, 7Up, Mirinda)", 8000, StockStatus.Available),
                 Prod("Sữa tươi", "Sữa tươi tiệt trùng có đường 220ml", 10000, StockStatus.Available)));
 
-        // ── Căn tin 4 ──
         AddCategories(canteenList[3].Id,
             Cat("Cơm",
                 Prod("Cơm gà xối mỡ", "Gà chiên xối mỡ da giòn, cơm trắng, rau răm, nước mắm gừng", 35000, StockStatus.Available,
@@ -303,7 +283,6 @@ public static class DataSeeder
                 Prod("Nước cam ép", "Cam tươi vắt nguyên chất", 15000, StockStatus.Available),
                 Prod("Sinh tố xoài", "Sinh tố xoài chín ngọt, sữa đặc, đá bào", 20000, StockStatus.Available)));
 
-        // ── Căn tin 5 ──
         AddCategories(canteenList[4].Id,
             Cat("Cơm văn phòng",
                 Prod("Cơm bò xào tiêu đen", "Thịt bò Úc xào tiêu đen, sốt nấm, cơm trắng, rau củ luộc", 42000, StockStatus.Available),
@@ -321,7 +300,6 @@ public static class DataSeeder
                 Prod("Nước ép dưa hấu", "Dưa hấu tươi ép nguyên chất", 18000, StockStatus.Available),
                 Prod("Latte nóng", "Cà phê espresso pha sữa tươi nóng, lớp bọt mịn", 25000, StockStatus.Available)));
 
-        // ── Căn tin 6 ──
         AddCategories(canteenList[5].Id,
             Cat("Cơm",
                 Prod("Cơm tấm đặc biệt", "Cơm tấm sườn, bì, chả, trứng, chà bông, mỡ hành, đồ chua đầy đủ", 38000, StockStatus.Available,
@@ -338,7 +316,6 @@ public static class DataSeeder
                 Prod("Cà phê đen đá", "Cà phê phin không đường, vị đắng đậm đà", 12000, StockStatus.Available),
                 Prod("Trà sữa matcha", "Matcha Nhật Bản pha sữa tươi, trân châu đen", 25000, StockStatus.Available)));
 
-        // ── Căn tin 7 ──
         AddCategories(canteenList[6].Id,
             Cat("Chè - Tráng miệng",
                 Prod("Chè đậu đỏ", "Đậu đỏ hầm nhừ, nước cốt dừa béo, đá bào", 15000, StockStatus.Available,
@@ -355,7 +332,6 @@ public static class DataSeeder
                 Prod("Nước sâm bí đao", "Nước sâm bí đao mát lành, la hán quả, rễ tranh", 10000, StockStatus.Available),
                 Prod("Sữa hạt điều", "Sữa hạt điều rang thơm, không đường, bổ dưỡng", 18000, StockStatus.Available)));
 
-        // ── Căn tin 8 ──
         AddCategories(canteenList[7].Id,
             Cat("Cơm",
                 Prod("Cơm chay", "Cơm trắng, đậu phụ sốt cà, nấm xào, rau củ luộc, canh rong biển", 25000, StockStatus.Available),
@@ -369,7 +345,6 @@ public static class DataSeeder
                 Prod("Nước ép cà rốt", "Cà rốt tươi ép nguyên chất, bổ sung vitamin A", 15000, StockStatus.Available),
                 Prod("Sữa đậu nành", "Sữa đậu nành nóng hoặc lạnh, thơm béo tự nhiên", 10000, StockStatus.Available)));
 
-        // ── Căn tin Đại học CMC ──
         AddCategories(canteenList[8].Id,
             Cat("Cơm",
                 Prod("Cơm tấm đại học", "Cơm tấm sườn nướng, bì, chả, trứng, đầy đủ topping, giá sinh viên", 30000, StockStatus.Available,
@@ -395,7 +370,6 @@ public static class DataSeeder
                 Prod("Bắp xào", "Bắp Mỹ xào bơ, tép khô, hành lá, ăn vặt tuổi thơ", 12000, StockStatus.Available),
                 Prod("Cá viên chiên", "Cá viên chiên vàng, chấm tương ớt hoặc sốt mayonnaise (10 viên)", 15000, StockStatus.Available)));
 
-        // ── Căn tin THPT CMC ──
         AddCategories(canteenList[9].Id,
             Cat("Cơm trưa",
                 Prod("Cơm tấm học sinh", "Cơm tấm sườn nhỏ, trứng ốp la, đồ chua, giá phải chăng", 22000, StockStatus.Available,
@@ -420,13 +394,9 @@ public static class DataSeeder
 
         await db.SaveChangesAsync();
 
-        // ── SoldCount ──
         foreach (var p in allProducts) p.SoldCount = rng.Next(0, 200);
         await db.SaveChangesAsync();
 
-        // ═══════════════════════════════
-        // FAVORITES
-        // ═══════════════════════════════
         var usedFavPairs = new HashSet<(int, int)>();
         for (int i = 0; i < 40; i++)
         {
@@ -444,9 +414,6 @@ public static class DataSeeder
         }
         await db.SaveChangesAsync();
 
-        // ═══════════════════════════════
-        // ORDERS
-        // ═══════════════════════════════
         var orderStatuses = new[] { OrderStatus.Pending, OrderStatus.Preparing, OrderStatus.Preparing, OrderStatus.ReadyForPickup, OrderStatus.ReadyForPickup, OrderStatus.Delivered, OrderStatus.Delivered, OrderStatus.Delivered, OrderStatus.Delivered, OrderStatus.Cancelled };
         var orderTypes = new[] { OrderType.DineIn, OrderType.DineIn, OrderType.TakeAway };
 
