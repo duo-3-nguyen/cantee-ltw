@@ -20,7 +20,8 @@ var state = {
     customizingProductId: null,
     customizingProduct: null,
     selectedModifiers: {},
-    detailCanteen: null
+    detailCanteen: null,
+    productPollInterval: null
 };
 
 var allViews = ['viewCanteenSelect','viewMenu','viewCheckout','viewOrderHistory','viewProfile','viewChangePassword'];
@@ -66,6 +67,7 @@ async function navigateTo(view) {
     var statusEl = document.getElementById('headerCanteenStatus');
 
     if (view === 'canteen-select') {
+        stopProductPolling();
         pill.classList.add('ẩn'); pill.style.display = 'none';
         prompt.classList.remove('ẩn');
         statusEl.classList.add('ẩn');
@@ -95,18 +97,23 @@ async function navigateTo(view) {
             renderCategories();
             renderProducts();
             renderCart();
+            startProductPolling();
         } else if (view === 'checkout') {
+            stopProductPolling();
             showView('viewCheckout');
             generatePickupOptions();
             renderCheckout();
         } else if (view === 'order-history') {
+            stopProductPolling();
             if (!state.orders || state.orders.length === 0) await loadOrders();
             showView('viewOrderHistory');
             renderOrderHistory();
         } else if (view === 'profile') {
+            stopProductPolling();
             showView('viewProfile');
             renderProfile();
         } else if (view === 'change-password') {
+            stopProductPolling();
             showView('viewChangePassword');
             document.getElementById('pwdError').classList.add('ẩn');
         }
@@ -280,6 +287,13 @@ async function loadProducts() {
         state.products = await api.products.list(params);
         renderProducts();
     } catch(e) { showToast('Lỗi tải sản phẩm: ' + (e.message || ''), 'error'); }
+}
+
+function stopProductPolling() { if (state.productPollInterval) { clearInterval(state.productPollInterval); state.productPollInterval = null; } }
+
+function startProductPolling() {
+    stopProductPolling();
+    state.productPollInterval = setInterval(function() { loadProducts(); }, 10000);
 }
 
 function renderCategories() {
