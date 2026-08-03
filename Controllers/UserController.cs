@@ -26,6 +26,7 @@ public class UserController : ControllerBase
     {
         var (success, error, user, _) = _authChecker.RequireLogin(Request);
         if (!success) return Unauthorized(error);
+
         if (!_authChecker.RequireRoles(user, UserRole.Admin))
             return StatusCode(403, "Bạn không có quyền thực hiện hành động này.");
 
