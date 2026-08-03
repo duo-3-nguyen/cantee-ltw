@@ -209,9 +209,8 @@ public class OrderController : ControllerBase
             query = query.Where(o => o.Status == status.Value);
         if (date.HasValue)
         {
-            var from = date.Value.Date;
-            var to = from.AddDays(1);
-            query = query.Where(o => o.CreatedAt >= from && o.CreatedAt < to);
+            var from = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc);
+            query = query.Where(o => o.CreatedAt >= from && o.CreatedAt < from.AddDays(1));
         }
 
         var list = query.OrderByDescending(o => o.CreatedAt)

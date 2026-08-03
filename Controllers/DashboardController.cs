@@ -35,9 +35,9 @@ public class DashboardController : ControllerBase
             .AsQueryable();
 
         if (from.HasValue)
-            query = query.Where(o => o.CreatedAt >= from.Value);
+            query = query.Where(o => o.CreatedAt >= DateTime.SpecifyKind(from.Value.Date, DateTimeKind.Utc));
         if (to.HasValue)
-            query = query.Where(o => o.CreatedAt <= to.Value);
+            query = query.Where(o => o.CreatedAt < DateTime.SpecifyKind(to.Value.Date, DateTimeKind.Utc).AddDays(1));
 
         var revenue = query
             .GroupBy(o => new { o.CanteenId, o.Canteen.Name })
